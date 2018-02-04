@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Gym Assistant</string>
+    <string name="app_name_gym">Gym</string>
+    <string name="app_name_assistant">Assistant</string>
 </resources>
