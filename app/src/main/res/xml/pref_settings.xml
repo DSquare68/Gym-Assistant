@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/lib/com.example.daniel"
+    xmlns:style="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.daniel.gymassistant.Settings">
+
+    <com.example.daniel.extraview.SettingsCategory
+        style:text_color="@color/color_settings_header"
+        style:font_size="25dp"
+        android:title="@string/settings"
+        android:key="pref_key_storage_settings">
+
+        <Preference
+            android:key="@string/key_start_mode_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:summary="@string/start_mode_summary"
+            android:title="@string/training_mode"/>
+            <!--android:title="@string/settings_start_mode_title"-->
+
+
+        <!--rename-->
+        <Preference
+            android:key="@string/key_what_display_on_exercise_round"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:title="@string/displaying_tips"
+            android:summary="@string/displaying_tips_summary"/>
+    </com.example.daniel.extraview.SettingsCategory>
+    <!--
+    <com.example.daniel.extraview.SettingsCategory
+        style:text_color="@color/color_settings_header"
+        style:font_size="25dp"
+        android:title="@string/language"
+        android:key="pref_key_storage_settings">
+
+        <Preference
+            android:key="@string/key_start_mode_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:title="@string/choose_language"/>
+
+
+
+    </com.example.daniel.extraview.SettingsCategory>
+-->
+</PreferenceScreen >

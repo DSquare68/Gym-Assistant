@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="settings_category">
+        <attr name="text_color" format="color" />
+        <attr name="font_size" format="dimension"/>
+    </declare-styleable>
+</resources>
