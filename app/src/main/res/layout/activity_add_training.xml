@@ -11,9 +11,7 @@
         android:id="@+id/toolbar_dodaj_trening"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:background="@color/colorPrimaryDark"
         app:titleTextAppearance="@style/Toolbar.TitleText"
         >
 

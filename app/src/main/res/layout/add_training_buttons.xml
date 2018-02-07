@@ -10,18 +10,18 @@
 
     android:weightSum="2">
     <ImageView
-        android:id="@+id/dodajcwiczeniePrzycisk"
+        android:id="@+id/add_exercise_button"
         android:layout_width="@dimen/dimension_of_plus_and_arrow_add_training"
         android:layout_height="@dimen/dimension_of_plus_and_arrow_add_training"
         android:clickable="true"
         android:layout_weight="1"
-        android:onClick="dodajĆwiczenie"
+        android:onClick="addExercise"
         android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/add_training">
     </ImageView>
 
     <ImageView
-        android:id="@+id/dodajcwiczeniePrzyciskDalej"
+        android:id="@+id/add_exercise_setting_go_button"
         android:layout_width="@dimen/dimension_of_plus_and_arrow_add_training"
         android:layout_height="@dimen/dimension_of_plus_and_arrow_add_training"
         android:layout_gravity="center_horizontal"

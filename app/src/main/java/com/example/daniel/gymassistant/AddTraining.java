@@ -50,7 +50,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     Slider slider = new Slider();
     private ArrayList listData;
     LinearLayout.LayoutParams lp;
-    public static int openMode;
+    public static int openMode=1;
     
     private static LinearLayout recyclerViewLinearLayout;
     private static LinearLayout przyciski;
@@ -86,7 +86,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                 otwartePrzezStatystyki();
                 break;
         }
-        setContentView(parentLayout, lp);
+        setContentView(parentLayout);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         sprCzyklawiaturaJestWłączona();
     }
@@ -105,15 +105,10 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
 
                     @Override
                     public void run() {
-
-                        // Do something after 5s = 5000ms
-                        //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
                         Rect measureRect = new Rect(); //you should cache this, onGlobalLayout can get called often
                         parentLayout.getWindowVisibleDisplayFrame(measureRect);
                         // measureRect.bottom is the position above soft keypad
                         int keypadHeight = parentLayout.getRootView().getHeight() - measureRect.bottom;
-                        int downBar = measureRect.bottom;
-                        Log.d("Down", String.valueOf(downBar));
                         if(keypadHeight!=prevoiusHeight) {
                             recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerViewLinearLayout.getHeight() - keypadHeight + prevoiusHeight)));
                             recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerView.getHeight() - keypadHeight  + prevoiusHeight)));
@@ -121,32 +116,6 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                         }
                     }
                 },100);
-
-            }
-
-            private void klawiaturaSięSchowała() {
-                if (!Resolution.hasSoftKeys) {
-                    recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 570)));
-                    recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 570)));
-                } else{
-                    recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 430)));
-                    recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 430)));
-                }
-            }
-
-            private void klawiaturSięPokazała() {
-                if(!Resolution.hasSoftKeys) {
-                    recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 230))); //230
-                    recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 230)));
-                } else{
-                    recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 200)));
-                    recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Units.dpToPx(context, 200)));
-                }
-                //przyciski.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                //parentLayout.removeView(przyciski);
-                //parentLayout.addView(przyciski,2);
-
-                Log.d("dzieci",String.valueOf(parentLayout.getChildCount()));
             }
         });
     }
@@ -371,7 +340,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     }
 
     private void moveItem(int oldPos, int newPos) {
-        ExerciseValue item = (ExerciseValue) ExerciseAdapter.exerciseList.get(oldPos);
+        ExerciseValue item = ExerciseAdapter.exerciseList.get(oldPos);
         ExerciseAdapter.exerciseList.remove(oldPos);
         ExerciseAdapter.exerciseList.add(newPos, item);
         adapter.notifyItemMoved(oldPos, newPos);
@@ -381,7 +350,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         ExerciseAdapter.exerciseList.remove(position);
         adapter.notifyItemRemoved(position);
     }
-    public void dodajĆwiczenie(View view){
+    public void addExercise(View view){
         addItemToList();
     }
 

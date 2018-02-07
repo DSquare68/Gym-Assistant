@@ -43,8 +43,8 @@ public class AddTrainingSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         parentLayout =(LinearLayout) View.inflate(this,R.layout.activity_add_training_settings,null);
         trainingValuesDatabase= new TrainingValuesDatabase(getApplicationContext());
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, LinearLayout.LayoutParams.MATCH_PARENT, getResources().getDisplayMetrics()));
-        addContentView(parentLayout,p);
+        //LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, LinearLayout.LayoutParams.MATCH_PARENT, getResources().getDisplayMetrics()));
+        setContentView(parentLayout);
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_add_training_settings);
         setSupportActionBar(mActionBarToolbar);
         getSupportActionBar().setTitle(AddTraining.defaultTrainingName);
