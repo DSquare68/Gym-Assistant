@@ -1,4 +1,4 @@
-package com.example.daniel.database.exercise;
+package com.example.daniel.database.exercise.name;
 
 /**
  * Created by Daniel on 2017-04-05.
@@ -15,7 +15,7 @@ public class Exercise {
     public void setName(String nazwa){
         this.nazwa = nazwa;
     }
-    public String getNazwa(){
+    public String getName(){
         return nazwa;
     }
 

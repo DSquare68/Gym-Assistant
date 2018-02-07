@@ -1,4 +1,4 @@
-package com.example.daniel.database.trainings.exercisevalues;
+package com.example.daniel.database.exercise.values;
 
 /**
  * Created by Daniel on 2017-04-22.

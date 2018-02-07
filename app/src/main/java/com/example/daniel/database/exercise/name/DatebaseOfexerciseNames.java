@@ -1,4 +1,4 @@
-package com.example.daniel.database.exercise;
+package com.example.daniel.database.exercise.name;
 
 /**
  * Created by Daniel on 2017-08-10.

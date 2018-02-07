@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dodajcwiczenieKomponent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context= "com.example.daniel.gymassistant.AddTraining"
+    android:layout_weight="1"
+    android:weightSum="1"
+    android:gravity="center_vertical|left"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:maxLines="2"
+
+        />
+
+    <ImageView
+        android:id="@+id/suwak"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        app:srcCompat="@drawable/slider"
+        android:layout_weight="0.01"
+        android:clickable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/round_number_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:inputType="textMultiLine"
+            android:text="Ilość\nserii"
+            android:textColor="#000000"
+            android:textSize="12dp" />
+
+        <EditText
+            android:id="@+id/round_number_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center_horizontal"
+            android:textSize="12dp"
+            android:layout_weight="1"
+            android:inputType="number"
+            />
+        <TextView
+            android:id="@+id/weight_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:inputType="textMultiLine"
+            android:text="Obciążenie"
+            android:textColor="#000000"
+            android:textSize="12dp"
+
+            />
+        <EditText
+            android:id="@+id/weight_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center_horizontal"
+            android:textSize="12dp"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            />
+
+        <TextView
+            android:id="@+id/reps_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:inputType="textMultiLine"
+            android:text="Ilość\npowtórzeń"
+            android:textColor="#000000"
+            android:textSize="12dp" />
+
+        <EditText
+            android:id="@+id/reps_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:gravity="center_horizontal"
+            android:textSize="12dp"
+            android:inputType="number"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+</LinearLayout>

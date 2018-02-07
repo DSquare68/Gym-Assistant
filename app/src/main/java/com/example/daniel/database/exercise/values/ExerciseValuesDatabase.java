@@ -1,4 +1,4 @@
-package com.example.daniel.database.trainings.exercisevalues;
+package com.example.daniel.database.exercise.values;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.daniel.database.exercise.Exercise;
+import com.example.daniel.database.exercise.name.Exercise;
 
 
 public class ExerciseValuesDatabase extends SQLiteOpenHelper {
@@ -87,7 +87,7 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         return false;
     }*/
 
-    public ExerciseValue readExerciseValue(int row){
+    public ExerciseValue get(int row){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRANING_ID,ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, null,null,null,null,ExerciseValuesColumns._ID);
@@ -98,7 +98,7 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         db.close();
         return  ćwiczenie;
     }
-    public Exercise[] readAllExercise(){
+    public Exercise[] getAllArderedByID(){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT DISTINCT "+ExerciseValuesColumns.EXERCISE_ID+" FROM "+ExerciseValuesColumns.TABLE_NAME+" ORDER BY "+ExerciseValuesColumns.EXERCISE_ID+" DESC;";
         Cursor cursor= db.rawQuery(query, new String[]{});
@@ -110,7 +110,7 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         }
         return   wynik;
     }
-    public ExerciseValue[] readExerciseValue(String nazwaTreningu){
+    public ExerciseValue[] get(String nazwaTreningu){
         SQLiteDatabase db = this.getReadableDatabase();
         //String query ="SELECT * FROM "+ExerciseValuesColumns.TABLE_NAME+" WHERE "+ ExerciseValuesColumns.NAZWA_TRENINGU +" = " + nazwaTreningu + " ORDER BY "+ExerciseValuesColumns.NAZWA_ĆWICZENIA;
         Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRANING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRANING_ID+" = '"+nazwaTreningu+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER);
@@ -127,20 +127,20 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         db.close();
         return  ćwiczenie;
     }
-    public ExerciseValue[] readAllExerciseValue(){
+    public ExerciseValue[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID,ExerciseValuesColumns.TRANING_ID, ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, null,null,null,null,ExerciseValuesColumns._ID);
         if (cursor!=null){
             cursor.moveToFirst();
         }
-        ExerciseValue[] ćwiczenie = new ExerciseValue[cursor.getCount()];
+        ExerciseValue[] exercise = new ExerciseValue[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
-            ćwiczenie[i] = new ExerciseValue(cursor.getInt(1),cursor.getInt(2),cursor.getInt(3),cursor.getInt(4), cursor.getDouble(5),cursor.getInt(6));
+            exercise[i] = new ExerciseValue(cursor.getInt(1),cursor.getInt(2),cursor.getInt(3),cursor.getInt(4), cursor.getDouble(5),cursor.getInt(6));
             cursor.moveToNext();
         }
         db.close();
-        return  ćwiczenie;
+        return  exercise;
     }
     public void delate(int numer){
         SQLiteDatabase db = this.getWritableDatabase();

@@ -1,4 +1,4 @@
-package com.example.daniel.database.trainings.exercisevalues;
+package com.example.daniel.database.exercise.values;
 
 import android.provider.BaseColumns;
 

@@ -47,7 +47,7 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
     public void addTrainingName(String training){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //if(czyNazwaĆwiczeniaJużByła(ćwiczenie.getNazwa())) return;
+        //if(czyNazwaĆwiczeniaJużByła(exercises.getNazwa())) return;
         ContentValues values = new ContentValues();
         values.put(TrainingNamesColumns.TRAINING_NAME, training);
 
@@ -55,7 +55,7 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
         db.close();
     }
 
-    private boolean isTrainingNameRepeated(String trainingName) {
+    public boolean isTrainingNameRepeated(String trainingName) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[] {TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME}, null,null,null,null,TrainingNamesColumns._ID);
         int ilość = cursor.getCount();
@@ -72,7 +72,15 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
         return false;
     }
 
-    public TrainingName readTrainingName(int row, int column){
+    public int getIndex(String name) {
+        String countQuery = "SELECT  "+TrainingNamesColumns._ID+" FROM " + TrainingNamesColumns.TABLE_NAME+" WHERE "+TrainingNamesColumns.TRAINING_NAME+" = "+name;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+    }
+
+    public TrainingName getTrainingName(int row, int column){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[] {TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME}, null,null,null,null,TrainingNamesColumns._ID);
@@ -84,25 +92,25 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
         return  ćwiczenie;
     }
 
-    public TrainingName[] readAllTrainings(){
+    public TrainingName[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[] {TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME}, null,null,null,null,TrainingNamesColumns._ID);
         if (cursor!=null){
             cursor.moveToFirst();
         }
-        TrainingName[] ćwiczenie = new TrainingName[cursor.getCount()];
+        TrainingName[] training = new TrainingName[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
-            ćwiczenie[i] = new TrainingName(cursor.getString(1));
+            training[i] = new TrainingName(cursor.getString(1));
             cursor.moveToNext();
         }
         db.close();
-        return  ćwiczenie;
+        return  training;
     }
 
-    public void deleteTrainingName(int numer){
+    public void deleteTrainingName(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TrainingNamesColumns.TABLE_NAME, TrainingNamesColumns._ID+" =?", new String[]{String.valueOf(numer)});
+        db.delete(TrainingNamesColumns.TABLE_NAME, TrainingNamesColumns._ID+" =?", new String[]{String.valueOf(id)});
         db.close();
     }
     public void deleteTrainingName(String nazwaTreningu){
@@ -127,4 +135,6 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
         return cursor.getCount();
 
     }
+
+
 }

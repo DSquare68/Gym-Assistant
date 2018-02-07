@@ -7,13 +7,13 @@ package com.example.daniel.database.trainings.trainingvalues;
 public class TrainingValue {
     private long averageTime;
     private int trainingId, roundsNumber, exerciseNumber, repetition;
-    private String traningName, weekDays, trainingMode, shedshule, addDate, firstDayTraining, lastTrainingDayDate;
+    private String trainingName, weekDays, trainingMode, schedule, addDate, firstDayTraining, lastTrainingDayDate;
 
-    public TrainingValue(String treningName, int trainingID, String weekDays, String trainingMode, String shedshule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
-        this.traningName = treningName;
+    public TrainingValue(String treningName, int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
+        this.trainingName = treningName;
         this.weekDays = weekDays;
         this.trainingMode = trainingMode;
-        this.shedshule = shedshule;
+        this.schedule = schedule;
         this.roundsNumber = roundsNumber;
         this.exerciseNumber = exerciseNumber;
         this.addDate = addDate;
@@ -23,11 +23,11 @@ public class TrainingValue {
         this.averageTime = averageTime;
     }
 
-    public TrainingValue(int trainingID, String weekDays, String trainingMode, String shedshule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
+    public TrainingValue(int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
         this.trainingId = trainingID;
         this.weekDays = weekDays;
         this.trainingMode = trainingMode;
-        this.shedshule = shedshule;
+        this.schedule = schedule;
         this.roundsNumber = roundsNumber;
         this.exerciseNumber = exerciseNumber;
         this.addDate = addDate;
@@ -77,12 +77,12 @@ public class TrainingValue {
         this.repetition = repetition;
     }
 
-    public String getTraningName() {
-        return traningName;
+    public String getTrainingName() {
+        return trainingName;
     }
 
-    public void setTraningName(String traningName) {
-        this.traningName = traningName;
+    public void setTrainingName(String trainingName) {
+        this.trainingName = trainingName;
     }
 
     public String getWeekDays() {
@@ -101,12 +101,12 @@ public class TrainingValue {
         this.trainingMode = trainingMode;
     }
 
-    public String getShedshule() {
-        return shedshule;
+    public String getSchedule() {
+        return schedule;
     }
 
-    public void setShedshule(String shedshule) {
-        this.shedshule = shedshule;
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
     }
 
     public String getAddDate() {

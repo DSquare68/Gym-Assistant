@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addTraining(View view) {
+        Intent intent = new Intent(this, AddTraining.class);
+        startActivity(intent);
     }
 
     public void progressOpen(View view) {

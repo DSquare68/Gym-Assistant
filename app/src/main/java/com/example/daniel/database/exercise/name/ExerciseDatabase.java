@@ -1,10 +1,13 @@
-package com.example.daniel.database.exercise;
+package com.example.daniel.database.exercise.name;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.example.daniel.database.exercise.name.Exercise;
+import com.example.daniel.database.exercise.name.ExerciseColumnNames;
 
 /**
  * Created by Daniel on 2017-04-07.
@@ -37,18 +40,35 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void dodajĆwiczenie(Exercise ćwiczenie){
+    public void addExercise(Exercise exercise){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        if(czyNazwaĆwiczeniaJużByła(ćwiczenie.getNazwa())) return;
+        if(isExerciseNameExists(exercise.getName())) return;
         ContentValues values = new ContentValues();
-        values.put(ExerciseColumnNames.EXERCISE_NAME, ćwiczenie.getNazwa());
+        values.put(ExerciseColumnNames.EXERCISE_NAME, exercise.getName());
 
         db.insert(ExerciseColumnNames.TABLE_NAME, null, values);
         db.close();
     }
+    public int getIndex(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + ExerciseColumnNames.EXERCISE_NAME+" FROM "+ExerciseColumnNames.TABLE_NAME+" WHERE "+ ExerciseColumnNames.EXERCISE_NAME+" = "+name;
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
 
-    private boolean czyNazwaĆwiczeniaJużByła(String nazwa) {
+    }
+    public int getIndex(Exercise exercise) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + ExerciseColumnNames._ID+" FROM "+ExerciseColumnNames.TABLE_NAME+" WHERE "+ ExerciseColumnNames.EXERCISE_NAME+" = "+exercise.getName();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+
+    }
+
+
+        private boolean isExerciseNameExists(String nazwa) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(ExerciseColumnNames.TABLE_NAME, new String[] {ExerciseColumnNames._ID, ExerciseColumnNames.EXERCISE_NAME}, null,null,null,null, ExerciseColumnNames._ID);
         int ilość = cursor.getCount();
@@ -64,7 +84,7 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         return false;
     }
 
-    public Exercise wczytajĆwiczenie(int row, int column){
+    public Exercise getExercise(int row, int column){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(ExerciseColumnNames.TABLE_NAME, new String[] {ExerciseColumnNames._ID, ExerciseColumnNames.EXERCISE_NAME}, null,null,null,null, ExerciseColumnNames._ID);
@@ -76,31 +96,31 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         db.close();
         return  ćwiczenie;
     }
-    public Exercise[] wczytajWszystkiejĆwiczenie(){
+    public Exercise[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(ExerciseColumnNames.TABLE_NAME, new String[] {ExerciseColumnNames._ID, ExerciseColumnNames.EXERCISE_NAME}, null,null,null,null, ExerciseColumnNames._ID);
         if (cursor!=null){
             cursor.moveToFirst();
         }
-        Exercise[] ćwiczenie = new Exercise[cursor.getCount()];
+        Exercise[] exercises = new Exercise[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
-            ćwiczenie[i] = new Exercise(cursor.getString(1));
+            exercises[i] = new Exercise(cursor.getString(1));
             cursor.moveToNext();
         }
         db.close();
-        return  ćwiczenie;
+        return  exercises;
     }
-    public void usuńĆwiczenie(int numer){
+    public void delete(int numer){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ExerciseColumnNames.TABLE_NAME, ExerciseColumnNames._ID+" =?", new String[]{String.valueOf(numer)});
         db.close();
     }
-    public void usuńWszystkie(){
+    public void deletaAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ExerciseColumnNames.TABLE_NAME,null,null);
     }
-    public void usuńPlik(){
+    public void delateFile(){
         Context.deleteDatabase(ExerciseColumnNames.TABLE_NAME);
     }
 
@@ -108,10 +128,10 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + ExerciseColumnNames.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        int wynik = cursor.getCount();
+        int result = cursor.getCount();
         // return count
         cursor.close();
         db.close();
-        return wynik;
+        return result;
     }
 }

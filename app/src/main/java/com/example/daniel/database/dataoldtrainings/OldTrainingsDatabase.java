@@ -159,28 +159,14 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
         return cursor.getCount();
     }
 
-    /*public OldTraining[] wczytajZtreningZDAtyIGodziny(String s, String s1) { // żeby nie popwtarzał serii
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query("["+TABLE_NAME+"]", new String[] {TrainingValuesColumns._ID,OldTrainingsColumnNames.NAZWA_TRENINGU,OldTrainingsColumnNames.NAZWA_ĆWICZENIA, OldTrainingsColumnNames.DATA_TRENINGU,OldTrainingsColumnNames.GODZINA_TRENINGU,OldTrainingsColumnNames.CZAS_TRENINGU,OldTrainingsColumnNames.NAZWA_ĆWICZENIA,OldTrainingsColumnNames.NUMER_SERII,OldTrainingsColumnNames.ILOSC_POWTÓRZEŃ, OldTrainingsColumnNames.OBCIĄŻĘNIE}, OldTrainingsColumnNames.DATA_TRENINGU +" = '"+s+"' AND "+OldTrainingsColumnNames.GODZINA_TRENINGU +" = '"+s1+"' ",null,null,null,OldTrainingsColumnNames._ID);
-        cursor.moveToFirst();
-        OldTraining[] ćwiczenie= new OldTraining[cursor.getCount()];
-        int i=0;
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext(),i++) {
-            ćwiczenie[i]= new OldTraining(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7),cursor.getDouble(8));
-        }
-        db.close();
-        return ćwiczenie;
-    }*/
-    public OldTraining[][] wczytajZtreningZDAtyIGodziny(String s, String s1) { // żeby nie popwtarzał serii
+    public OldTraining[][] getAll(String s, String s1) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query("["+TABLE_NAME+"]", new String[] {OldTrainingsColumnNames._ID,OldTrainingsColumnNames.TRAINING_ID,OldTrainingsColumnNames.EXERCISE_ID, OldTrainingsColumnNames.DATE,OldTrainingsColumnNames.TIME,OldTrainingsColumnNames.DURATION,OldTrainingsColumnNames.ROUND_NUMBER,OldTrainingsColumnNames.REPS, OldTrainingsColumnNames.WEIGHT}, OldTrainingsColumnNames.DATE +" = '"+s+"' AND "+OldTrainingsColumnNames.TIME +" = '"+s1+"' ",null,null,null,OldTrainingsColumnNames._ID);
         TrainingValuesDatabase wtd = new TrainingValuesDatabase(context);
         cursor.moveToFirst();
-        TrainingValue trainingValue =wtd.read(cursor.getString(1));
+        TrainingValue trainingValue =wtd.get(cursor.getString(1));
         cursor.moveToFirst();
-        Log.d("Dane",DatabaseUtils.dumpCursorToString(cursor));
         int maxSerie=1, ilośććwiczeń=0,seria=0;
         for(int i=0; i<cursor.getCount();cursor.moveToNext(),i++){
 

@@ -22,6 +22,12 @@
             android:name=".Settings"
             android:label="@string/settings"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddTraining"
+            android:label="@string/title_activity_add_training" />
+        <activity
+            android:name=".AddTrainingSettings"
+            android:label="@string/title_activity_add_training_settings"></activity>
     </application>
 
 </manifest>

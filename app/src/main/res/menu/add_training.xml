@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DodajTrening"
+    android:icon="@drawable/ic_action_more">
+    <item
+        android:id="@+id/dodajTreningUstawNazwę"
+        android:title="Ustaw Nazwę"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_action_more"
+        />
+
+
+
+</menu>

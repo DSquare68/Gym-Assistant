@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.example.daniel.database.trainings.exercisevalues.ExerciseValuesColumns;
+import com.example.daniel.database.exercise.values.ExerciseValuesColumns;
 
 public class TrainingValuesDatabase extends SQLiteOpenHelper {
     private static final String DATA_BASE_NAME = "trainings.db";
@@ -43,7 +43,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         values.put(TrainingValuesColumns.TRAINING_ID,ćwiczenie.getTrainingId());
         values.put(TrainingValuesColumns.WEEK_DAYS, ćwiczenie.getWeekDays());
         values.put(TrainingValuesColumns.TRAINING_MODE, ćwiczenie.getTrainingMode());
-        values.put(TrainingValuesColumns.SCHEDULE, ćwiczenie.getShedshule());
+        values.put(TrainingValuesColumns.SCHEDULE, ćwiczenie.getSchedule());
         values.put(TrainingValuesColumns.ROUNDS_NUMBER,ćwiczenie.getRoundsNumber());
         values.put(TrainingValuesColumns.EXERCISE_NUMBER,ćwiczenie.getExerciseNumber());
         values.put(TrainingValuesColumns.ADD_DATE,ćwiczenie.getAddDate());
@@ -60,12 +60,12 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
     }
     public void update(TrainingValue ćwiczenie) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //db.delete(TrainingValuesColumns.TABLE_NAME,TrainingValuesColumns.NAZWA_TRENINGU+" = ? ",new String[]{ćwiczenie.getNazwaTreningu()});
+        //db.delete(TrainingValuesColumns.TABLE_NAME,TrainingValuesColumns.NAZWA_TRENINGU+" = ? ",new String[]{exercises.getNazwaTreningu()});
         ContentValues values = new ContentValues();
         values.put(TrainingValuesColumns.TRAINING_ID, ćwiczenie.getTrainingId());
         values.put(TrainingValuesColumns.WEEK_DAYS, ćwiczenie.getWeekDays());
         values.put(TrainingValuesColumns.TRAINING_MODE, ćwiczenie.getTrainingMode());
-        values.put(TrainingValuesColumns.SCHEDULE, ćwiczenie.getShedshule());
+        values.put(TrainingValuesColumns.SCHEDULE, ćwiczenie.getSchedule());
         values.put(TrainingValuesColumns.ROUNDS_NUMBER, ćwiczenie.getRoundsNumber());
         values.put(TrainingValuesColumns.EXERCISE_NUMBER, ćwiczenie.getExerciseNumber());
         values.put(TrainingValuesColumns.ADD_DATE, ćwiczenie.getAddDate());
@@ -78,7 +78,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public TrainingValue read(int row){
+    public TrainingValue get(int row){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, null,null,null,null,TrainingValuesColumns._ID);
@@ -90,7 +90,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         return  ćwiczenie;
     }
 
-    public TrainingValue readByTrainingID(int trainingID){
+    public TrainingValue getByTrainingID(int trainingID){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, TrainingValuesColumns.TRAINING_ID +" = '"+trainingID+"' ",null,null,null,TrainingValuesColumns._ID);
@@ -99,7 +99,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.close();
         return  ćwiczenie;
     }
-    public TrainingValue read(String dataTreningu) {
+    public TrainingValue get(String dataTreningu) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, TrainingValuesColumns.LAST_TRAINING_DAY_DATE +" = '"+dataTreningu+"' ",null,null,null,TrainingValuesColumns._ID);
@@ -109,7 +109,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.close();
         return  ćwiczenie;
     }
-    public String[] readAllID(){
+    public String[] getAllID(){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns.TRAINING_ID},null,null,null,null,TrainingValuesColumns.TRAINING_ID);
@@ -122,7 +122,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.close();
         return  training;
     }
-    public TrainingValue[] readAll(){
+    public TrainingValue[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, null,null,null,null,TrainingValuesColumns._ID);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimension_of_plus_and_arrow_add_training">80dp</dimen>
+    <dimen name="height_of_content_with_exercises">480dp</dimen>
+    <dimen name="width_edit_text_toolbar">180dp</dimen>
+    <dimen name="week_days_text_size">13dp</dimen>
+</resources>

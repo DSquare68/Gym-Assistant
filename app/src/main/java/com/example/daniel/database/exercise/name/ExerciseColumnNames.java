@@ -1,4 +1,4 @@
-package com.example.daniel.database.exercise;
+package com.example.daniel.database.exercise.name;
 
 import android.provider.BaseColumns;
 
