@@ -6,16 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.daniel.database.exercise.name.ExerciseColumnNames;
+import com.example.daniel.database.trainings.trainingvalues.TrainingValuesColumns;
 
-public class TrainingNamesDatebase extends SQLiteOpenHelper {
+
+public class TrainingNamesDatabase extends SQLiteOpenHelper {
     private static final String DATA_BASE_NAME = "trainings.db";
-    private static final int DATA_BASE_VERSION = 1;
+    private static final int DATA_BASE_VERSION = 2;
     Context context;
 
-    public TrainingNamesDatebase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public TrainingNamesDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
-    public TrainingNamesDatebase(Context context){
+    public TrainingNamesDatabase(Context context){
         super(context,DATA_BASE_NAME,null,DATA_BASE_VERSION);
         this.context = context;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -73,12 +76,17 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
     }
 
     public int getIndex(String name) {
-        String countQuery = "SELECT  "+TrainingNamesColumns._ID+" FROM " + TrainingNamesColumns.TABLE_NAME+" WHERE "+TrainingNamesColumns.TRAINING_NAME+" = "+name;
+        if(!isTrainingNameRepeated(name)){
+            addTrainingName(name);
+            return getIndex(name);
+        }
+        String countQuery = "SELECT  "+TrainingNamesColumns._ID+" FROM " + TrainingNamesColumns.TABLE_NAME+" WHERE "+TrainingNamesColumns.TRAINING_NAME+" = '"+name+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.moveToFirst();
         return cursor.getInt(0);
     }
+
 
     public TrainingName getTrainingName(int row, int column){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -87,9 +95,20 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
         if (cursor!=null){
             cursor.moveToPosition(row);
         }
-        TrainingName ćwiczenie = new TrainingName(cursor.getString(column));
+        TrainingName trainingName = new TrainingName(cursor.getString(column));
         db.close();
-        return  ćwiczenie;
+        return  trainingName;
+    }
+    public TrainingName getTrainingName(int ID){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[] {TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME},  TrainingNamesColumns._ID+" = "+String.valueOf(ID),null,null,null,TrainingNamesColumns._ID);
+        if (cursor!=null){
+            cursor.moveToFirst();
+        }
+        TrainingName trainingName = new TrainingName(cursor.getString(1));
+        db.close();
+        return  trainingName;
     }
 
     public TrainingName[] getAll(){
@@ -101,7 +120,7 @@ public class TrainingNamesDatebase extends SQLiteOpenHelper {
         }
         TrainingName[] training = new TrainingName[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
-            training[i] = new TrainingName(cursor.getString(1));
+            training[i] = new TrainingName(cursor.getString(1),cursor.getInt(0));
             cursor.moveToNext();
         }
         db.close();

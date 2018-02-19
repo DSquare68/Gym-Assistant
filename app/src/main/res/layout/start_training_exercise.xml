@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exercise"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginTop="15dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/exercise_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:inputType="textMultiLine"
+        android:text="exerise name"
+        android:textColor="@color/dark"
+        android:textSize="16dp" />
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <HorizontalScrollView
+            android:id="@+id/horizontal_scroll_view"
+            android:layout_width="fill_parent"
+            android:fillViewport="true"
+            android:layout_height="fill_parent"
+            android:scrollbars="none"
+            android:layout_weight="20">
+
+            <FrameLayout
+                android:id="@+id/rounds_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <LinearLayout
+                    android:id="@+id/rounds"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+            </FrameLayout>
+
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/add_round_image"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:background="@drawable/add_round"
+                android:onClick="addRound" android:contentDescription="TODO" />
+
+            <ImageButton
+                android:id="@+id/delete_round_image"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:background="@drawable/delete_round"
+                android:onClick="deleteRound" android:contentDescription="TODO" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

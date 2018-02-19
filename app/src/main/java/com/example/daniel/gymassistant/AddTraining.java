@@ -35,11 +35,10 @@ import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseDatabase;
 import com.example.daniel.database.exercise.values.ExerciseValue;
 import com.example.daniel.database.exercise.values.ExerciseValuesDatabase;
-import com.example.daniel.database.trainings.names.TrainingNamesDatebase;
+import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.extraview.ExerciseAdapter;
 import com.example.daniel.extraview.Slider;
-import com.example.daniel.procedures.Units;
 import com.example.daniel.values.AddTrainingValues;
 import com.example.daniel.values.Resolution;
 
@@ -65,14 +64,14 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     static RecyclerView recyclerView;
 
     static ExerciseDatabase exerciseDatabase;
-    static TrainingNamesDatebase trainingNamesDatebase;
+    static TrainingNamesDatabase trainingNamesDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         defaultTrainingName =  getResources().getString(R.string.training);
         exerciseDatabase = new ExerciseDatabase(getApplicationContext());
-        trainingNamesDatebase = new TrainingNamesDatebase(getApplicationContext());
+        trainingNamesDatabase = new TrainingNamesDatabase(getApplicationContext());
         parentLayout =(LinearLayout) View.inflate(this,R.layout.activity_add_training,null);
         parentLayout.setOrientation(LinearLayout.VERTICAL);
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -372,16 +371,16 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     public static void saveData(){
         zapiszDaneDoArrayList();
         ExerciseDatabase cw = new ExerciseDatabase(recyclerView.getContext());
-        TrainingNamesDatebase nt = new TrainingNamesDatebase(recyclerView.getContext());
+        TrainingNamesDatabase nt = new TrainingNamesDatabase(recyclerView.getContext());
         ExerciseValuesDatabase wc = new ExerciseValuesDatabase(recyclerView.getContext());
 
         for(int i = 0; i< exercises.size(); i++){
             cw.addExercise(exercises.get(i));
         }
 
-        switch (openMode){
+        /*switch (openMode){
             case AddTrainingValues.OPEN_FROM_MAIN_MENU: nt.addTrainingName(defaultTrainingName);break;
-        }
+        }*/
         switch (openMode) {
             case AddTrainingValues.OPEN_FROM_MAIN_MENU:
                 for (int i = 0; i < exerciseValuesList.size(); i++) {
@@ -414,18 +413,19 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(0);
         for(int i=0;i<adapter.getItemCount();i++){
-            boolean nazwaJestWprowadzona=false; boolean daneSąWprowadzone=false;
-            if(!adapter.exerciseList.get(i).getName().equals("")){ exerciseName=adapter.exerciseList.get(i).getName();nazwaJestWprowadzona=true;daneSąWprowadzone=true;} else exerciseName="";
-            if((adapter.exerciseList.get(i).getRoundNumber()!=0)){ roundNumber=adapter.exerciseList.get(i).getRoundNumber();} else roundNumber = 0;
-            if((adapter.exerciseList.get(i).getWeight()!=0)){ weight=adapter.exerciseList.get(i).getWeight();} else weight = 0;
-            if((adapter.exerciseList.get(i).getReps()!=0)){ reps=adapter.exerciseList.get(i).getReps(); }else reps=0;
-            if(nazwaJestWprowadzona==true) {
+            boolean nameIsEntered=false; boolean dataAreEntered=false;
+            if(!adapter.exerciseList.get(i).getName().equals("")){ exerciseName=adapter.exerciseList.get(i).getName();nameIsEntered=true;dataAreEntered=true;} else exerciseName="";
+            if((adapter.exerciseList.get(i).getRoundNumber()!=0)){ roundNumber=adapter.exerciseList.get(i).getRoundNumber();dataAreEntered=true;} else roundNumber = 0;
+            if((adapter.exerciseList.get(i).getWeight()!=0)){ weight=adapter.exerciseList.get(i).getWeight();dataAreEntered=true;} else weight = 0;
+            if((adapter.exerciseList.get(i).getReps()!=0)){ reps=adapter.exerciseList.get(i).getReps(); dataAreEntered=true;}else reps=0;
+            if(nameIsEntered==true) {
                 exercises.add(new Exercise(exerciseName));
-                Log.d("Nazwa ćwiczenia", exerciseName);
             }
-            if(daneSąWprowadzone){
+            Log.d("FADSADSF","dateareEntered  "+String.valueOf(dataAreEntered));
+            if(dataAreEntered){
                 exerciseNumber=i+1;
-                exerciseValuesList.add(new ExerciseValue(exerciseDatabase.getIndex(exerciseName),trainingNamesDatebase.getIndex(defaultTrainingName),exerciseNumber, roundNumber, weight, reps));
+                Log.d("exercise NAme",exerciseName+"   "+String.valueOf(exerciseDatabase.getIndex(exerciseName)));
+                exerciseValuesList.add(new ExerciseValue(exerciseDatabase.getIndex(exerciseName), trainingNamesDatabase.getIndex(defaultTrainingName),exerciseNumber, roundNumber , weight, reps));
                 numberOfExercises++;
             }
         }
@@ -436,7 +436,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         switch(openMode) {
 
             case AddTrainingValues.OPEN_FROM_MAIN_MENU:
-                if (trainingNamesDatebase.isTrainingNameRepeated(defaultTrainingName)) {
+                if (trainingNamesDatabase.isTrainingNameRepeated(defaultTrainingName)) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Już istnieje trening o takiej nazwie. Zmień  nazwę", Toast.LENGTH_LONG);
                     toast.show();
                     return;

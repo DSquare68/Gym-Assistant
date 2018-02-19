@@ -12,16 +12,18 @@ import com.example.daniel.database.exercise.name.Exercise;
 
 public class ExerciseValuesDatabase extends SQLiteOpenHelper {
     private static final String DATA_BASE_NAME = "trainings.db";
-    private static final int DATA_BASE_VERSION = 1;
-
+    private static final int DATA_BASE_VERSION = 2;
+    private Context context;
     public ExerciseValuesDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+
     }
     public ExerciseValuesDatabase(Context context){
 
         super(context, DATA_BASE_NAME, null, DATA_BASE_VERSION);
         SQLiteDatabase db = this.getWritableDatabase();
         onCreate(db);
+        this.context=context;
     }
 
     @Override
@@ -110,18 +112,29 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         }
         return   wynik;
     }
-    public ExerciseValue[] get(String nazwaTreningu){
+    public ExerciseValue[] get(String trainingName){
         SQLiteDatabase db = this.getReadableDatabase();
-        //String query ="SELECT * FROM "+ExerciseValuesColumns.TABLE_NAME+" WHERE "+ ExerciseValuesColumns.NAZWA_TRENINGU +" = " + nazwaTreningu + " ORDER BY "+ExerciseValuesColumns.NAZWA_ĆWICZENIA;
-        Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRANING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRANING_ID+" = '"+nazwaTreningu+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER);
-        //Cursor cursor = db.rawQuery(query,null);
+        Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRANING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRANING_ID+" = '"+trainingName+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER);
         if (cursor!=null){
             cursor.moveToFirst();
         }
-        Log.d("cursor ", String.valueOf(cursor.getCount()));
         ExerciseValue[] ćwiczenie = new ExerciseValue[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
             ćwiczenie[i] = new ExerciseValue(cursor.getInt(1),cursor.getInt(2),cursor.getInt(3),cursor.getInt(4), cursor.getDouble(5),cursor.getInt(6));
+            cursor.moveToNext();
+        }
+        db.close();
+        return  ćwiczenie;
+    }
+    public ExerciseValue[] getByID(int ID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRANING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRANING_ID+" = '"+ID+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER);
+        if (cursor!=null){
+            cursor.moveToFirst();
+        }
+        ExerciseValue[] ćwiczenie = new ExerciseValue[cursor.getCount()];
+        for(int i=0;i<cursor.getCount();i++){
+            ćwiczenie[i] = new ExerciseValue(cursor.getInt(1),cursor.getInt(2),cursor.getInt(3),cursor.getInt(4), cursor.getDouble(5),cursor.getInt(6),context);
             cursor.moveToNext();
         }
         db.close();

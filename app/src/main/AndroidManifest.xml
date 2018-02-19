@@ -29,7 +29,10 @@
         <activity
             android:name=".AddTrainingSettings"
             android:label="@string/title_activity_add_training_settings"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".StartTraining"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

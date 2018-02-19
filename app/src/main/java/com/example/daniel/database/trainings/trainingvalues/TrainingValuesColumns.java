@@ -14,7 +14,7 @@ public interface TrainingValuesColumns extends BaseColumns {
     public static final String ROUNDS_NUMBER = "rounds_number";
     public static final String TRAINING_MODE = "training_mode";
     public static final String SCHEDULE = "schedule";
-    public static final String WEEK_DAYS ="week_deys";
+    public static final String WEEK_DAYS ="week_days";
     public static final String ADD_DATE = "add_date";
     public static final String FIRST_DAY_DATE = "first_day_training";
     public static final String LAST_TRAINING_DAY_DATE = "last_training_day_date";

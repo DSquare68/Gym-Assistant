@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseColumnNames;
@@ -14,7 +13,7 @@ import com.example.daniel.database.exercise.name.ExerciseColumnNames;
  */
 
 public class ExerciseDatabase extends SQLiteOpenHelper {
-    private static final String DATA_BASE_NAME = "treningi_dane.db";
+    private static final String DATA_BASE_NAME = "exercise.db";
     private static final int DATA_BASE_VERSION = 1;
     android.content.Context Context;
 
@@ -48,11 +47,14 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         values.put(ExerciseColumnNames.EXERCISE_NAME, exercise.getName());
 
         db.insert(ExerciseColumnNames.TABLE_NAME, null, values);
-        db.close();
     }
     public int getIndex(String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + ExerciseColumnNames.EXERCISE_NAME+" FROM "+ExerciseColumnNames.TABLE_NAME+" WHERE "+ ExerciseColumnNames.EXERCISE_NAME+" = "+name;
+        if(!isExerciseNameExists(name)){
+            addExercise(new Exercise(name));
+            return getIndex(new Exercise(name));
+        }
+        String query = "SELECT " + ExerciseColumnNames._ID+" FROM "+ExerciseColumnNames.TABLE_NAME+" WHERE "+ ExerciseColumnNames.EXERCISE_NAME+" = '"+name+"'";
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         return cursor.getInt(0);
@@ -60,7 +62,11 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
     }
     public int getIndex(Exercise exercise) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + ExerciseColumnNames._ID+" FROM "+ExerciseColumnNames.TABLE_NAME+" WHERE "+ ExerciseColumnNames.EXERCISE_NAME+" = "+exercise.getName();
+        if(!isExerciseNameExists(exercise.getName())){
+            addExercise(new Exercise(exercise.getName()));
+            return getIndex(exercise);
+        }
+        String query = "SELECT " + ExerciseColumnNames._ID+" FROM "+ExerciseColumnNames.TABLE_NAME+" WHERE "+ ExerciseColumnNames.EXERCISE_NAME+" = '"+exercise.getName()+"'";
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         return cursor.getInt(0);
@@ -68,14 +74,13 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
     }
 
 
-        private boolean isExerciseNameExists(String nazwa) {
+    private boolean isExerciseNameExists(String nazwa) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(ExerciseColumnNames.TABLE_NAME, new String[] {ExerciseColumnNames._ID, ExerciseColumnNames.EXERCISE_NAME}, null,null,null,null, ExerciseColumnNames._ID);
-        int ilość = cursor.getCount();
+        int number = cursor.getCount();
         cursor.moveToFirst();
-        for(int i=0;i<ilość;i++){
+        for(int i=0;i<number;i++){
             if(nazwa.equals(cursor.getString(1))){
-                db.close();
                 return true;
             } else{
                 cursor.moveToNext();
@@ -91,10 +96,17 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         if (cursor!=null){
             cursor.moveToPosition(row);
         }
-        Log.d("cursor",cursor.toString());
         Exercise ćwiczenie = new Exercise(cursor.getString(column));
-        db.close();
         return  ćwiczenie;
+    }
+    public Exercise getExercise(int ID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ExerciseColumnNames.TABLE_NAME, new String[] {ExerciseColumnNames._ID, ExerciseColumnNames.EXERCISE_NAME}, ExerciseColumnNames._ID+" = "+String.valueOf(ID),null,null,null, ExerciseColumnNames._ID);
+        if (cursor!=null){
+            cursor.moveToFirst();
+        }
+        Exercise exercise = new Exercise(cursor.getString(1));
+        return  exercise;
     }
     public Exercise[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -108,13 +120,13 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
             exercises[i] = new Exercise(cursor.getString(1));
             cursor.moveToNext();
         }
-        db.close();
+
         return  exercises;
     }
     public void delete(int numer){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ExerciseColumnNames.TABLE_NAME, ExerciseColumnNames._ID+" =?", new String[]{String.valueOf(numer)});
-        db.close();
+
     }
     public void deletaAll(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -131,7 +143,6 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         int result = cursor.getCount();
         // return count
         cursor.close();
-        db.close();
         return result;
     }
 }

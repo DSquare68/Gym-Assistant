@@ -1,12 +1,16 @@
 package com.example.daniel.database.trainings.trainingvalues;
 
+import android.content.Context;
+
+import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
+
 /**
  * Created by Daniel on 2017-04-25.
  */
 
 public class TrainingValue {
     private long averageTime;
-    private int trainingId, roundsNumber, exerciseNumber, repetition;
+    private int trainingId=-1, roundsNumber, exerciseNumber, repetition;
     private String trainingName, weekDays, trainingMode, schedule, addDate, firstDayTraining, lastTrainingDayDate;
 
     public TrainingValue(String treningName, int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
@@ -24,6 +28,21 @@ public class TrainingValue {
     }
 
     public TrainingValue(int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
+        this.trainingId = trainingID;
+        this.weekDays = weekDays;
+        this.trainingMode = trainingMode;
+        this.schedule = schedule;
+        this.roundsNumber = roundsNumber;
+        this.exerciseNumber = exerciseNumber;
+        this.addDate = addDate;
+        this.firstDayTraining = firstDayTraining;
+        this.lastTrainingDayDate = lastTrainingDayDate;
+        this.repetition = repetition;
+        this.averageTime = averageTime;
+    }
+    public TrainingValue(int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime, Context context) {
+        TrainingNamesDatabase trainingNamesDatabase = new TrainingNamesDatabase(context);
+        this.trainingName =trainingNamesDatabase.getTrainingName(trainingID).getNazwa();
         this.trainingId = trainingID;
         this.weekDays = weekDays;
         this.trainingMode = trainingMode;

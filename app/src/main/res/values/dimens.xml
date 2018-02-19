@@ -4,4 +4,11 @@
     <dimen name="height_of_content_with_exercises">480dp</dimen>
     <dimen name="width_edit_text_toolbar">180dp</dimen>
     <dimen name="week_days_text_size">13dp</dimen>
+    <dimen name="add_training_exercise_weight_string">12dp</dimen>
+    <dimen name="add_training_exercise_reps_string">14dp</dimen>
+    <dimen name="add_training_exercise_number">22dp</dimen>
+    <dimen name="add_training_exercise_round_width">100dp</dimen>
+    <dimen name="stopwatch_buttons_dim">60dp</dimen>
+    <dimen name="round_number">30dp</dimen>
+    <dimen name="min_round_value_width">130dp</dimen>
 </resources>

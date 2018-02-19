@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.example.daniel.gymassistant.StartTraining">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_start_training"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        >
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/stopwatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/stopwatch_pause"
+            android:layout_width="@dimen/stopwatch_buttons_dim"
+            android:layout_height="@dimen/stopwatch_buttons_dim"
+            android:clickable="true"
+            android:onClick="pause"
+            app:srcCompat="@drawable/pause" />
+
+        <ImageView
+            android:id="@+id/stopwatch_play"
+            android:layout_width="@dimen/stopwatch_buttons_dim"
+            android:layout_height="@dimen/stopwatch_buttons_dim"
+            android:layout_alignRight="@+id/stopwatch_pause"
+            android:clickable="true"
+            android:onClick="play"
+            app:srcCompat="@drawable/play" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/stopwatch_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50dp"
+                android:layout_alignParentRight="true"
+                android:text="0:00:00" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView_start_training"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+    <RelativeLayout
+        android:id="@+id/finished_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        >
+        <ImageView
+            android:id="@+id/add_exercise_button"
+            android:layout_width="@dimen/dimension_of_plus_and_arrow_add_training"
+            android:layout_height="@dimen/dimension_of_plus_and_arrow_add_training"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:onClick="addExercise"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/add_training"
+            android:visibility="gone">
+        </ImageView>
+        <TextView
+            android:id="@+id/finished_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:text="@string/finished"
+            android:textColor="#000000"
+            android:textSize="50dp" />
+    </RelativeLayout>
+</LinearLayout>

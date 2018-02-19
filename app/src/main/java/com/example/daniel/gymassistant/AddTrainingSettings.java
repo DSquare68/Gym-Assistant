@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.daniel.database.trainings.names.TrainingNamesDatebase;
+import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValuesDatabase;
 import com.example.daniel.procedures.DateTraining;
@@ -150,7 +149,7 @@ public class AddTrainingSettings extends AppCompatActivity {
         Date date = new Date();
         String data = date.getDate()+"."+date.getMonth()+"."+(date.getYear()+1900);
         TrainingValue wt;
-        TrainingNamesDatebase tnd = new TrainingNamesDatebase(getApplicationContext());
+        TrainingNamesDatabase tnd = new TrainingNamesDatabase(getApplicationContext());
         DateTraining dt = new DateTraining(this);
         if(AddTrainingSettings.date.equals(null)|| AddTrainingSettings.date.equals("")) AddTrainingSettings.date =dt.readDate(weekDaysString,schedule);
         if(!(weekDaysString==null)&&!(weekDaysString=="")){

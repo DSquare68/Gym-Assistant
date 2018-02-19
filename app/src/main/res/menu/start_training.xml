@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".StartTraining"
+    android:icon="@drawable/ic_action_more">
+    <item
+        android:id="@+id/RozpocznijTreningStoper"
+        android:title="Stoper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+    <item
+        android:id="@+id/action_settings1"
+        android:title="Zmień Trening"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+
+    <item
+        android:id="@+id/action_settings2"
+        android:title="Zresetuj Dane"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+    <item
+        android:id="@+id/action_settings3"
+        android:title="Zakończ Trening"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+</menu>

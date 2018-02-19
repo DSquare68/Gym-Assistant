@@ -3,6 +3,17 @@
     <string name="app_name_gym">Gym</string>
     <string name="app_name_assistant">Assistant</string>
 
+    <string name="weight">Weight</string>
+    <string name="reps">Reps</string>
+    <string name="finished">Finished</string>
+    <string name="communique_no_trainings">No trainings. Create one!</string>
+    <string name="choose_training">Choose training</string>
+    <string name="new_training">New training</string>
+    <string-array name="add_training_create_name">
+        <item>Date</item>
+        <item>Name</item>
+    </string-array>
+    <string name="what_training_name_question">A title of training</string>
     <string name="training">Training</string>
     <string name="round_number">Round number</string>
     <string name="repetition">Repetition</string>
@@ -175,4 +186,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_add_training">AddTraining</string>
     <string name="title_activity_add_training_settings">AddTrainingSettings</string>
+    <string name="title_activity_start_training">StartTraining</string>
 </resources>

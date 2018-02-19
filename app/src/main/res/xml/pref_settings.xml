@@ -9,7 +9,7 @@
 
     <com.example.daniel.extraview.SettingsCategory
         style:text_color="@color/color_settings_header"
-        style:font_size="25dp"
+        style:font_size="21dp"
         android:title="@string/settings"
         android:key="pref_key_storage_settings">
 

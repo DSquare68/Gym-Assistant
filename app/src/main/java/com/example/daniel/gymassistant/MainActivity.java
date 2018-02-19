@@ -5,6 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.example.daniel.database.exercise.name.DatebaseOfexerciseNames;
+import com.example.daniel.database.exercise.name.Exercise;
+import com.example.daniel.database.exercise.name.ExerciseDatabase;
+import com.example.daniel.values.SettingsValues;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout parent;
@@ -13,9 +19,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         parent = (LinearLayout) View.inflate(this,R.layout.activity_main,null);
         setContentView(parent);
+        if(SettingsValues.getValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext())==1){
+            Toast toast = Toast.makeText(getApplicationContext(),"WELCOME",Toast.LENGTH_LONG);
+            toast.show();
+            SettingsValues.setValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext(),-1);
+            for(int i = 0; i< DatebaseOfexerciseNames.nazwyTreningów.length; i++){
+                ExerciseDatabase nazwaTreningu = new ExerciseDatabase(getApplicationContext());
+                nazwaTreningu.addExercise(new Exercise(DatebaseOfexerciseNames.nazwyTreningów[i]));
+            }
+        }
     }
 
     public void startTraining(View view) {
+        Intent intent = new Intent(this, StartTraining.class);
+        startActivity(intent);
+
     }
 
     public void addTraining(View view) {
