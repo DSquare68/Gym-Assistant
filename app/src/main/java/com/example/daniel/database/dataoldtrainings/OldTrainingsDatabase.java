@@ -216,7 +216,7 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
     public OldTraining[] wczytaĆwiczenie(TrainingName trainingName, int exerciseID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM '"+TABLE_NAME+"' WHERE "+OldTrainingsColumnNames.TRAINING_ID+" = ? AND "+ OldTrainingsColumnNames.EXERCISE_ID+" = ? ORDER BY "+OldTrainingsColumnNames.DATE+", "+OldTrainingsColumnNames.TIME+", "+OldTrainingsColumnNames.ROUND_NUMBER+";";
-        Cursor cursor = db.rawQuery(query,new String[] {trainingName.getNazwa(),String.valueOf(exerciseID)});
+        Cursor cursor = db.rawQuery(query,new String[] {trainingName.getName(),String.valueOf(exerciseID)});
         OldTraining[] oldTrainings =new OldTraining[cursor.getCount()];
         cursor.moveToFirst();
         for(int i=0;i<cursor.getCount();i++,cursor.moveToNext()){

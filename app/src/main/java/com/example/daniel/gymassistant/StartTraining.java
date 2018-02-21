@@ -184,7 +184,7 @@ public class StartTraining extends AppCompatActivity {
         final RadioButton[] radioButtons = new RadioButton[s.length+1];
         for(int i=0;i<s.length;i++){
             radioButtons[i] = new RadioButton(this);
-            radioButtons[i].setText(s[i].getNazwa());
+            radioButtons[i].setText(s[i].getName());
             radioGroup.addView(radioButtons[i]);
         }
         radioButtons[s.length] = new RadioButton(this);
@@ -254,7 +254,7 @@ public class StartTraining extends AppCompatActivity {
             }
         }
         DateTraining dateTraining = new DateTraining(this);
-        if(!newTraining) oldTrainings = dateTraining.lastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getNazwa(), this);
+        if(!newTraining) oldTrainings = dateTraining.lastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getName(), this);
         for(int i = 0; i< exerciseValues.length; i++) {
             exercises[i] = createExercise();
             fillRoundsWithHints(i,exercises[i]);

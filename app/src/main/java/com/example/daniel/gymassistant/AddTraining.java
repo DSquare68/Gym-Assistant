@@ -367,7 +367,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     public void onSecondaryIconClick(int p) {
 
     }
-    //Todo: Można dodawać trening bez nazwy. Poprawić
+    //Todo: Można dodawać trainingLinearLayout bez nazwy. Poprawić
     public static void saveData(){
         zapiszDaneDoArrayList();
         ExerciseDatabase cw = new ExerciseDatabase(recyclerView.getContext());
@@ -437,7 +437,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
 
             case AddTrainingValues.OPEN_FROM_MAIN_MENU:
                 if (trainingNamesDatabase.isTrainingNameRepeated(defaultTrainingName)) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Już istnieje trening o takiej nazwie. Zmień  nazwę", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Już istnieje trainingLinearLayout o takiej nazwie. Zmień  nazwę", Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }

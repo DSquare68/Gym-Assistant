@@ -41,7 +41,7 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TrainingNamesColumns.TRAINING_NAME, ćwiczenie.getNazwa());
+        values.put(TrainingNamesColumns.TRAINING_NAME, ćwiczenie.getName());
 
         db.insert(TrainingNamesColumns.TABLE_NAME, null, values);
         db.close();

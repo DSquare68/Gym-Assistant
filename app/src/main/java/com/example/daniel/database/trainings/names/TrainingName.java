@@ -5,26 +5,26 @@ package com.example.daniel.database.trainings.names;
  */
 
 public class TrainingName {
-    private String nazwa;
+    private String name;
     private int ID;
 
 
     public TrainingName(String n, int ID) {
 
-        this.nazwa = n;
+        this.name = n;
         this.ID = ID;
     }
     public TrainingName(String n) {
 
-        this.nazwa = n;
+        this.name = n;
     }
 
-    public String getNazwa() {
-        return nazwa;
+    public String getName() {
+        return name;
     }
 
-    public void setNazwa(String nazwa) {
-        this.nazwa = nazwa;
+    public void setname(String nazwa) {
+        this.name = nazwa;
     }
 
     public int getID() {

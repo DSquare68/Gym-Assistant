@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".planZajec"
+    android:icon="@drawable/ic_action_more_vert">
+    <item
+        android:id="@+id/dodajTreningUstawNazwę"
+        android:title="Dodaj Trening"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+    <item
+        android:id="@+id/action_settings1"
+        android:title="Usuń Trening"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+
+    <item
+        android:id="@+id/action_settings2"
+        android:title="Usuń Wszystkie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+    <item
+        android:id="@+id/action_settings3"
+        android:title="Sortuj Według"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+    <item
+        android:id="@+id/action_settings4"
+        android:title="Tryb wyświetlania"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="200"
+        />
+</menu>

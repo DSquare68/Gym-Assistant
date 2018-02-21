@@ -96,8 +96,8 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         if (cursor!=null){
             cursor.moveToPosition(row);
         }
-        Exercise ćwiczenie = new Exercise(cursor.getString(column));
-        return  ćwiczenie;
+        Exercise exercise = new Exercise(cursor.getString(column));
+        return  exercise;
     }
     public Exercise getExercise(int ID){
         SQLiteDatabase db = this.getReadableDatabase();

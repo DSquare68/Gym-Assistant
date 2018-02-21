@@ -30,7 +30,6 @@ public class DateTraining {
         java.util.Date date= new java.util.Date();
         java.util.Date trainingDate=null;
         String data="";
-
         int[] daysValue = new int[7];
         String schedule = trainingValue.getSchedule();
         int scheduleValue=0, howManyWeeksElapsed= howManyWeeksElapsed(date,trainingValue), howManyDaysElapsed = howManyDaysElapsed(date,trainingValue);
@@ -41,7 +40,7 @@ public class DateTraining {
         Scanner s = new Scanner(trainingValue.getWeekDays());
         for(int j=0;s.hasNext();j++) {
             String string = s.next();
-            for(int l=0;l<shortDays.length;j++){
+            for(int l=0;l<shortDays.length;l++){
                 if (shortDays[l].equals(string)){
                     daysValue[j]=l;
                 }
@@ -555,7 +554,7 @@ public class DateTraining {
     }
 
 
-    public int wczytajIlośćTrenigówWMiesiącu(java.util.Date dataToday, TrainingValue wt, java.util.Date firtsDAy) {
+    public int readNumberOfTrainingsInMonth(java.util.Date dataToday, TrainingValue wt, java.util.Date firtsDAy) {
         int  numberDT=0;// ilość Dni Trenignowych gdy trening jest co tydzień lub dwa np trzy, gdy jest pon, śr, sob
         int[] daysValues = new int[7];
         String schedule = wt.getSchedule();
@@ -564,23 +563,22 @@ public class DateTraining {
             daysValues[j]=-1;
         }
         Scanner s = new Scanner(wt.getWeekDays());
+        String[] shortDays = context.getResources().getStringArray(R.array.short_week_days);
         for(int j=0;s.hasNext();j++,numberDT++) {
-            switch (s.next()) {
-                case "pon":daysValues[j]=1;break;
-                case "wt":daysValues[j]=2;break;
-                case "śr":daysValues[j]=3;break;
-                case "czw":daysValues[j]=4;break;
-                case "pt":daysValues[j]=5;break;
-                case "sob":daysValues[j]=6;break;
-                case "ndz":daysValues[j]=0;break;
+            String shortDay=s.next();
+           for(int k=0;k<shortDays.length;k++){
+                if(shortDays[k].equals(shortDay)){
+                    daysValues[j]=(k+1);
+                    break;
+                }
             }
         }
-        switch (schedule){
-            case "co tydzień": repetition=1;break;
-            case "co 2 tygodnie": repetition=2;break;
-            case "co miesiąc": repetition=3;break;
-            case "co X dni": repetition=4;break;
-
+        String[] schedules = context.getResources().getStringArray(R.array.repetition);
+        for(int i=0;i<schedules.length;i++){
+            if(schedules[i].equals(schedule)){
+                repetition=i+1;
+                break;
+            }
         }
         if(repetition==1){
             return numberDT*6;

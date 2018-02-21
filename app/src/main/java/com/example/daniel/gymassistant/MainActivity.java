@@ -12,6 +12,8 @@ import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseDatabase;
 import com.example.daniel.values.SettingsValues;
 
+import java.sql.Time;
+
 public class MainActivity extends AppCompatActivity {
     LinearLayout parent;
     @Override
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void timetableOpen(View view) {
+        Intent intent = new Intent(this, Timetable.class);
+        startActivity(intent);
     }
 
     public void synchOpen(View view) {

@@ -42,7 +42,7 @@ public class TrainingValue {
     }
     public TrainingValue(int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime, Context context) {
         TrainingNamesDatabase trainingNamesDatabase = new TrainingNamesDatabase(context);
-        this.trainingName =trainingNamesDatabase.getTrainingName(trainingID).getNazwa();
+        this.trainingName =trainingNamesDatabase.getTrainingName(trainingID).getName();
         this.trainingId = trainingID;
         this.weekDays = weekDays;
         this.trainingMode = trainingMode;

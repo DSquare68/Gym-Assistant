@@ -35,7 +35,7 @@ public class ExerciseValue {
         ExerciseDatabase exerciseDatabase = new ExerciseDatabase(context);
         TrainingNamesDatabase trainingNamesDatabase = new TrainingNamesDatabase(context);
         this.name=exerciseDatabase.getExercise(nameID).getName();
-        this.trainingName=trainingNamesDatabase.getTrainingName(trainingID).getNazwa();
+        this.trainingName=trainingNamesDatabase.getTrainingName(trainingID).getName();
         this.nameID=nameID;
         this.trainingID =trainingID;
         this.exerciseNumber =exerciseNumber;
