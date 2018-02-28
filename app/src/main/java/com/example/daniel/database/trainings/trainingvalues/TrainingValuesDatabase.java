@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import com.example.daniel.database.exercise.values.ExerciseValuesColumns;
+import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
 
 public class TrainingValuesDatabase extends SQLiteOpenHelper {
     private static final String DATA_BASE_NAME = "trainings.db";
@@ -99,10 +100,11 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         TrainingValue training = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11),context);
         return  training;
     }
-    public TrainingValue get(String dataTreningu) {
+    public TrainingValue get(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, TrainingValuesColumns.LAST_TRAINING_DAY_DATE +" = '"+dataTreningu+"' ",null,null,null,TrainingValuesColumns._ID);
+        TrainingNamesDatabase tnd = new TrainingNamesDatabase(context);
+        int ID = tnd.getIndex(name);
+        Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, TrainingValuesColumns.TRAINING_ID +" = '"+ID+"'",null,null,null,TrainingValuesColumns._ID);
         if(cursor.getCount()==0) return null;
         cursor.moveToFirst();
         TrainingValue ćwiczenie = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11),context);

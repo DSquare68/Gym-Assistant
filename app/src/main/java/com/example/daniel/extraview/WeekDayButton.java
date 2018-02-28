@@ -115,9 +115,9 @@ public class WeekDayButton extends android.support.v7.widget.AppCompatButton {
         }
         setText(String.valueOf(number));
         if(isTraining ==true){
-            setBackgroundResource(R.drawable.button_week_days_pressed);
+            setBackgroundResource(R.drawable.button_week_days_pressed_calendar);
         } else{
-            setBackgroundResource(R.drawable.button_week_days);
+            setBackgroundResource(R.drawable.button_week_days_calendar);
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(getWidth(),getHeight());
         lp.setMargins(Units.dpToPx(getContext(),9),Units.dpToPx(getContext(),4),Units.dpToPx(getContext(),8),Units.dpToPx(getContext(),5));

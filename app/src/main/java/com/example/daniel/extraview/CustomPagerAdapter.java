@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +74,10 @@ public class CustomPagerAdapter extends PagerAdapter {
         Date sunday=new Date(data.getYear(),data.getMonth(),data.getDate()- (data.getDay()==0 ? 6 : data.getDay()-1)+6+position*7);
         monday = new Date(data.getYear(),data.getMonth(),7*position+data.getDate()-(dayNumber));
         DateTraining trainingDate = new DateTraining(mContext);
+        String[][] dates= new String[trainingValues.length][];
+        for(int j = 0; j< trainingValues.length; j++) {
+            dates[j] = trainingDate.getNearestDatesOfTrainings(trainingValues[j], position);
+        }
         for(int i = 0;i<7;i++){
             TextView textView = new TextView(mContext);
             textView.setTextSize(Units.dpToPx(mContext,12));
@@ -111,12 +114,13 @@ public class CustomPagerAdapter extends PagerAdapter {
                 String pomdzien =trainingDate.getDate(monday);
                 pomdzien = trainingDate.switchYearWithDay(pomdzien);
                 pomdzien = removeZeroFromMounth(pomdzien);
-                Log.d("date",trainingDate.getNearestTrainingDate(sunday, trainingValues[j],position)+"    "+pomdzien);
-                if (trainingDate.getNearestTrainingDate(sunday, trainingValues[j],position).equals(pomdzien)) {
-                    if(textView.getText().equals(noTraining)){
-                        textView.setText(trainingValues[j].getTrainingName());
-                    } else{
-                        textView.setText(textView.getText()+" / "+ trainingValues[j].getTrainingName());
+                for(int k=0;k<dates[j].length;k++) {
+                    if (dates[j][k].equals(pomdzien)) {
+                        if (textView.getText().equals(noTraining)) {
+                            textView.setText(trainingValues[j].getTrainingName());
+                        } else {
+                            textView.setText(textView.getText() + " / " + trainingValues[j].getTrainingName());
+                        }
                     }
                 }
             }

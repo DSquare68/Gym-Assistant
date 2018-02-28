@@ -1,6 +1,7 @@
 package com.example.daniel.procedures;
 
 import android.content.Context;
+import java.util.Calendar;
 import android.util.Log;
 
 import com.example.daniel.database.dataoldtrainings.OldTraining;
@@ -25,8 +26,215 @@ public class DateTraining {
         this.context =context;
         this.trainingValuesDatabase = new TrainingValuesDatabase(context);
     }
+    final static int ONE_WEEK=0;
+    final static int TWO_WEEKS=1;
+    final static int MONTHLY =2;
+    final static int X_DAYS=3;
 
-    public String getNearestTrainingDate(int i, TrainingValue trainingValue){ //
+    public String getNearestTrainingDate(TrainingValue trainingValue){ //
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date trainingDate=null;
+        int scheduleValue =setScheduleValue(trainingValue);
+        int dayValue = getDayValue(calendar.get(Calendar.DAY_OF_WEEK),trainingValue);
+        Log.d(trainingValue.getTrainingName(), String.valueOf(scheduleValue)+"   "+String.valueOf(dayValue)+"   "+String.valueOf(calendar.get(Calendar.DATE)+(dayValue-calendar.get(Calendar.DAY_OF_WEEK))));
+        switch(scheduleValue){
+            case ONE_WEEK:
+                trainingDate= new Date(calendar.get(Calendar.YEAR)-1900,calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE)+(dayValue-calendar.get(Calendar.DAY_OF_WEEK))+1);
+                break;
+            case TWO_WEEKS:
+                trainingDate= new Date(calendar.get(Calendar.YEAR)-1900,calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE)+(dayValue-calendar.get(Calendar.DAY_OF_WEEK)+1)+addWeek(trainingValue));
+                break;
+            case MONTHLY:
+                trainingDate = getNextTrainingMonthly(trainingValue,dayValue);
+                break;
+            case X_DAYS:
+                trainingDate = getNextTrainingXDays(trainingValue,0);
+                break;
+        }
+        updataTrainingDates(trainingValue,trainingDate);
+        return  trainingDate.getDate()+"."+(trainingDate.getMonth()+1)+"."+(calendar.get(Calendar.YEAR));
+    }
+
+    public String[] getNearestDatesOfTrainings(TrainingValue trainingValue, int position) {
+        String[] dates = new String[7];
+        int l=0;
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date trainingDate=null;
+        int scheduleValue =setScheduleValue(trainingValue);
+        int[] dayValues = getDayValues(calendar.get(Calendar.DAY_OF_WEEK),trainingValue);
+        while(dayValues[l]!=100) {
+            switch (scheduleValue) {
+                case ONE_WEEK:
+                    trainingDate = new Date(calendar.get(Calendar.YEAR) - 1900, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) + (dayValues[l] - calendar.get(Calendar.DAY_OF_WEEK )+1) + 7*position);
+                    updataTrainingDates(trainingValue, trainingDate);
+                    break;
+                case TWO_WEEKS:
+                    trainingDate = new Date(calendar.get(Calendar.YEAR) - 1900, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) + (dayValues[l] - calendar.get(Calendar.DAY_OF_WEEK )+1) + addWeek(trainingValue) + (position>=2 ? 14 :0));
+                    break;
+                case MONTHLY:
+                    trainingDate = getNextTrainingMonthly(trainingValue,dayValues[l]);
+                    break;
+                case X_DAYS:
+                    for(int i=0; i<7*4/trainingValue.getRepetition();i++) {
+                        trainingDate = getNextTrainingXDays(trainingValue, i);
+                        dates[l++] = trainingDate.getDate() + "." + (trainingDate.getMonth() + 1) + "." + (calendar.get(Calendar.YEAR));
+                    }
+                    break;
+            }
+            if(scheduleValue!=X_DAYS) dates[l++] = trainingDate.getDate() + "." + (trainingDate.getMonth() + 1) + "." + (calendar.get(Calendar.YEAR));
+        }
+        String[] result = new String[l];
+        for(int i=0;i<result.length;i++){
+            result[i]=dates[i];
+        }
+        return result;
+    }
+    private Date getNextTrainingXDays(TrainingValue trainingValue,int i) {
+        int repetitions = trainingValue.getRepetition();
+        Date firstTraining = readDateFromString(trainingValue.getFirstDayTraining());
+        Date today = new Date();
+        while(today.after(firstTraining)){
+            firstTraining= new Date(firstTraining.getYear(),firstTraining.getMonth(),firstTraining.getDate()+repetitions);
+        }
+        firstTraining = new Date(firstTraining.getYear(),firstTraining.getMonth(),firstTraining.getDate()+repetitions*i);
+        return  firstTraining;
+    }
+
+    private Date getNextTrainingMonthly(TrainingValue trainingValue, int dayValue) {
+        if(dayValue>6) dayValue-=7;
+        Date firstTraining = readDateFromString(trainingValue.getFirstDayTraining());
+        Date today = new Date();
+        while(today.after(firstTraining)) {
+            firstTraining = new Date(firstTraining.getYear(), firstTraining.getMonth() + 1, firstTraining.getDate());
+        }
+        Log.d("get monthly", String.valueOf(dayValue)+"  "+String.valueOf(firstTraining.toString()));
+        while(dayValue!=firstTraining.getDay()){
+            if(dayValue>firstTraining.getDay()){
+                firstTraining = new Date(firstTraining.getYear(),firstTraining.getMonth(),firstTraining.getDate()+1);
+            } else {
+                firstTraining = new Date(firstTraining.getYear(),firstTraining.getMonth(),firstTraining.getDate()-1);
+            }
+        }
+        return firstTraining;
+    }
+    private int addWeek(TrainingValue trainingValue) {
+        Date date = new Date();
+        Date firstTrainingDate = readDateFromString(trainingValue.getFirstDayTraining());
+        if(firstTrainingDate==null) return 0;
+        if(date.equals(firstTrainingDate)){return 0; }
+        if(date.before(firstTrainingDate)) return 0;
+        if(date.after(firstTrainingDate)){
+            while (true) {
+                if (date.before(firstTrainingDate)){
+                    firstTrainingDate = new Date(firstTrainingDate.getYear(), firstTrainingDate.getMonth(), firstTrainingDate.getDate() -7);
+                    if(date.after(firstTrainingDate)){
+                        return 0;
+                    }else {
+                        return 7;
+                    }
+                }
+                else {
+                    firstTrainingDate = new Date(firstTrainingDate.getYear(), firstTrainingDate.getMonth(), firstTrainingDate.getDate() + 14);
+                }
+            }
+        } else{
+            while (true) {
+                if (date.after(firstTrainingDate)) {
+                    firstTrainingDate = new Date(firstTrainingDate.getYear(), firstTrainingDate.getMonth(), firstTrainingDate.getDate() -7);
+                    if(date.before(firstTrainingDate)){
+                        return 0;
+                    }else {
+                        return 7;
+                    }
+                }
+                else {
+                    firstTrainingDate = new Date(firstTrainingDate.getYear(), firstTrainingDate.getMonth(), firstTrainingDate.getDate() - 14);
+                }
+            }
+        }
+    }
+
+    private int setScheduleValue(TrainingValue trainingValue) {
+        String schedule = trainingValue.getSchedule();
+        String[] scheduleArray = context.getResources().getStringArray(R.array.repetition);
+        for(int j=0;j<scheduleArray.length;j++){
+            if(schedule.equals(scheduleArray[j])){
+                return j;
+            }
+        }
+        return -1;
+    }
+
+    private int getDayValue(int todayDayNumber,TrainingValue trainingValue) {
+        int[] daysValue  = new int[7];
+        for (int j=0;j<daysValue.length;j++){
+            daysValue[j]=100;
+        }
+        String[] shortDays = context.getResources().getStringArray(R.array.short_week_days);
+        Scanner s = new Scanner(trainingValue.getWeekDays());
+        for(int j=0;s.hasNext();j++) {
+            String string = s.next();
+            for(int l=0;l<shortDays.length;l++){
+                if (shortDays[l].equals(string)){
+                    daysValue[j]=(l==6 ? 0 : l+1);
+                }
+            }
+        }
+        int temp;
+        for(int i=0;i<shortDays.length;i++){
+            for(int j=1;j<shortDays.length-i;j++){
+                if(daysValue[j-1] > daysValue[j]){
+                    temp = daysValue[j-1];
+                    daysValue[j-1] = daysValue[j];
+                    daysValue[j] = temp;
+                }
+            }
+        }
+        int result=-1;
+        for(int i=0;i<daysValue.length;i++){
+            if(daysValue[i]==100) {
+                return result<todayDayNumber ? result+7  : result;
+            }else if(daysValue[i]==todayDayNumber){
+                return daysValue[i];
+            } else if(result==-1){
+                result=daysValue[i];
+            } else if(result!=-1&&todayDayNumber>daysValue[i]&&result>daysValue[i]){
+                result=daysValue[i];
+            } else if(result!=-1&&todayDayNumber<daysValue[i]&&result<daysValue[i]){
+                result=daysValue[i];
+            }
+        }
+        return result<todayDayNumber ? result+7  : result; // ugly but works
+    }
+    private int[] getDayValues(int todayDayNumber,TrainingValue trainingValue) {
+        int[] daysValue = new int[7];
+        for (int j = 0; j < daysValue.length; j++) {
+            daysValue[j] = 100;
+        }
+        String[] shortDays = context.getResources().getStringArray(R.array.short_week_days);
+        Scanner s = new Scanner(trainingValue.getWeekDays());
+        for (int j = 0; s.hasNext(); j++) {
+            String string = s.next();
+            for (int l = 0; l < shortDays.length; l++) {
+                if (shortDays[l].equals(string)) {
+                    daysValue[j] = (l == 6 ? 0 : l + 1);
+                }
+            }
+        }
+        int temp;
+        for (int i = 0; i < shortDays.length; i++) {
+            for (int j = 1; j < shortDays.length - i; j++) {
+                if (daysValue[j - 1] > daysValue[j]) {
+                    temp = daysValue[j - 1];
+                    daysValue[j - 1] = daysValue[j];
+                    daysValue[j] = temp;
+                }
+            }
+        }
+        return daysValue;
+    }
+
+    public String getNearestTrainingDate(int i, TrainingValue trainingValue){
         java.util.Date date= new java.util.Date();
         java.util.Date trainingDate=null;
         String data="";
@@ -94,141 +302,24 @@ public class DateTraining {
         data=trainingDate.getDate()+"."+(trainingDate.getMonth()+1)+"."+(trainingDate.getYear()+1900);
         return data;
     }
-    public String getNearestTrainingDate(Date date2, int i, TrainingValue trainingValue){ //
-        Date date= new Date();
-        Date trainingDate=null;
-        String data="";
 
-        int[] daysValue = new int[7];
-        String schedule = trainingValue.getSchedule();
-        int scheduleValue=0, howManyWeeksElapsed= howManyWeeksElapsed(date,trainingValue), howManyDaysElapsed = howManyDaysElapsed(date,trainingValue);
-        for (int j=0;j<daysValue.length;j++){
-            daysValue[j]=-1;
-        }
-        String[] shortDays = context.getResources().getStringArray(R.array.short_week_days);
-        Scanner s = new Scanner(trainingValue.getWeekDays());
-        for(int j=0;s.hasNext();j++) {
-            String string = s.next();
-            for(int l=0;l<shortDays.length;j++){
-                if (shortDays[l].equals(string)){
-                    daysValue[j]=l;
-                }
-            }
-        }
-        String[] scheduleArray = context.getResources().getStringArray(R.array.repetition);
-        for(int j=0;j<scheduleArray.length;i++){
-            if(schedule.equals(scheduleArray[j])){
-                scheduleValue=j;
-            }
-        }
-
-        for(int j=0;j<daysValue.length;j++){
-            if(daysValue[j]==0){
-                daysValue[j]=7;
-                if(daysValue[j]>=(date.getDay()+1)&&(scheduleValue==1||scheduleValue==2)){
-                    trainingDate= new Date(date.getYear(),date.getMonth(),date.getDate()+(daysValue[j]-date.getDay()+7*(howManyWeeksElapsed)));
-                    if(date.getDay()==0){
-                        trainingDate= new Date(date.getYear(),date.getMonth(),date.getDate()+7*(scheduleValue-1));
-                    }
-                    updataTrainingDates(trainingValue,trainingDate);
-                    break;
-                }
-            }
-            if(daysValue[j]>=(date.getDay()-1)&&(scheduleValue==1||scheduleValue==2)){
-                trainingDate= new Date(date.getYear(),date.getMonth(),date.getDate()+(daysValue[j]-date.getDay()+7*(howManyWeeksElapsed)));
-                updataTrainingDates(trainingValue,trainingDate);
-                break;
-            }
-            if(daysValue[j]<(date.getDay()-1)&&(scheduleValue==1||scheduleValue==2)){
-                trainingDate= new Date(date.getYear(),date.getMonth(),date.getDate()+(+7*(howManyWeeksElapsed+1)-(date.getDay()-daysValue[j])));
-                updataTrainingDates(trainingValue,trainingDate);
-                break;
-            }
-            if(scheduleValue==3){
-                //Log.d("trójka",readDateFromString(trainingValue.getDataPierwszegoTreningu()).after(date)+"   "+readDateFromString(trainingValue.getDataPierwszegoTreningu()));
-                if(readDateFromString(trainingValue.getFirstDayTraining()).after(date)) {trainingDate= readDateFromString(trainingValue.getFirstDayTraining());
-                    updataTrainingDates(trainingValue,trainingDate);String dataTreninguString= switchYearWithDay(getDate(trainingDate)); dataTreninguString = removeZeros(dataTreninguString); Log.d("DFSAADFSASDAS", dataTreninguString); return dataTreninguString;  }
-                trainingDate= new Date(date.getYear(),date.getMonth()+1, nextTrainingNextMonth(date,trainingValue.getFirstDayTraining(),howManyDaysElapsed));
-                updataTrainingDates(trainingValue,trainingDate);
-                break;
-            }
-            if(scheduleValue==4){
-                trainingDate = new Date(date.getYear(),date.getMonth(), nextTraining(date,trainingValue.getFirstDayTraining(),trainingValue.getRepetition()));
-                updataTrainingDates(trainingValue,trainingDate);
-                break;
-            }
-        }
-        if (trainingDate==null){
-            trainingDate= new Date(date.getYear(),date.getMonth(),date.getDate()+(7-daysValue[0]-1+7*(scheduleValue-1)));
-        }
-        data=trainingDate.getDate()+"."+(trainingDate.getMonth()+1)+"."+(trainingDate.getYear()+1900);
-        return data;
-    }
-    public String getNearestTrainingDate(java.util.Date niedziela, TrainingValue wt, int któryTydzieńDoPrzodu){ //Todo: Zakończony trening dodaj do tygodnia, dla o ile dni poprawić
-        if(któryTydzieńDoPrzodu==0) { return getNearestTrainingDate(któryTydzieńDoPrzodu,wt);} else{
-            String trainingDate = getNearestTrainingDate(któryTydzieńDoPrzodu,wt);
-            int scheduleValue=0;
-            String schedule = wt.getSchedule();
-            String[] scheduleArray = context.getResources().getStringArray(R.array.repetition);
-            for(int j=0;j<scheduleArray.length;j++){
-                if(schedule.equals(scheduleArray[j])){
-                    scheduleValue=j;
-                }
-            }
-            if(scheduleValue==1) {trainingDate = addHowManyDays(trainingDate, któryTydzieńDoPrzodu); if(niedziela.before(readDateFromString(switchYearWithDay(trainingDate)))) {trainingDate= addHowManyDays(trainingDate,-1);} return trainingDate;}
-            if(scheduleValue==3) {return getNearestTrainingDate(któryTydzieńDoPrzodu,wt);}
-            if(scheduleValue==4) {return getNearestTrainingDate(któryTydzieńDoPrzodu,wt);}
-            if(scheduleValue==2&&któryTydzieńDoPrzodu%2==0) {trainingDate = addHowManyDays(trainingDate, któryTydzieńDoPrzodu); return trainingDate;}  else {return getNearestTrainingDate(któryTydzieńDoPrzodu,wt);} // Todo: do poprawy drugi warunek
-        }
-    }
-    public String getNearestTrainingDate(java.util.Date date, int i, TrainingValue wt, int któryTydzieńDoPrzodu){ //Todo: Zakończony trening dodaj do tygodnia, dla o ile dni poprawić
-        if(któryTydzieńDoPrzodu==0) { return getNearestTrainingDate(date,i,wt);} else{
-            String dataTreningu = getNearestTrainingDate(date,i,wt);
-            int scheduleValue=0;
-            String schedule = wt.getSchedule();
-            String[] scheduleArray = context.getResources().getStringArray(R.array.repetition);
-            for(int j=0;j<scheduleArray.length;i++){
-                if(schedule.equals(scheduleArray[j])){
-                    scheduleValue=j;
-                }
-            }
-            if(scheduleValue==1) {dataTreningu = addHowManyDays(dataTreningu, któryTydzieńDoPrzodu); return dataTreningu;}
-            if(scheduleValue==3) {return getNearestTrainingDate(date,i,wt);}
-            if(scheduleValue==4) {return getNearestTrainingDate(date,i,wt);}
-            if(scheduleValue==2&&któryTydzieńDoPrzodu%2==0) {dataTreningu = addHowManyDays(dataTreningu, któryTydzieńDoPrzodu); return dataTreningu;}  else {return getNearestTrainingDate(date,i,wt);}
-        }
-    }
     public String getNearestTrainingDateInMonth(TrainingValue wt, int któryTreningLiczy, int któryMiesiąc) {
-            String dataTreningu = getNearestTrainingDate(0,wt);
+            String trainingDate = getNearestTrainingDate(wt);
             int scheduleValue=0;
             String schedule = wt.getSchedule();
             String[] scheduleArray = context.getResources().getStringArray(R.array.repetition);
             for(int j=0;j<scheduleArray.length;j++){
                 if(schedule.equals(scheduleArray[j])){
-                    scheduleValue=j;
+                    scheduleValue=j+1;
                 }
             }
-            if(scheduleValue==1) {dataTreningu = addHowManyDays(dataTreningu, któryTreningLiczy,któryMiesiąc); return dataTreningu;}
-            if(scheduleValue==3) {return dataTreningu;}
-            if(scheduleValue==4) {dataTreningu=dodajIleDni(dataTreningu,któryTreningLiczy,wt.getRepetition());return dataTreningu;}
-            if(scheduleValue==2) {dataTreningu = addHowManyDays(dataTreningu, któryTreningLiczy*2,któryMiesiąc); return dataTreningu;}  else {return getNearestTrainingDate(0,wt);}
-
-
-
+            if(scheduleValue==1) {trainingDate = addHowManyDays(trainingDate, któryTreningLiczy,któryMiesiąc); return trainingDate;}
+            if(scheduleValue==3) {return trainingDate;}
+            if(scheduleValue==4) {trainingDate=dodajIleDni(trainingDate,któryTreningLiczy,wt.getRepetition());return trainingDate;}
+            if(scheduleValue==2) {trainingDate = addHowManyDays(trainingDate, któryTreningLiczy*2,któryMiesiąc); return trainingDate;}  else {return getNearestTrainingDate(wt);}
         }
 
 
-    private String addHowManyDays(String dataTreningu, int któryTydzieńDoPrzodu) {
-        dataTreningu= switchYearWithDay(dataTreningu);
-        java.util.Date data = readDateFromString(dataTreningu);
-       // Log.d("d1111 2",data.toString());
-        data = new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+7*któryTydzieńDoPrzodu);
-        //Log.d("d1111 4",data.toString());
-        dataTreningu = getDate(data);
-        dataTreningu= switchYearWithDay(dataTreningu);
-        dataTreningu = removeZeros(dataTreningu);
-        return dataTreningu;
-    }
     private String addHowManyDays(String dataTreningu, int któryTydzieńDoPrzodu, int któryMieciąc) {
         dataTreningu= switchYearWithDay(dataTreningu);
         java.util.Date data = readDateFromString(dataTreningu);
@@ -270,7 +361,7 @@ public class DateTraining {
         java.util.Date[] date = new java.util.Date[trainingValuesDatabase.getCount()];
         int a=0;
         for (int i = 0; i< trainingValuesDatabase.getCount(); i++){
-            daty[i]= getNearestTrainingDate(0,treningi[i]);
+            daty[i]= getNearestTrainingDate(treningi[i]);
             date[i]= readDateFromString(daty[i]);
         }
         for(int i = 0; i< trainingValuesDatabase.getCount()-1; i++){
@@ -285,24 +376,24 @@ public class DateTraining {
         return treningi[a];
     }
     private int howManyWeeksElapsed(Date date, TrainingValue trainingValue){
-        if (trainingValue.getLastTrainingDayDate().equals("")) {return 0; }
+        if (trainingValue.getFirstDayTraining().equals("")) {return 0; }
         int number=0;
-        Date lastTrainigDate = readDateFromString(trainingValue.getLastTrainingDayDate());
-        if(date.equals(lastTrainigDate)){return 0; }
-        if(date.after(lastTrainigDate)){
+        Date lastTrainingDate = readDateFromString(trainingValue.getFirstDayTraining());
+        if(date.equals(lastTrainingDate)){return 0; }
+        if(date.after(lastTrainingDate)){
             while (true) {
-                if (date.before(lastTrainigDate)) return number-1;
+                if (date.before(lastTrainingDate)) return number-1;
                 else {
                     number++;
-                    lastTrainigDate = new Date(lastTrainigDate.getYear(), lastTrainigDate.getMonth(), lastTrainigDate.getDate() + 7);
+                    lastTrainingDate = new Date(lastTrainingDate.getYear(), lastTrainingDate.getMonth(), lastTrainingDate.getDate() + 7);
                 }
             }
         } else{
             while (true) {
-                if (date.after(lastTrainigDate)) return number-1;
+                if (date.after(lastTrainingDate)) return number-1;
                 else {
                     number++;
-                    lastTrainigDate = new Date(lastTrainigDate.getYear(), lastTrainigDate.getMonth(), lastTrainigDate.getDate() - 7);
+                    lastTrainingDate = new Date(lastTrainingDate.getYear(), lastTrainingDate.getMonth(), lastTrainingDate.getDate() - 7);
                 }
             }
         }
@@ -346,6 +437,7 @@ public class DateTraining {
         }
     }
     public java.util.Date readDateFromString(String data){
+        if(data.equals("")||data.equals(null)) return null;
         int numberDay=0, month=0,year=0,j=0;
         String s="";
         if(data.charAt(4)=='.') data = switchYearWithDay(data);
@@ -455,39 +547,37 @@ public class DateTraining {
     }
 
 
-    public String readDate(String dniTygodniaŁańcuch, String coIle) {
+    public String readDate(String shortDaysWeekData, String coIle) {
         java.util.Date data = new java.util.Date();
-        int[] wartościDni= new int[7];
-        for(int i=0;i<wartościDni.length;i++){
-            wartościDni[i]=-1;
+        int[] shortDaysValue= new int[7];
+        for(int i=0;i<shortDaysValue.length;i++){
+            shortDaysValue[i]=-1;
         }
-        Scanner s = new Scanner(dniTygodniaŁańcuch);
+        Scanner s = new Scanner(shortDaysWeekData);
+        String[] shortDaysWeek = context.getResources().getStringArray(R.array.short_week_days);
         for(int j=0;s.hasNext();j++) {
-            switch (s.next()) {
-                case "pon":wartościDni[j]=0;break;
-                case "wt":wartościDni[j]=1;break;
-                case "śr":wartościDni[j]=2;break;
-                case "czw":wartościDni[j]=3;break;
-                case "pt":wartościDni[j]=4;break;
-                case "sob":wartościDni[j]=5;break;
-                case "ndz":wartościDni[j]=6;break;
+            String day = s.next();
+            for(int i=0;i<shortDaysWeek.length;i++){
+                if(day.equals(shortDaysWeek[i])){
+                    shortDaysValue[j]=i;
+                }
             }
         }
         int dzieńtygodnia=data.getDay();
         if (dzieńtygodnia==0) dzieńtygodnia=6; else dzieńtygodnia--;
         java.util.Date dzień=null;
         for (int i=0;i<7;i++){
-            if(dzieńtygodnia==wartościDni[i]){
+            if(dzieńtygodnia==shortDaysValue[i]){
                 dzień  = data;
-            } else if (dzieńtygodnia<wartościDni[i]){
-                dzień= new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+wartościDni[i]-dzieńtygodnia);
+            } else if (dzieńtygodnia<shortDaysValue[i]){
+                dzień= new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+shortDaysValue[i]-dzieńtygodnia);
             }
         }
         if(dzień==null){
             for (int i=0;i<7;i++) {
-                if (dzieńtygodnia > wartościDni[i]) {
-                    if(wartościDni[i]==-1) break;
-                    dzień = new java.util.Date(data.getYear(), data.getMonth(), data.getDate() + wartościDni[i] - dzieńtygodnia);
+                if (dzieńtygodnia > shortDaysValue[i]) {
+                    if(shortDaysValue[i]==-1) break;
+                    dzień = new java.util.Date(data.getYear(), data.getMonth(), data.getDate() + shortDaysValue[i] - dzieńtygodnia);
                 }
             }
         }
@@ -553,12 +643,11 @@ public class DateTraining {
         return wynik;
     }
 
-
-    public int readNumberOfTrainingsInMonth(java.util.Date dataToday, TrainingValue wt, java.util.Date firtsDAy) {
+    public int readNumberOfTrainingsInMonth(TrainingValue wt) {
         int  numberDT=0;// ilość Dni Trenignowych gdy trening jest co tydzień lub dwa np trzy, gdy jest pon, śr, sob
-        int[] daysValues = new int[7];
         String schedule = wt.getSchedule();
         int repetition=0;
+        int [] daysValues = new int[7];
         for (int j=0;j<daysValues.length;j++){
             daysValues[j]=-1;
         }
@@ -566,7 +655,7 @@ public class DateTraining {
         String[] shortDays = context.getResources().getStringArray(R.array.short_week_days);
         for(int j=0;s.hasNext();j++,numberDT++) {
             String shortDay=s.next();
-           for(int k=0;k<shortDays.length;k++){
+            for(int k=0;k<shortDays.length;k++){
                 if(shortDays[k].equals(shortDay)){
                     daysValues[j]=(k+1);
                     break;
@@ -580,6 +669,7 @@ public class DateTraining {
                 break;
             }
         }
+
         if(repetition==1){
             return numberDT*6;
         } else if (repetition==2){

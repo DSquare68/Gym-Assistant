@@ -1,7 +1,6 @@
 package com.example.daniel.extraview;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,36 +19,37 @@ import java.util.Date;
  * Created by Daniel on 2017-07-27.
  */
 
-public class Calendar extends LinearLayout {
-    public LinearLayout[] tydzieńLayout= new LinearLayout[6];
-    static String[] nazwyMiesięcy;
-    static Date dataAktualna = new Date();
-    static int któryMiesiąc=0;
+public class CalendarViewNew extends LinearLayout {
+    public LinearLayout[] weekLayout = new LinearLayout[6];
+    static String[] monthNames;
+    static Date today = new Date();
+    static int whichMonth =0;
     //Todo: czy wyświetlać skończone treningi???
-    public Calendar(Context context) {
+    public CalendarViewNew(Context context) {
         super(context,null);
-        nazwyMiesięcy=context.getResources().getStringArray(R.array.month);
+        monthNames =context.getResources().getStringArray(R.array.month);
         init(context);
-        ustawLisenerButton();
+        setButtonListener();
     }
 
-    private void ustawLisenerButton() {
-        ImageView lewy = findViewById(R.id.back);
-        ImageView prawy = findViewById(R.id.forward);
-        lewy.setOnClickListener(new OnClickListener() {
+    private void setButtonListener() {
+        ImageView back = findViewById(R.id.back);
+        ImageView forward = findViewById(R.id.forward);
+        back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataAktualna= new Date(dataAktualna.getYear(),dataAktualna.getMonth()-1,dataAktualna.getDate(),dataAktualna.getHours(),dataAktualna.getMinutes(),dataAktualna.getSeconds());
-                któryMiesiąc--;
+                today = new Date(today.getYear(), today.getMonth()-1, today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds());
+                whichMonth--;
                 init(getContext());
             }
         });
-        prawy.setOnClickListener(new OnClickListener() {
+        forward.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dataAktualna.getDate()!=31)dataAktualna= new Date(dataAktualna.getYear(),dataAktualna.getMonth()+1,dataAktualna.getDate(),dataAktualna.getHours(),dataAktualna.getMinutes(),dataAktualna.getSeconds());
-                else dataAktualna= new Date(dataAktualna.getYear(),dataAktualna.getMonth()+1,dataAktualna.getDate()-1,dataAktualna.getHours(),dataAktualna.getMinutes(),dataAktualna.getSeconds());
-                któryMiesiąc++;
+                if(today.getDate()!=31)
+                    today = new Date(today.getYear(), today.getMonth()+1, today.getDate(), today.getHours(), today.getMinutes(), today.getSeconds());
+                else today = new Date(today.getYear(), today.getMonth()+1, today.getDate()-1, today.getHours(), today.getMinutes(), today.getSeconds());
+                whichMonth++;
                 init(getContext());
 
             }
@@ -62,11 +62,12 @@ public class Calendar extends LinearLayout {
         inflater.inflate(R.layout.calendar,this);
         TrainingValuesDatabase wtd = new TrainingValuesDatabase(getContext());
         TrainingValue[] trainingValues = wtd.getAll();
-        TextView nazwaMiesiąca =findViewById(R.id.textView4);
-        nazwaMiesiąca.setText(nazwyMiesięcy[dataAktualna.getMonth()]+" "+ String.valueOf(dataAktualna.getYear()+1900));
-        DateTraining dataTreningu = new DateTraining(getContext());
+        TextView monthName =findViewById(R.id.textView4);
+        monthName.setText(monthNames[today.getMonth()]+" "+ String.valueOf(today.getYear()+1900));
+        DateTraining trainingDate = new DateTraining(getContext());
+
         Date pomPondziałek=null;
-        pomPondziałek = new Date(dataAktualna.getYear(),dataAktualna.getMonth(),0);
+        pomPondziałek = new Date(today.getYear(), today.getMonth(),0);
         int pompomDzień=pomPondziałek.getDay();
         if(pompomDzień!=0) pompomDzień--; else pompomDzień=6;
         pomPondziałek = new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()-pompomDzień);
@@ -75,82 +76,76 @@ public class Calendar extends LinearLayout {
         }
         int sum=0,max=0;
         for(int i=0;i<trainingValues.length;i++){
-            sum+=dataTreningu.readNumberOfTrainingsInMonth(dataAktualna,trainingValues[i],pomPondziałek);
-            if(max<dataTreningu.readNumberOfTrainingsInMonth(dataAktualna,trainingValues[i],pomPondziałek)) max=dataTreningu.readNumberOfTrainingsInMonth(dataAktualna,trainingValues[i],pomPondziałek);
+            int numberOfTrainingsInMonth =trainingDate.readNumberOfTrainingsInMonth(trainingValues[i]);
+            sum+=numberOfTrainingsInMonth;
+            if(max<numberOfTrainingsInMonth) max=numberOfTrainingsInMonth;
         }
-        Date dataTreninguDate[][] = new Date[trainingValues.length][max];
-        int k=0,g=0;
-        String[] trainingName = new String[sum];
+        Date trainingDates[][] = new Date[trainingValues.length][max];
+        int k,g=0;
+        String[] trainingNames = new String[sum];
         for(int j=0;j<trainingValues.length;j++){
             k=0;
-            for(int i = 0; i<dataTreningu.readNumberOfTrainingsInMonth(dataAktualna,trainingValues[j],pomPondziałek); i++,k++){
-                dataTreninguDate[j][k] = dataTreningu.readDateFromString(dataTreningu.switchYearWithDay(dataTreningu.getNearestTrainingDateInMonth(trainingValues[j],k,któryMiesiąc)));
-                if(dataTreninguDate[j][k]!=null&&dataTreningu.readDateFromString(trainingValues[j].getFirstDayTraining()).after(dataTreninguDate[j][k])){
-                    dataTreninguDate[j][g]= new Date(dataTreninguDate[j][g].getYear()+30,0,0);
-                    trainingName[g]="";
+            for(int i = 0; i<trainingDate.readNumberOfTrainingsInMonth(trainingValues[j]); i++,k++){
+                trainingDates[j][k] = trainingDate.readDateFromString(trainingDate.switchYearWithDay(trainingDate.getNearestTrainingDateInMonth(trainingValues[j],k, whichMonth)));
+                if(trainingDates[j][k]!=null&&trainingDate.readDateFromString(trainingValues[j].getFirstDayTraining()).after(trainingDates[j][k])){
+                    trainingDates[j][g]= new Date(trainingDates[j][g].getYear()+30,0,0);
+                    trainingNames[g]="";
                 }
             }
-            trainingName[j] =trainingValues[j].getTrainingName();
+            trainingNames[j] =trainingValues[j].getTrainingName();
         }
-        dataTreninguDate = changeNull(dataTreninguDate);
-        dataTreninguDate=  sort(dataTreninguDate);
-        dataTreninguDate = poprawDate(dataTreninguDate, pomPondziałek,trainingName);
-
-        k=0;
-        g = 0;
-       // poniedziałek=dataAktualna;
-
-
-        //pomPondziałek=new Date(poniedziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()-(new Date(poniedziałek.getYear(),poniedziałek.getMonth(),-1).getDay()));
+        trainingDates = changeNull(trainingDates);
+        trainingDates =  sort(trainingDates);
+        trainingDates = poprawDate(trainingDates, pomPondziałek,trainingNames);
         boolean braktreningu=true;
         int[] tabLength = new int[trainingValues.length];
         for (int i=0;i<tabLength.length;i++){
             tabLength[i]=0;
         }
         for(int i=0;i<6;i++) {
-            tydzieńLayout[i] =(LinearLayout) ((LinearLayout)getChildAt(0)).getChildAt(i+2);
-            tydzieńLayout[i].removeAllViews();
+            weekLayout[i] =(LinearLayout) ((LinearLayout)getChildAt(0)).getChildAt(i+2);
+            weekLayout[i].removeAllViews();
             for(int j=0;j<7;j++){
                 braktreningu=true;
                 for(int p=0;p<tabLength.length;p++) {
                     if (i == 0 && pomPondziałek.getDate() > 20) {
-                        if (tabLength[p] < dataTreninguDate[p].length && dataTreningu.getDate(pomPondziałek).equals(dataTreningu.getDate(dataTreninguDate[p][tabLength[p]]))) {
+                        if (tabLength[p] < trainingDates[p].length && trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
                             braktreningu=false;
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingName[p]), false, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), false, pomPondziałek));
                         }
                         else if(p==tabLength.length-1&&braktreningu)
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
                         //pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
                     } else if (i == 4 && pomPondziałek.getDate() < 6) {
-                        if (tabLength[p] < dataTreninguDate[p].length && dataTreningu.getDate(pomPondziałek).equals(dataTreningu.getDate(dataTreninguDate[p][tabLength[p]]))) {
+                        if (tabLength[p] < trainingDates[p].length && trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
                             braktreningu=false;
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingName[p]), false, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), false, pomPondziałek));
                         }
                         else if(p==tabLength.length-1&&braktreningu)
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
                         // pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
                     } else if (i == 5 && pomPondziałek.getDate() < 25) {
-                        if (tabLength[p]< dataTreninguDate[p].length &&  dataTreningu.getDate(pomPondziałek).equals(dataTreningu.getDate(dataTreninguDate[p][tabLength[p]]))) {
+                        if (tabLength[p]< trainingDates[p].length &&  trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
                             braktreningu=false;
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingName[p]), false, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), false, pomPondziałek));
                         }
                         else if(p==tabLength.length-1&&braktreningu)
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
                         // pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
-                    } else if (tabLength[p] < dataTreninguDate[p].length) {
-                        if (dataTreningu.getDate(pomPondziałek).equals(dataTreningu.getDate(dataTreninguDate[p][tabLength[p]]))) {
+                    } else if (tabLength[p] < trainingDates[p].length) {
+                        if (trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
                             braktreningu=false;
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingName[p]), true, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), true, pomPondziałek));
                         }
                         else if(p==tabLength.length-1&&braktreningu)
-                            tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, true, pomPondziałek));
+                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, true, pomPondziałek));
                         // pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
                     } else if(p==tabLength.length-1&&braktreningu){
-                        tydzieńLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, true, pomPondziałek));
+                        weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, true, pomPondziałek));
                         //pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
                     }
 
@@ -169,7 +164,6 @@ public class Calendar extends LinearLayout {
         boolean pierwsza =true;
         TrainingValuesDatabase wtd = new TrainingValuesDatabase(getContext());
         for(int j=0;j<dataTreninguDate.length;j++) {
-            Log.d("adfsaa",nazwyTreningów[j]);
             rodzajTreningu= wtd.getByTrainingID(tnd.getIndex(nazwyTreningów[j])).getSchedule();
             coIle=wtd.getByTrainingID(tnd.getIndex(nazwyTreningów[j])).getRepetition();
             String[] scheduleRules = getResources().getStringArray(R.array.repetition);

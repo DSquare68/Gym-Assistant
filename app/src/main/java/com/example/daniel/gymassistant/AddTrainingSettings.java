@@ -30,6 +30,7 @@ public class AddTrainingSettings extends AppCompatActivity {
     Button[] weekDays = new Button[7];
     static String date ="";
     static String day ="";
+    static String monthlyDate;
     Toolbar mActionBarToolbar;
     static boolean[] isWeekDayChosen = new boolean[7];
     {for (int i = 0; i< isWeekDayChosen.length; i++){
@@ -66,11 +67,11 @@ public class AddTrainingSettings extends AppCompatActivity {
     }
 
     private void ustawKompozytyWedłógDanych() {
-        TrainingValue właściwościTreningów = trainingValuesDatabase.get(AddTraining.mActionBarToolbar.getTitle().toString());
-        int roundsNumber = Integer.valueOf(właściwościTreningów.getRoundsNumber());
+        TrainingValue trainingValue = trainingValuesDatabase.get(AddTraining.mActionBarToolbar.getTitle().toString());
+        int roundsNumber = Integer.valueOf(trainingValue.getRoundsNumber());
         roundsNumber--;
         ((Spinner) findViewById(R.id.round_number_spinner)).setSelection(roundsNumber);
-        String schedule= właściwościTreningów.getSchedule();
+        String schedule= trainingValue.getSchedule();
         String[] schedules = getResources().getStringArray(R.array.repetition);
         int number=0;
         for(int i=0;i<schedules.length;i++) {
@@ -81,7 +82,7 @@ public class AddTrainingSettings extends AppCompatActivity {
         }
         ((Spinner) findViewById(R.id.repetition_slider)).setSelection(number);
         if(number==0||number==1){
-            String days = właściwościTreningów.getWeekDays();
+            String days = trainingValue.getWeekDays();
             String[] weekDaysArray =getResources().getStringArray(R.array.short_week_days);
             Scanner s = new Scanner(days);
             for(int i=0;s.hasNext();i++) {
@@ -96,9 +97,9 @@ public class AddTrainingSettings extends AppCompatActivity {
             }
         } else if(number == 2){
             DateTraining dt= new DateTraining(this);
-            ((CalendarView) findViewById(R.id.calendar_view)).setDate(dt.readDateFromString(właściwościTreningów.getFirstDayTraining()).getTime());
+            ((CalendarView) findViewById(R.id.calendar_view)).setDate(dt.readDateFromString(trainingValue.getFirstDayTraining()).getTime());
         } else{
-            ((Spinner) findViewById(R.id.slider_repetition_2)).setSelection(właściwościTreningów.getRepetition()-1);
+            ((Spinner) findViewById(R.id.slider_repetition_2)).setSelection(trainingValue.getRepetition()-1);
         }
 
     }
@@ -130,14 +131,14 @@ public class AddTrainingSettings extends AppCompatActivity {
         AddTraining.saveData();
         String weekDaysString= "", trainingMode, schedule;
         int roundNumber = 1, repetition=0;
-
-        if(isWeekDayChosen[0]==true){weekDaysString = weekDaysString+"pon ";}
-        if(isWeekDayChosen[1]==true){weekDaysString = weekDaysString+"wt ";}
-        if(isWeekDayChosen[2]==true){weekDaysString = weekDaysString+"śr ";}
-        if(isWeekDayChosen[3]==true){weekDaysString = weekDaysString+"czw ";}
-        if(isWeekDayChosen[4]==true){weekDaysString = weekDaysString+"pt ";}
-        if(isWeekDayChosen[5]==true){weekDaysString = weekDaysString+"sob ";}
-        if(isWeekDayChosen[6]==true){weekDaysString = weekDaysString+"ndz ";}
+        String[] shortDaysWeek = getResources().getStringArray(R.array.short_week_days);
+        if(isWeekDayChosen[0]==true){weekDaysString = weekDaysString+shortDaysWeek[0]+" ";}
+        if(isWeekDayChosen[1]==true){weekDaysString = weekDaysString+shortDaysWeek[1]+" ";}
+        if(isWeekDayChosen[2]==true){weekDaysString = weekDaysString+shortDaysWeek[2]+" ";}
+        if(isWeekDayChosen[3]==true){weekDaysString = weekDaysString+shortDaysWeek[3]+" ";}
+        if(isWeekDayChosen[4]==true){weekDaysString = weekDaysString+shortDaysWeek[4]+" ";}
+        if(isWeekDayChosen[5]==true){weekDaysString = weekDaysString+shortDaysWeek[5]+" ";}
+        if(isWeekDayChosen[6]==true){weekDaysString = weekDaysString+shortDaysWeek[6]+" ";}
         Spinner ilośćSeriiSpinner = (Spinner) findViewById(R.id.round_number_spinner);
         Spinner trybTrenignuSpinner = (Spinner) findViewById(R.id.training_mode_spinner);
         Spinner powtarzanieSpinner = (Spinner) findViewById(R.id.repetition_slider);
@@ -146,22 +147,26 @@ public class AddTrainingSettings extends AppCompatActivity {
         trainingMode = trybTrenignuSpinner.getSelectedItem().toString();
         schedule = powtarzanieSpinner.getSelectedItem().toString();
         repetition = Integer.valueOf(powtarzanieSpinner2.getSelectedItem().toString());
-        Date date = new Date();
-        String data = date.getDate()+"."+date.getMonth()+"."+(date.getYear()+1900);
+        Date today = new Date();
+        String data = today.getDate()+"."+today.getMonth()+"."+(today.getYear()+1900);
         TrainingValue wt;
         TrainingNamesDatabase tnd = new TrainingNamesDatabase(getApplicationContext());
         DateTraining dt = new DateTraining(this);
-        if(AddTrainingSettings.date.equals(null)|| AddTrainingSettings.date.equals("")) AddTrainingSettings.date =dt.readDate(weekDaysString,schedule);
+        //TODO in case someone is switching spinner
         if(!(weekDaysString==null)&&!(weekDaysString=="")){
-            wt = new TrainingValue(tnd.getIndex(AddTraining.defaultTrainingName),weekDaysString,trainingMode,schedule,roundNumber,AddTraining.numberOfExercises,data, AddTrainingSettings.date,"",repetition,0);
-        } else{
-            wt = new TrainingValue(tnd.getIndex(AddTraining.defaultTrainingName), day,trainingMode,schedule,roundNumber,AddTraining.numberOfExercises,data, AddTrainingSettings.date,"",repetition,0);
+            wt = new TrainingValue(tnd.getIndex(AddTraining.defaultTrainingName),weekDaysString,trainingMode,schedule,roundNumber,AddTraining.numberOfExercises,data,"" ,"",repetition,0);
+        } else if(today!=null){
+            wt = new TrainingValue(tnd.getIndex(AddTraining.defaultTrainingName), day,trainingMode,schedule,roundNumber,AddTraining.numberOfExercises,data, date,date,repetition,0);
+        } else {
+            wt = new TrainingValue(tnd.getIndex(AddTraining.defaultTrainingName), day,trainingMode,schedule,roundNumber,AddTraining.numberOfExercises,data, "","",repetition,0);
+
         }
         switch(AddTraining.openMode) {
             case AddTrainingValues.OPEN_FROM_MAIN_MENU: trainingValuesDatabase.add(wt); break;
             case AddTrainingValues.OPEN_FROM_SCHEDULE:  trainingValuesDatabase.add(wt); break;
             case AddTrainingValues.OPEN_FROM_PROGRESS:  trainingValuesDatabase.add(wt);break;
         }
+        (new DateTraining(getApplicationContext())).getNearestTrainingDate(wt);
         AddTraining.exerciseValuesList.clear();
         AddTraining.exercises.clear();
         AddTraining.numberOfExercises=0;
@@ -171,10 +176,9 @@ public class AddTrainingSettings extends AppCompatActivity {
 
             public void onSelectedDayChange(CalendarView view, int year, int month, int day){
                 month = month + 1;
-                Log.d("rok",String.valueOf(day)+"  "+String.valueOf(month)+"  "+String.valueOf(year));
                 date = year+"."+month+"."+ day;
                 Date data = new Date(year-1900,month-1,day);
-                String[] dniTyg={"pon","wt","śr","czw","pt","sob","ndz"};
+                String[] dniTyg= getResources().getStringArray(R.array.short_week_days);
                 Log.d("dzień",String.valueOf(data.getDay()));
                 switch (data.getDay()){
                     case 0: AddTrainingSettings.day =dniTyg[6];

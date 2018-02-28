@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -27,7 +28,7 @@ import com.example.daniel.database.trainings.names.TrainingName;
 import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValuesDatabase;
-import com.example.daniel.extraview.Calendar;
+import com.example.daniel.extraview.CalendarViewNew;
 import com.example.daniel.extraview.CustomPagerAdapter;
 import com.example.daniel.procedures.DateTraining;
 import com.example.daniel.values.AddTrainingValues;
@@ -84,10 +85,10 @@ public class Timetable extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 for(int i = 0; i< trainings.size(); i++){
-                    ImageView usuń = (ImageView) trainings.get(i).getChildAt(1);
-                    LinearLayout.LayoutParams lp =(LinearLayout.LayoutParams) usuń.getLayoutParams();
+                    ImageView delete = (ImageView) trainings.get(i).getChildAt(1);
+                    LinearLayout.LayoutParams lp =(LinearLayout.LayoutParams) delete.getLayoutParams();
                     if(lp.weight!=1){
-                        usuń.setOnClickListener(setOnClickListenerImageViewDelete(i)); //dodać DAneStarychTreningów
+                        delete.setOnClickListener(setOnClickListenerImageViewDelete(i)); //dodać DAneStarychTreningów
                     } else{
 
                     }
@@ -97,7 +98,7 @@ public class Timetable extends AppCompatActivity {
                         lp.weight=-1;
                     }
                     //  Poprawidź widoczność Text view dla daty, i innych
-                    usuń.setLayoutParams(lp);
+                    delete.setLayoutParams(lp);
                 }
                 return false;
             }
@@ -110,8 +111,8 @@ public class Timetable extends AppCompatActivity {
                         ExerciseValuesDatabase wc = new ExerciseValuesDatabase(context);
                         TrainingValuesDatabase wt = new TrainingValuesDatabase(context);
 
-                        nt.deleteTrainingName(trainingNames[i].getName());
-                        wc.delate(trainingNames[i].getName());
+                        nt.deleteTrainingName(trainingNames[i].getID());
+                        wc.delate(trainingNames[i].getID());
                         wt.deleteTrainingValueByTrainingID(trainingNames[i].getID());
 
                         LinearLayout ll =(LinearLayout) v.getParent();
@@ -249,7 +250,7 @@ public class Timetable extends AppCompatActivity {
         viewPager.setVisibility(View.GONE);
         LinearLayout LL = parentLayout.findViewById(R.id.linearLayout_timetable);
         LL.setVisibility(View.GONE);
-        Calendar calendar = new Calendar(this);
+        CalendarViewNew calendar = new CalendarViewNew(this);
         parentLayout.addView(calendar,1);
         setContentView(parentLayout);
     }
@@ -267,7 +268,7 @@ public class Timetable extends AppCompatActivity {
         containerTrainings.setOrientation(LinearLayout.VERTICAL);
         LinearLayout ll =(LinearLayout) trainingLinearLayout.getParent();
         ll.removeView(trainingLinearLayout);
-        for(int i=0;i<ntd.getCount();i++) {
+        for(int i=0;i<wtd.getCount();i++) {
             trainings.add(i, (LinearLayout) getLayoutInflater().inflate(R.layout.timetable_training, parentLayout, false));
             LinearLayout LL =(LinearLayout) trainings.get(i).getChildAt(0);
             TextView name =LL.findViewById(R.id.training_name);
@@ -275,15 +276,15 @@ public class Timetable extends AppCompatActivity {
             TextView exercisesNumber =LL.findViewById(R.id.number_of_exercises);
             TextView time = LL.findViewById(R.id.time);
             name.setText(trainingNames[i].getName());
-            date.setText(dateTraining.getNearestTrainingDate(0,trainingValues[i]));
+            date.setText(dateTraining.getNearestTrainingDate(trainingValues[i]));
             exercisesNumber.setText(getResources().getString(R.string.number_of_exercises)+": "+trainingValues[i].getExerciseNumber());
             Date timeD = new Date(trainingValues[i].getAverageTime());
             DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
             time.setText(String.valueOf(formatter.format(timeD)));
             trainings.get(i).setOnClickListener(setOnClickListener(i));
         }
-        int[] nr = new int[ntd.getCount()];
-        for(int i=0;i<ntd.getCount();i++){
+        int[] nr = new int[wtd.getCount()];
+        for(int i=0;i<wtd.getCount();i++){
             nr[i]=i;
         }
         switch(showMode){
@@ -294,7 +295,7 @@ public class Timetable extends AppCompatActivity {
                 sortChronological(nr, trainingValues);
                 break;
         }
-        for(int i=0; i<ntd.getCount();i++){
+        for(int i=0; i<wtd.getCount();i++){
             containerTrainings.addView(trainings.get(nr[i]));
         }
     }
@@ -323,8 +324,8 @@ public class Timetable extends AppCompatActivity {
         int tempInt;
         for(int j=0;j<numer.length;j++) {
             for (int i = 0; i < numer.length - j - 1; i++) {
-                if (dateTraining.readDateFromString(dateTraining.getNearestTrainingDate(0, właściwości[i + 1])).before(
-                        dateTraining.readDateFromString(dateTraining.getNearestTrainingDate(0, właściwości[i]))
+                if (dateTraining.readDateFromString(dateTraining.getNearestTrainingDate( właściwości[i + 1])).before(
+                        dateTraining.readDateFromString(dateTraining.getNearestTrainingDate( właściwości[i]))
                 )) {
                     tempStr = właściwości[i];
                     właściwości[i] = właściwości[i + 1];
