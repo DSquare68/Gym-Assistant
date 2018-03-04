@@ -403,28 +403,24 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     }
 
     private static void zapiszDaneDoArrayList(){
-        String exerciseName="";
-        int roundNumber = 0;
-        double weight = 0;
-        int reps=0;
-        int exerciseNumber;
-        LinearLayout LL=null;
-        EditText ilośćSeriiET, obciążenieET, ilośćPowtórzeńET;
+        String exerciseName;
+        int roundNumber ;
+        double weight ;
+        int reps;
+        int exerciseNumber=0;
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(0);
         for(int i=0;i<adapter.getItemCount();i++){
             boolean nameIsEntered=false; boolean dataAreEntered=false;
             if(!adapter.exerciseList.get(i).getName().equals("")){ exerciseName=adapter.exerciseList.get(i).getName();nameIsEntered=true;dataAreEntered=true;} else exerciseName="";
             if((adapter.exerciseList.get(i).getRoundNumber()!=0)){ roundNumber=adapter.exerciseList.get(i).getRoundNumber();dataAreEntered=true;} else roundNumber = 0;
-            if((adapter.exerciseList.get(i).getWeight()!=0)){ weight=adapter.exerciseList.get(i).getWeight();dataAreEntered=true;} else weight = 0;
+            if((adapter.exerciseList.get(i).getWeight()!=0.0)){ weight=adapter.exerciseList.get(i).getWeight();dataAreEntered=true;} else weight = 0;
             if((adapter.exerciseList.get(i).getReps()!=0)){ reps=adapter.exerciseList.get(i).getReps(); dataAreEntered=true;}else reps=0;
-            if(nameIsEntered==true) {
+            if(nameIsEntered) {
                 exercises.add(new Exercise(exerciseName));
             }
-            Log.d("FADSADSF","dateareEntered  "+String.valueOf(dataAreEntered));
             if(dataAreEntered){
-                exerciseNumber=i+1;
-                Log.d("exercise NAme",exerciseName+"   "+String.valueOf(exerciseDatabase.getIndex(exerciseName)));
+                exerciseNumber++;
                 exerciseValuesList.add(new ExerciseValue(exerciseDatabase.getIndex(exerciseName), trainingNamesDatabase.getIndex(defaultTrainingName),exerciseNumber, roundNumber , weight, reps));
                 numberOfExercises++;
             }

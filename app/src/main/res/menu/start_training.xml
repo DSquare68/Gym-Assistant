@@ -5,7 +5,7 @@
     tools:context=".StartTraining"
     android:icon="@drawable/ic_action_more">
     <item
-        android:id="@+id/RozpocznijTreningStoper"
+        android:id="@+id/statistics_item_change_mode"
         android:title="Stoper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

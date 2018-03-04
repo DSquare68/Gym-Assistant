@@ -66,13 +66,12 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
     public boolean checkIfTabExists(String name){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-
+        if(name==null) return true;
         if (c.moveToFirst()) {
-            while ( !c.isAfterLast() ) {
+            while ( c.moveToNext() ) {
                if(name.equals(c.getString(0))) {
                     return true;
                 }
-                c.moveToNext();
             }
         }
         return false;
@@ -140,8 +139,16 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
         db.close();
         return DataICzas;
     }
-    public void deletaAll() {
+    public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
+        if (TABLE_NAME==null){
+           Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'",null);
+           cursor.moveToFirst();
+           while (cursor.moveToNext()){
+               db.delete("["+cursor.getString(0)+"]", null, null);
+           }
+           return;
+        }
         db.delete("["+TABLE_NAME+"]", null, null);
         db.close();
     }
@@ -165,79 +172,117 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
         Cursor cursor = db.query("["+TABLE_NAME+"]", new String[] {OldTrainingsColumnNames._ID,OldTrainingsColumnNames.TRAINING_ID,OldTrainingsColumnNames.EXERCISE_ID, OldTrainingsColumnNames.DATE,OldTrainingsColumnNames.TIME,OldTrainingsColumnNames.DURATION,OldTrainingsColumnNames.ROUND_NUMBER,OldTrainingsColumnNames.REPS, OldTrainingsColumnNames.WEIGHT}, OldTrainingsColumnNames.DATE +" = '"+s+"' AND "+OldTrainingsColumnNames.TIME +" = '"+s1+"' ",null,null,null,OldTrainingsColumnNames._ID);
         TrainingValuesDatabase wtd = new TrainingValuesDatabase(context);
         cursor.moveToFirst();
-        TrainingValue trainingValue =wtd.get(cursor.getString(1));
+        TrainingValue trainingValue =wtd.getByTrainingID(cursor.getInt(1));
         cursor.moveToFirst();
-        int maxSerie=1, ilośććwiczeń=0,seria=0;
+        int maxRounds=1, numberOfExercise=0,round=0;
         for(int i=0; i<cursor.getCount();cursor.moveToNext(),i++){
 
             if(cursor.getInt(6)==1) {
-                if (seria>maxSerie){
-                    maxSerie=seria;
+                if (round>maxRounds){
+                    maxRounds=round;
                 }
-                seria=1;
-                ilośććwiczeń++;
+                round=1;
+                numberOfExercise++;
 
             } else{
-                seria++;
+                round++;
             }
             if(cursor.isLast()){
-                if (seria>maxSerie){
-                    maxSerie=seria;
+                if (round>maxRounds){
+                    maxRounds=round;
                 }
             }
 
         }
-        OldTraining[][] oldTrainings= new OldTraining[ilośććwiczeń][maxSerie];
+        OldTraining[][] oldTrainings= new OldTraining[numberOfExercise][maxRounds];
         int i=-1,j=0;
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             if(cursor.getInt(6)==1) {j=0; i++;}
-            if(j>=maxSerie) {j=0; i++;}
+            if(j>=maxRounds) {j=0; i++;}
             if(i>=trainingValue.getExerciseNumber()) {db.close(); return oldTrainings;}
             oldTrainings[i][j++] = new OldTraining(cursor.getInt(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7), cursor.getDouble(8));
         }
         db.close();
         return oldTrainings;
     }
-    public int[] getIlośSerii(String data, String godzina){
+    public int[] getRoundsNumber(String data, String time){
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Cursor cursor = db.query("["+TABLE_NAME+"]", new String[] {TrainingValuesColumns._ID,OldTrainingsColumnNames.NUMER_SERII}, OldTrainingsColumnNames.DATA_TRENINGU +" = '"+data+"' AND "+OldTrainingsColumnNames.GODZINA_TRENINGU +" = '"+godzina+"' ",null,null,null,OldTrainingsColumnNames._ID);
-        String query="SELECT "+OldTrainingsColumnNames.EXERCISE_ID+", MAX( "+OldTrainingsColumnNames.ROUND_NUMBER+" ) FROM "+"["+TABLE_NAME+"] GROUP BY "+OldTrainingsColumnNames.EXERCISE_ID+" ORDER BY +"+OldTrainingsColumnNames._ID;
+        String query="SELECT "+OldTrainingsColumnNames.EXERCISE_ID+", MAX( "+OldTrainingsColumnNames.ROUND_NUMBER+" ) FROM "+"["+TABLE_NAME+"]"+" WHERE "+OldTrainingsColumnNames.DATE+" = '"+data+"' AND "+OldTrainingsColumnNames.TIME+"= '"+time+"' GROUP BY "+OldTrainingsColumnNames.EXERCISE_ID+" ORDER BY +"+OldTrainingsColumnNames.EXERCISE_ID;
         Cursor cursor = db.rawQuery(query,null);
-        int i=0,k=0;
-        int[] ilość= new int[cursor.getCount()];
+        int i=0;
+        int[] count= new int[cursor.getCount()];
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext(),i++){
-            ilość[i]=cursor.getInt(1);
+            count[i]=cursor.getInt(1);
         }
         db.close();
-        return ilość;
+        return count;
     }
+    public OldTraining[][] getTrainingFromTimeAndDate(String date, String time) { // żeby nie popwtarzał serii
+        SQLiteDatabase db = this.getReadableDatabase();
 
-    public OldTraining[] wczytaĆwiczenie(TrainingName trainingName, int exerciseID) {
+        Cursor cursor = db.query("["+TABLE_NAME+"]", new String[] {OldTrainingsColumnNames._ID,OldTrainingsColumnNames.TRAINING_ID,OldTrainingsColumnNames.EXERCISE_ID, OldTrainingsColumnNames.DATE,OldTrainingsColumnNames.TIME,OldTrainingsColumnNames.DURATION,OldTrainingsColumnNames.ROUND_NUMBER,OldTrainingsColumnNames.REPS, OldTrainingsColumnNames.WEIGHT}, OldTrainingsColumnNames.DATE +" = '"+date+"' AND "+OldTrainingsColumnNames.TIME +" = '"+time+"' ",null,null,null,OldTrainingsColumnNames._ID);
+        TrainingValuesDatabase wtd = new TrainingValuesDatabase(context);
+        cursor.moveToFirst();
+        TrainingValue trainingValue =wtd.getByTrainingID(cursor.getInt(1));
+        cursor.moveToFirst();
+        int maxRounds=1, numberOfExercise=0,round=0;
+        for(int i=0; i<cursor.getCount();cursor.moveToNext(),i++){
+
+            if(cursor.getInt(6)==1) {
+                if (round>maxRounds){
+                    maxRounds=round;
+                }
+                round=1;
+                numberOfExercise++;
+
+            } else{
+                round++;
+            }
+            if(cursor.isLast()){
+                if (round>maxRounds){
+                    maxRounds=round;
+                }
+            }
+
+        }
+        OldTraining[][] oldTrainings= new OldTraining[numberOfExercise][maxRounds];
+        int i=-1,j=0;
+        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            if(cursor.getInt(6)==1) {j=0; i++;}
+            if(j>=maxRounds) {j=0; i++;}
+            if(i>=trainingValue.getExerciseNumber()) {db.close(); return oldTrainings;}
+            oldTrainings[i][j++] = new OldTraining(cursor.getInt(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7), cursor.getDouble(8),context);
+        }
+        db.close();
+        return oldTrainings;
+    }
+    public OldTraining[] wczytaĆwiczenie(int trainingID, int exerciseID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM '"+TABLE_NAME+"' WHERE "+OldTrainingsColumnNames.TRAINING_ID+" = ? AND "+ OldTrainingsColumnNames.EXERCISE_ID+" = ? ORDER BY "+OldTrainingsColumnNames.DATE+", "+OldTrainingsColumnNames.TIME+", "+OldTrainingsColumnNames.ROUND_NUMBER+";";
-        Cursor cursor = db.rawQuery(query,new String[] {trainingName.getName(),String.valueOf(exerciseID)});
+        Cursor cursor = db.rawQuery(query,new String[] {String.valueOf(trainingID),String.valueOf(exerciseID)});
         OldTraining[] oldTrainings =new OldTraining[cursor.getCount()];
         cursor.moveToFirst();
         for(int i=0;i<cursor.getCount();i++,cursor.moveToNext()){
-            oldTrainings[i]=new OldTraining(cursor.getInt(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7), cursor.getDouble(8));
+            oldTrainings[i]=new OldTraining(cursor.getInt(1), cursor.getInt(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7), cursor.getDouble(8),context);
         }
         return oldTrainings;
     }
 
-    public int maxIlośćSeriiDlaĆwiczenia(String nazwaTreningu, String nazwaCwiczenia) {
+    public int maxIlośćSeriiDlaĆwiczenia(int trainingID, int exerciseID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT MAX ("+OldTrainingsColumnNames.ROUND_NUMBER+") FROM '"+TABLE_NAME+"' WHERE "+OldTrainingsColumnNames.TRAINING_ID+" = ? AND "+ OldTrainingsColumnNames.EXERCISE_ID+" = ? ORDER BY "+OldTrainingsColumnNames.DATE+";";
-        Cursor cursor = db.rawQuery(query,new String[] {nazwaTreningu,nazwaCwiczenia});
+        Cursor cursor = db.rawQuery(query,new String[] {String.valueOf(trainingID),String.valueOf(exerciseID)});
         cursor.moveToFirst();
         return cursor.getInt(0);
     }
 
-    public String[] getDatyTreningów(String nazwaCwiczenia){
+    public String[] getDatyTreningów(int exerciseID){
         SQLiteDatabase db = this.getReadableDatabase();
         //godznia treningu????????? przy ordered by
-        String query = "SELECT DISTINCT "+OldTrainingsColumnNames.TRAINING_ID+" FROM '"+TABLE_NAME+"' WHERE "+OldTrainingsColumnNames.EXERCISE_ID+" = ? ORDER BY "+OldTrainingsColumnNames.DATE+";";
-        Cursor cursor = db.rawQuery(query,new String[] {nazwaCwiczenia});
+        String query = "SELECT DISTINCT "+OldTrainingsColumnNames.DATE+" FROM '"+TABLE_NAME+"' WHERE "+OldTrainingsColumnNames.EXERCISE_ID+" = ? ORDER BY "+OldTrainingsColumnNames.DATE+";";
+        Cursor cursor = db.rawQuery(query,new String[] {String.valueOf(exerciseID)});
         String[] wynik =new String[cursor.getCount()];
         if (cursor.getCount()<=0) {
             for(int i=0;i<cursor.getCount();i++,cursor.moveToNext()){
@@ -252,11 +297,11 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
         return wynik;
     }
 
-    public String[] getGodzinyTreningów(String nazwa) {
+    public String[] getGodzinyTreningów(int exerciseID) {
         SQLiteDatabase db = this.getReadableDatabase();
         //godznia treningu????????? przy ordered by
         String query = "SELECT DISTINCT "+ OldTrainingsColumnNames.TIME+" FROM '"+TABLE_NAME+"' WHERE "+ OldTrainingsColumnNames.EXERCISE_ID+" = ? ORDER BY "+ OldTrainingsColumnNames.DATE+";";
-        Cursor cursor = db.rawQuery(query,new String[] {nazwa});
+        Cursor cursor = db.rawQuery(query,new String[] {String.valueOf(exerciseID)});
         String[] wynik =new String[cursor.getCount()];
         if (cursor.getCount()<=0) {
             for(int i=0;i<cursor.getCount();i++,cursor.moveToNext()){

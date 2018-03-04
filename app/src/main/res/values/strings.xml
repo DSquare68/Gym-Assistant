@@ -3,6 +3,9 @@
     <string name="app_name_gym">Gym</string>
     <string name="app_name_assistant">Assistant</string>
 
+    <string name="welcome">WELCOME</string>
+    <string name="exercise">Exercise</string>
+    <string name="change_mode">Change mode</string>
     <string name="weight">Weight</string>
     <string name="reps">Reps</string>
     <string name="finished">Finished</string>
@@ -25,7 +28,12 @@
     <string name="short_friday">Fri</string>
     <string name="short_saturday">Sat</string>
     <string name="short_Sunday">Sun</string>
+    <string name="rounds_number">Rounds number</string>
 
+    <string-array name="statistics_show_mode">
+        <item>Show trainings</item>
+        <item>Show exercise</item>
+    </string-array>
     <string-array name="week_days">
         <item>Monday</item>
         <item>Tuesday</item>

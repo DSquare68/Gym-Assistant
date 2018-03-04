@@ -10,6 +10,7 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.example.daniel.database.dataoldtrainings.OldTraining;
 import com.example.daniel.database.dataoldtrainings.OldTrainingsDatabase;
+import com.example.daniel.database.exercise.name.ExerciseDatabase;
 import com.example.daniel.database.exercise.values.ExerciseValue;
 import com.example.daniel.database.exercise.values.ExerciseValuesDatabase;
 import com.example.daniel.database.trainings.names.TrainingName;
@@ -371,6 +373,7 @@ public class StartTraining extends AppCompatActivity {
     private void readDateFromExercises(OldTrainingsDatabase dstd) {
         LinearLayout ll = (LinearLayout) scrollView.getChildAt(0);
         DateTraining dt = new DateTraining(getApplicationContext());
+        ExerciseDatabase exerciseDatabase = new ExerciseDatabase(getApplicationContext());
         Date date = new Date();
         updateTime = timeInMilliseconds;
         int secs =(int) (updateTime/1000);
@@ -392,18 +395,20 @@ public class StartTraining extends AppCompatActivity {
         }
         //exercises
         for(int i=0;i<ll.getChildCount();i++){
-            LinearLayout rounds = ll.findViewById(R.id.rounds);
-            TextView exerciseName = ll.findViewById(R.id.exercise_name);
+            LinearLayout exercise =(LinearLayout) ll.getChildAt(i);
+            LinearLayout rounds = exercise.findViewById(R.id.rounds);
+            TextView exerciseName = exercise.findViewById(R.id.exercise_name);
             //rounds of exercises
             for(int j=0;j<rounds.getChildCount();j++){
                 LinearLayout round =(LinearLayout) rounds.getChildAt(j);
                 TextView weight = round.findViewById(R.id.weight);
                 TextView reps = round.findViewById(R.id.reps);
                 if(newTraining){
-                    dstd.addOldTraining(new OldTraining(trainingName,trainingNamesDatabase.getIndex(trainingName),exerciseName.getText().toString(),0,dt.getDate(date),String.format("%01d",date.getHours())+":"+String.format("%02d",date.getMinutes())+":"+String.format("%02d",date.getSeconds()),String.format("%01d",hour)+":"+String.format("%02d",mins)+":"+String.format("%02d",secs) ,j+1,Integer.valueOf( reps.getText().toString()),Double.valueOf(weight.getText().toString())));
+                    dstd.addOldTraining(new OldTraining(trainingName,trainingNamesDatabase.getIndex(trainingName),exerciseName.getText().toString(),exerciseDatabase.getIndex(exerciseName.getText().toString()),dt.getDate(date),String.format("%01d",date.getHours())+":"+String.format("%02d",date.getMinutes())+":"+String.format("%02d",date.getSeconds()),String.format("%01d",hour)+":"+String.format("%02d",mins)+":"+String.format("%02d",secs) ,j+1,Integer.valueOf( reps.getText().toString()),Double.valueOf(weight.getText().toString())));
                 }
                 else {
-                    dstd.addOldTraining(new OldTraining(mActionBarToolbar.getTitle().toString(),trainingNamesDatabase.getIndex(mActionBarToolbar.getTitle().toString()),exerciseName.getText().toString(),0,dt.getDate(date),String.format("%01d",date.getHours())+":"+String.format("%02d",date.getMinutes())+":"+String.format("%02d",date.getSeconds()),String.format("%01d",hour)+":"+String.format("%02d",mins)+":"+String.format("%02d",secs) ,j+1,Integer.valueOf( reps.getText().toString()),Double.valueOf(weight.getText().toString())));
+                    Log.d("exercise number",String.valueOf(exerciseDatabase.getIndex(exerciseName.getText().toString())));
+                    dstd.addOldTraining(new OldTraining(mActionBarToolbar.getTitle().toString(),trainingNamesDatabase.getIndex(mActionBarToolbar.getTitle().toString()),exerciseName.getText().toString(),exerciseDatabase.getIndex(exerciseName.getText().toString()),dt.getDate(date),String.format("%01d",date.getHours())+":"+String.format("%02d",date.getMinutes())+":"+String.format("%02d",date.getSeconds()),String.format("%01d",hour)+":"+String.format("%02d",mins)+":"+String.format("%02d",secs) ,j+1,Integer.valueOf( reps.getText().toString()),Double.valueOf(weight.getText().toString())));
                 }
             }
         }

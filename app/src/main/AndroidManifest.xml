@@ -32,10 +32,19 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StartTraining"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Timetable"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Statistics"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Timetable"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StatisticsCompareTraining"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StatisticsCompareExercise"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

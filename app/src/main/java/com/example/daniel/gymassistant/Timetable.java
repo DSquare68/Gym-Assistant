@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -110,10 +109,12 @@ public class Timetable extends AppCompatActivity {
                         TrainingNamesDatabase nt = new TrainingNamesDatabase(context);
                         ExerciseValuesDatabase wc = new ExerciseValuesDatabase(context);
                         TrainingValuesDatabase wt = new TrainingValuesDatabase(context);
+                        OldTrainingsDatabase otd = new OldTrainingsDatabase(context,null);
 
                         nt.deleteTrainingName(trainingNames[i].getID());
                         wc.delate(trainingNames[i].getID());
                         wt.deleteTrainingValueByTrainingID(trainingNames[i].getID());
+                        otd.deleteAll();
 
                         LinearLayout ll =(LinearLayout) v.getParent();
                         containerTrainings.removeView(ll);
@@ -133,7 +134,7 @@ public class Timetable extends AppCompatActivity {
                 TrainingName[] trainingNames =nt.getAll();
                 for(int i=0;i<nt.getCount();i++) {
                     OldTrainingsDatabase dst = new OldTrainingsDatabase(context, trainingNames[i].getName());
-                    dst.deletaAll();
+                    dst.deleteAll();
                 }
 
                 nt.deleteAll();

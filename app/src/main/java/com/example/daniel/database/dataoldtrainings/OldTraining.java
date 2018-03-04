@@ -1,5 +1,10 @@
 package com.example.daniel.database.dataoldtrainings;
 
+import android.content.Context;
+
+import com.example.daniel.database.exercise.name.ExerciseDatabase;
+import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
+
 /**
  * Created by Daniel on 2017-05-19.
  */
@@ -24,6 +29,20 @@ public class OldTraining {
         this.weight=weight;
     }
     public OldTraining(int trainingID,int exerciseID,String date, String time,String duration, int roundNumber, int reps, double weight){
+        this.trainingID=trainingID;
+        this.exerciseID=exerciseID;
+        this.trainingDate=date;
+        this.trainingTime=time;
+        this.trainingDuration=duration;
+        this.roundNumber=roundNumber;
+        this.reps =reps;
+        this.weight=weight;
+    }
+    public OldTraining(int trainingID,int exerciseID,String date, String time,String duration, int roundNumber, int reps, double weight, Context context){
+        TrainingNamesDatabase tnd = new TrainingNamesDatabase(context);
+        ExerciseDatabase ed = new ExerciseDatabase(context);
+        this.trainingName=tnd.getTrainingName(trainingID).getName();
+        this.exerciseName=ed.getExercise(exerciseID).getName();
         this.trainingID=trainingID;
         this.exerciseID=exerciseID;
         this.trainingDate=date;

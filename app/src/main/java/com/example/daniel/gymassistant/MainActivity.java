@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         parent = (LinearLayout) View.inflate(this,R.layout.activity_main,null);
         setContentView(parent);
         if(SettingsValues.getValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext())==1){
-            Toast toast = Toast.makeText(getApplicationContext(),"WELCOME",Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome),Toast.LENGTH_LONG);
             toast.show();
             SettingsValues.setValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext(),-1);
             for(int i = 0; i< DatebaseOfexerciseNames.nazwyTreningów.length; i++){
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void progressOpen(View view) {
+        Intent intent = new Intent(this, Statistics.class);
+        startActivity(intent);
     }
 
     public void timetableOpen(View view) {

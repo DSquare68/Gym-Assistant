@@ -87,9 +87,9 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         if (cursor!=null){
             cursor.moveToPosition(row);
         }
-        TrainingValue ćwiczenie = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11));
+        TrainingValue trainingValue = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11));
         db.close();
-        return  ćwiczenie;
+        return  trainingValue;
     }
 
     public TrainingValue getByTrainingID(int trainingID){

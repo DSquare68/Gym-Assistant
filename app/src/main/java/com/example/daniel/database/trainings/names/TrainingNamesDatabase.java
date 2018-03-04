@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.daniel.database.exercise.name.ExerciseColumnNames;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValuesColumns;
@@ -60,19 +61,13 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
 
     public boolean isTrainingNameRepeated(String trainingName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[] {TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME}, null,null,null,null,TrainingNamesColumns._ID);
-        int ilość = cursor.getCount();
-        cursor.moveToFirst();
-        for(int i=0;i<ilość;i++){
-            if(trainingName.equals(cursor.getString(1))){
-                db.close();
-                return true;
-            } else{
-                cursor.moveToNext();
-            }
+        Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[] {TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME}, TrainingNamesColumns.TRAINING_NAME+" = '"+trainingName+"'",null,null,null,TrainingNamesColumns._ID);
+        int count = cursor.getCount();
+        if(count==0){
+            return false;
+        } else{
+            return true;
         }
-        db.close();
-        return false;
     }
 
     public int getIndex(String name) {
@@ -150,7 +145,6 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TrainingNamesColumns.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        // return count
         return cursor.getCount();
 
     }
