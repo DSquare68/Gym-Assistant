@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -48,25 +47,25 @@ public class AddTrainingSettings extends AppCompatActivity {
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_add_training_settings);
         setSupportActionBar(mActionBarToolbar);
         getSupportActionBar().setTitle(AddTraining.defaultTrainingName);
-        ustawKalendarzLisener();
-        znajdźDniTygodniaButton();
-        final Spinner powtarzanie = (Spinner) findViewById(R.id.repetition_slider);
-        powtarzanie.setOnItemSelectedListener(ustawPowtarzenieSpinnerLisener());
+        setCalendarListener();
+        findWeekDaysButton();
+        final Spinner repetitionSpinner = (Spinner) findViewById(R.id.repetition_slider);
+        repetitionSpinner.setOnItemSelectedListener(setRepetitionSpinnerListener());
         switch(AddTraining.openMode){
             case AddTrainingValues.OPEN_FROM_SCHEDULE:
-                ustawKompozytyWedłógDanych();
+                setComponents();
                 break;
         }
         RelativeLayout RL = (RelativeLayout) View.inflate(this, R.layout.add_training_settings_check,null);
         RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ImageView przyciskCheck = (ImageView) RL.findViewById(R.id.image_check);
-        przyciskCheck.setOnClickListener(ustawOnClickLitsenerCheck());
+        ImageView buttonCheck = (ImageView) RL.findViewById(R.id.image_check);
+        buttonCheck.setOnClickListener(setOnClickListenerCheck());
         addContentView(RL,rp);
 
 
     }
 
-    private void ustawKompozytyWedłógDanych() {
+    private void setComponents() {
         TrainingValue trainingValue = trainingValuesDatabase.get(AddTraining.mActionBarToolbar.getTitle().toString());
         int roundsNumber = Integer.valueOf(trainingValue.getRoundsNumber());
         roundsNumber--;
@@ -111,23 +110,18 @@ public class AddTrainingSettings extends AppCompatActivity {
             isWeekDayChosen[i]=false;
         }
     }
-    private   View.OnClickListener ustawOnClickLitsenerCheck(){
+    private   View.OnClickListener setOnClickListenerCheck(){
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                końcowaCzynność();
+                savingData();
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 startActivity(intent);
             }
         };
         return listener;
     }
-
-    private void edytujTrening() {
-
-    }
-
-    private void końcowaCzynność(){
+    private void savingData(){
         AddTraining.saveData();
         String weekDaysString= "", trainingMode, schedule;
         int roundNumber = 1, repetition=0;
@@ -139,14 +133,14 @@ public class AddTrainingSettings extends AppCompatActivity {
         if(isWeekDayChosen[4]==true){weekDaysString = weekDaysString+shortDaysWeek[4]+" ";}
         if(isWeekDayChosen[5]==true){weekDaysString = weekDaysString+shortDaysWeek[5]+" ";}
         if(isWeekDayChosen[6]==true){weekDaysString = weekDaysString+shortDaysWeek[6]+" ";}
-        Spinner ilośćSeriiSpinner = (Spinner) findViewById(R.id.round_number_spinner);
-        Spinner trybTrenignuSpinner = (Spinner) findViewById(R.id.training_mode_spinner);
-        Spinner powtarzanieSpinner = (Spinner) findViewById(R.id.repetition_slider);
-        Spinner powtarzanieSpinner2 = (Spinner) findViewById(R.id.slider_repetition_2);
-        roundNumber = Integer.valueOf(ilośćSeriiSpinner.getSelectedItem().toString());
-        trainingMode = trybTrenignuSpinner.getSelectedItem().toString();
-        schedule = powtarzanieSpinner.getSelectedItem().toString();
-        repetition = Integer.valueOf(powtarzanieSpinner2.getSelectedItem().toString());
+        Spinner roundsNumberSpinner = findViewById(R.id.round_number_spinner);
+        Spinner trainingModeSpinner = findViewById(R.id.training_mode_spinner);
+        Spinner repetitionSpinner = findViewById(R.id.repetition_slider);
+        Spinner repetitionSpinner2 = findViewById(R.id.slider_repetition_2);
+        roundNumber = Integer.valueOf(roundsNumberSpinner.getSelectedItem().toString());
+        trainingMode = trainingModeSpinner.getSelectedItem().toString();
+        schedule = repetitionSpinner.getSelectedItem().toString();
+        repetition = Integer.valueOf(repetitionSpinner2.getSelectedItem().toString());
         Date today = new Date();
         String data = today.getDate()+"."+today.getMonth()+"."+(today.getYear()+1900);
         TrainingValue wt;
@@ -171,7 +165,7 @@ public class AddTrainingSettings extends AppCompatActivity {
         AddTraining.exercises.clear();
         AddTraining.numberOfExercises=0;
     }
-    private void ustawKalendarzLisener(){
+    private void setCalendarListener(){
         final CalendarView.OnDateChangeListener myCalendarListener = new CalendarView.OnDateChangeListener(){
 
             public void onSelectedDayChange(CalendarView view, int year, int month, int day){
@@ -179,7 +173,6 @@ public class AddTrainingSettings extends AppCompatActivity {
                 date = year+"."+month+"."+ day;
                 Date data = new Date(year-1900,month-1,day);
                 String[] dniTyg= getResources().getStringArray(R.array.short_week_days);
-                Log.d("dzień",String.valueOf(data.getDay()));
                 switch (data.getDay()){
                     case 0: AddTrainingSettings.day =dniTyg[6];
                         break;
@@ -201,34 +194,34 @@ public class AddTrainingSettings extends AppCompatActivity {
 
             }
         };
-        CalendarView kalendarz = findViewById(R.id.calendar_view);
-        kalendarz.setOnDateChangeListener(myCalendarListener);
+        CalendarView calendarView = findViewById(R.id.calendar_view);
+        calendarView.setOnDateChangeListener(myCalendarListener);
 
     }
-    private AdapterView.OnItemSelectedListener ustawPowtarzenieSpinnerLisener(){
+    private AdapterView.OnItemSelectedListener setRepetitionSpinnerListener(){
         AdapterView.OnItemSelectedListener AV = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Spinner powtarzanieIlośćDni =findViewById(R.id.slider_repetition_2);
-                TextView wybierzDni =findViewById(R.id.choose_day);
-                LinearLayout dniTygodniLL = findViewById(R.id.week_days_linear_layout);
-                CalendarView kalendarz = findViewById(R.id.calendar_view);
+                Spinner repetitionNumberOfDays =findViewById(R.id.slider_repetition_2);
+                TextView chooseDay =findViewById(R.id.choose_day);
+                LinearLayout weekDays = findViewById(R.id.week_days_linear_layout);
+                CalendarView calendarView = findViewById(R.id.calendar_view);
                 if(position==3){
-                    powtarzanieIlośćDni.setVisibility(View.VISIBLE);
-                    wybierzDni.setVisibility(View.GONE);
-                    dniTygodniLL.setVisibility(View.GONE);
-                    kalendarz.setVisibility(View.VISIBLE);
+                    repetitionNumberOfDays.setVisibility(View.VISIBLE);
+                    chooseDay.setVisibility(View.GONE);
+                    weekDays.setVisibility(View.GONE);
+                    calendarView.setVisibility(View.VISIBLE);
                 }
                 else if(position==2){
-                    powtarzanieIlośćDni.setVisibility(View.GONE);
-                    wybierzDni.setVisibility(View.GONE);
-                    dniTygodniLL.setVisibility(View.GONE);
-                    kalendarz.setVisibility(View.VISIBLE);
+                    repetitionNumberOfDays.setVisibility(View.GONE);
+                    chooseDay.setVisibility(View.GONE);
+                    weekDays.setVisibility(View.GONE);
+                    calendarView.setVisibility(View.VISIBLE);
                 } else{
-                    powtarzanieIlośćDni.setVisibility(View.GONE);
-                    wybierzDni.setVisibility(View.VISIBLE);
-                    dniTygodniLL.setVisibility(View.VISIBLE);
-                    kalendarz.setVisibility(View.GONE);
+                    repetitionNumberOfDays.setVisibility(View.GONE);
+                    chooseDay.setVisibility(View.VISIBLE);
+                    weekDays.setVisibility(View.VISIBLE);
+                    calendarView.setVisibility(View.GONE);
 
                 }
             }
@@ -243,7 +236,7 @@ public class AddTrainingSettings extends AppCompatActivity {
     }
 
 
-    private void znajdźDniTygodniaButton(){
+    private void findWeekDaysButton(){
         weekDays[0] = findViewById(R.id.mon);
         weekDays[1] = findViewById(R.id.tue);
         weekDays[2] = findViewById(R.id.wed);
@@ -251,23 +244,23 @@ public class AddTrainingSettings extends AppCompatActivity {
         weekDays[4] = findViewById(R.id.fri);
         weekDays[5] = findViewById(R.id.sat);
         weekDays[6] = findViewById(R.id.sun);
-        ustawActionLisenerDniTygodnia();
+        setActionListenerWeekDays();
     }
-    private void ustawActionLisenerDniTygodnia(){
+    private void setActionListenerWeekDays(){
         for(int i=0;i<7;i++){
-            weekDays[i].setOnClickListener(wybierzDzieńTygodniaButton(i, weekDays[i]));
+            weekDays[i].setOnClickListener(chooseWeekDayButton(i, weekDays[i]));
         }
     }
-    private  View.OnClickListener wybierzDzieńTygodniaButton(final int numer, final Button button){
+    private  View.OnClickListener chooseWeekDayButton(final int number, final Button button){
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(isWeekDayChosen[numer]==true){
+                if(isWeekDayChosen[number]==true){
                     button.setBackground(getResources().getDrawable(R.drawable.button_week_days));
-                    isWeekDayChosen[numer]=false;
+                    isWeekDayChosen[number]=false;
                 } else{
                     button.setBackground(getResources().getDrawable(R.drawable.button_week_days_pressed));
-                    isWeekDayChosen[numer]=true;
+                    isWeekDayChosen[number]=true;
                 }
             }
         };

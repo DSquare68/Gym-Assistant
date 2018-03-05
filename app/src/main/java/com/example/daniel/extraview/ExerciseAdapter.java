@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,18 +56,18 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
         public ExerciseHolder(View view) {
             super(view);
             title = view.findViewById(R.id.autocomplete_exercise);
-            ustawieniePodpowiedzi(view,title);
-            slider = view.findViewById(R.id.suwak);
+            setHints(view,title);
+            slider = view.findViewById(R.id.slider_image);
             slider.setOnClickListener(this);
             LinearLayout parent = (LinearLayout) slider.getParent();
-            final LinearLayout ukryty = (LinearLayout) parent.getChildAt(2);
-            slider.setOnClickListener(ExerciseAdapter.this.slider.setListerer(ukryty));
-            roundNumberTV = view.findViewById(R.id.round_number_textview);
-            repsTV = view.findViewById(R.id.reps_textview);
-            weightTV = view.findViewById(R.id.weight_textview);
-            roundNumberET = view.findViewById(R.id.round_number_edittext);
-            repsET =  view.findViewById(R.id.reps_edittext);
-            weightET = view.findViewById(R.id.weight_edittext);
+            final LinearLayout hidden = (LinearLayout) parent.getChildAt(2);
+            slider.setOnClickListener(ExerciseAdapter.this.slider.setListener(hidden));
+            roundNumberTV = view.findViewById(R.id.round_number_text_view);
+            repsTV = view.findViewById(R.id.reps_text_view);
+            weightTV = view.findViewById(R.id.weight_text_view);
+            roundNumberET = view.findViewById(R.id.round_number_edit_text);
+            repsET =  view.findViewById(R.id.reps_edit_text);
+            weightET = view.findViewById(R.id.weight_edit_text);
 
             this.customEditTextListener[0] = new MyCustomEditTextListener(1);
             this.title.addTextChangedListener(customEditTextListener[0]);
@@ -85,7 +84,7 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.dodajcwiczenieKomponent){
+            if (v.getId() == R.id.exercise){
                 itemClickCallback.onItemClick(getAdapterPosition());
             } else {
                 itemClickCallback.onSecondaryIconClick(getAdapterPosition());
@@ -114,7 +113,6 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            Log.d("fadafdafa", String.valueOf(!(charSequence.toString()=="")));
             switch (index){
                 case 1: exerciseList.get(position).setName(charSequence.toString()); break;
                 case 2: if(!(charSequence.toString().equals(""))) exerciseList.get(position).setRoundNumber(Integer.valueOf(charSequence.toString())); else exerciseList.get(position).setRoundNumber(0);  break;
@@ -135,15 +133,15 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
 
 
 
-    private void ustawieniePodpowiedzi(View view, AutoCompleteTextView title){
+    private void setHints(View view, AutoCompleteTextView title){
         ExerciseDatabase cw = new  ExerciseDatabase(view.getContext());
-        int ilośćĆwiczenia = cw.getĆwiczeniaCount();
-        String[] ćwiczenia = new String[ilośćĆwiczenia];
-        Exercise[] cwiczenie = cw.getAll();
-        for(int i=0;i<cw.getĆwiczeniaCount();i++){
-            ćwiczenia[i] = cwiczenie[i].getName();
+        int numberOfExercise = cw.getCount();
+        String[] exerciseS = new String[numberOfExercise];
+        Exercise[] exercises = cw.getAll();
+        for(int i = 0; i<cw.getCount(); i++){
+            exerciseS[i] = exercises[i].getName();
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.add_training_list_item,R.id.item, ćwiczenia);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(), R.layout.add_training_list_item,R.id.item, exerciseS);
         title.setAdapter(arrayAdapter);
         title.setThreshold(1);
         cw.close();

@@ -30,7 +30,7 @@ public class Diagram extends HorizontalScrollView {
     Exercise exercise;
 
     /**
-     *  pierwszy wymmiar data, drugi wymiar godznia, trzeci wymiar seria
+     *  first dim data, second dim time, third dim round
      */
     OldTraining[][][] oldTrainings;
     Context context;
@@ -49,19 +49,17 @@ public class Diagram extends HorizontalScrollView {
         this.exercise = exercise;
         this.oldTrainings = addOldTrainings();
         if(oldTrainings ==null) {
-            //Intent intent = new Intent(context, Statystyki.class);
-            // context.startActivity(intent);
             isExercise =false;
             // a.finish();
             return;
         }
         widthColumn =Units.dpToPx(context,40);
         bottomMargin =Units.dpToPx(getContext(),120);
-        ustawDane();
+        setDane();
         init();
     }
 
-    private void ustawDane() {
+    private void setDane() {
         for (int i = 0; i < oldTrainings.length; i++) {
             for (int j = 0; j < oldTrainings[0].length; j++) {
                 for (int k = 0; k < oldTrainings[0][0].length; k++) {
@@ -79,23 +77,23 @@ public class Diagram extends HorizontalScrollView {
 
     private OldTraining[][][] addOldTrainings() {
         TrainingNamesDatabase ntd = new TrainingNamesDatabase(context);
-        TrainingName[] nazwy = ntd.getAll();
-        OldTrainingsDatabase[] dstd = new OldTrainingsDatabase[nazwy.length];
+        TrainingName[] name = ntd.getAll();
+        OldTrainingsDatabase[] dstd = new OldTrainingsDatabase[name.length];
         /**
          * One dimension for trainings second fot dates
          */
-        String[][] date = new String[nazwy.length][];
-        String[][] time = new String[nazwy.length][];
+        String[][] date = new String[name.length][];
+        String[][] time = new String[name.length][];
         int maxNumberOfRounds = 0;
-        for (int i = 0; i < nazwy.length; i++) {
-            dstd[i] = new OldTrainingsDatabase(context, nazwy[i].getName());
-            if (maxNumberOfRounds < dstd[i].maxIlośćSeriiDlaĆwiczenia(nazwy[i].getID(), exercise.getID()))
-                maxNumberOfRounds = dstd[i].maxIlośćSeriiDlaĆwiczenia(nazwy[i].getID(), exercise.getID());
-            date[i] = dstd[i].getDatyTreningów(exercise.getID());
-            time[i] = dstd[i].getGodzinyTreningów(exercise.getID());
+        for (int i = 0; i < name.length; i++) {
+            dstd[i] = new OldTrainingsDatabase(context, name[i].getName());
+            if (maxNumberOfRounds < dstd[i].maxNumberOfRounds(name[i].getID(), exercise.getID()))
+                maxNumberOfRounds = dstd[i].maxNumberOfRounds(name[i].getID(), exercise.getID());
+            date[i] = dstd[i].getDataTrainings(exercise.getID());
+            time[i] = dstd[i].getTime(exercise.getID());
         }
         int numberOfDates = 0,numberOfTimes=0;
-        boolean[] hasTrainingExercise = new boolean[nazwy.length];
+        boolean[] hasTrainingExercise = new boolean[name.length];
         for (int i = 0; i < date.length; i++) {
             for(int j=0;j<date[i].length;j++) {
                 if (date[i][j] != "") {
@@ -106,40 +104,30 @@ public class Diagram extends HorizontalScrollView {
                 }
             }
         }
-        numberOfTimes=policzGodziny(date,time);
+        numberOfTimes= calculateTime(date,time);
         OldTraining[][][] result;
         OldTraining[][] previousResult = new OldTraining[numberOfDates][];
         int j = 0;
         if(!isTraining(hasTrainingExercise)) return null;
-        for (int i = 0; i < nazwy.length; i++) {
-            while (!hasTrainingExercise[i]) {i++; if(i==nazwy.length) return  methodGroup(previousResult,numberOfDates,numberOfTimes,maxNumberOfRounds);}
-            previousResult[j++] = dstd[i].wczytaĆwiczenie(nazwy[i].getID(), exercise.getID());
+        for (int i = 0; i < name.length; i++) {
+            while (!hasTrainingExercise[i]) {i++; if(i==name.length) return  methodGroup(previousResult,numberOfDates,numberOfTimes,maxNumberOfRounds);}
+            previousResult[j++] = dstd[i].get(name[i].getID(), exercise.getID());
         }
         result = methodGroup(previousResult,numberOfDates,numberOfTimes,maxNumberOfRounds);
         return result;
     }
 
-    private boolean isTraining(boolean[] hasTrainignAnExercise) {
+    private boolean isTraining(boolean[] hasTrainingAnExercise) {
         boolean result = false;
-        for (int i = 0; i < hasTrainignAnExercise.length; i++)
-            if (hasTrainignAnExercise[i]==true) return true;
+        for (int i = 0; i < hasTrainingAnExercise.length; i++)
+            if (hasTrainingAnExercise[i]==true) return true;
         return result;
     }
 
 
-    private int policzGodziny(String[][] daty, String[][] godziny) {
-        int ilośćGodzin=0;
-        /*for (int i = 0; i < godziny.length; i++) {
-            for (int j = 0; j < godziny[0].length; j++) {
-                if (godziny[i][j] != "") {
-                    ilośćGodzin++;
-
-                } else {
-
-                }
-            }
-        }*/
-        return 5; /// TUTAJ ILOŚĆ GODZIN POMYSLEĆ CO DALEJ
+    private int calculateTime(String[][] data, String[][] time) {
+        //TODO: finish
+        return 5;
     }
 
     private OldTraining[][][] methodGroup(OldTraining[][] previousResult, int numberOfDates, int numberOfTime, int numberOfRounds) {
@@ -231,10 +219,10 @@ public class Diagram extends HorizontalScrollView {
         return result;
     }
 
-    private int checkISTherePreviousTraining(String currentDate, String checkedDate, String currentTime, String curentTime){
+    private int checkISTherePreviousTraining(String currentDate, String checkedDate, String currentTime, String checkedTime){
         DateTraining dateTraining = new DateTraining(context);
-        Date current= dateTraining.wczydajDateZeStringaIGodzine(currentDate,currentTime);
-        Date checked=dateTraining.wczydajDateZeStringaIGodzine(checkedDate,curentTime);
+        Date current= dateTraining.getDataFromDateAndTime(currentDate,currentTime);
+        Date checked=dateTraining.getDataFromDateAndTime(checkedDate,checkedTime);
         if (current.after(checked)) return 1;
         if (current.before(checked)) return -1;
         if (current.equals(checked)) return 0;
@@ -245,8 +233,6 @@ public class Diagram extends HorizontalScrollView {
     }
 
     private void init() {
-        //LinearLayout LL = new LinearLayout(context);
-        // this.addView(LL);
         this.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
         table =new LinearLayout(context);
@@ -256,7 +242,6 @@ public class Diagram extends HorizontalScrollView {
         container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
 
         final HorizontalScrollView hsv = this;
-        //hsv.setLayoutParams(new LinearLayout.LayoutParams(hsv.getLayoutParams().width-Jedostek.dpToPx(context,30)*2, ViewGroup.LayoutParams.MATCH_PARENT));
         container.addView(table);
         addView(container);
         hsv.post(new Runnable() {
@@ -278,7 +263,6 @@ public class Diagram extends HorizontalScrollView {
     static  public int scaleOneColumnWeight;
     @Override
     public void draw(Canvas canvas) {
-        //Todo: skalaJedenSzczebel wczy nie rónym może powodować odstawanie (nie równe prostokąty)
         super.draw(canvas);
         int height = getHeight();
         scaleOneColumnReps = (height- bottomMargin)/ maxReps;
@@ -287,7 +271,7 @@ public class Diagram extends HorizontalScrollView {
 
         Paint paint = new Paint();
 
-        paint.setColor(Color.parseColor("#00d000")); // zielony
+        paint.setColor(Color.parseColor("#00d000")); // green
         paint.setStrokeWidth(0);
         int l=0;
         for(int i = 0; i< oldTrainings.length; i++){
@@ -331,7 +315,7 @@ public class Diagram extends HorizontalScrollView {
         paint.setStrokeWidth(Units.dpToPx(context, 4));
         canvas.drawLine(width1 - widthColumn * l, 0, width1 - widthColumn * l, getHeight(), paint);
 
-        //Todo: skalowanie, rózne ilośći serii i długie nazwy trningów
+        //Todo: scaling, different number of rounds, too long names
         l=0;
         DateTraining dateTraining = new DateTraining(getContext());
         for(int i = 0; i< oldTrainings.length; i++){
@@ -380,16 +364,16 @@ public class Diagram extends HorizontalScrollView {
         Rect bounds = new Rect();
         l=0;
         int width=(int) mTextPaint.measureText(String.valueOf(maxWeight));
-        int czcionkaWartośćiObciążenieDp=80;
+        int fontValueWeight=80;
         while(width> widthColumn) {
-            mTextPaint.setTextSize(Units.dpToPx(getContext(), --czcionkaWartośćiObciążenieDp));
+            mTextPaint.setTextSize(Units.dpToPx(getContext(), --fontValueWeight));
             width = (int) mTextPaint.measureText(String.valueOf(maxWeight));
         }
-        int czcionkaWartośćiIlośćPowtózeń=80;
-        mTextPaint.setTextSize(Units.dpToPx(getContext(), czcionkaWartośćiIlośćPowtózeń));
+        int fontValueReps=80;
+        mTextPaint.setTextSize(Units.dpToPx(getContext(), fontValueReps));
         int width2=(int) mTextPaint.measureText(String.valueOf(maxReps));
         while(width2> widthColumn) {
-            mTextPaint.setTextSize(Units.dpToPx(getContext(), --czcionkaWartośćiIlośćPowtózeń));
+            mTextPaint.setTextSize(Units.dpToPx(getContext(), --fontValueReps));
             width2 = (int) mTextPaint.measureText(String.valueOf(maxReps));
         }
 
@@ -399,7 +383,7 @@ public class Diagram extends HorizontalScrollView {
                 for (int k = 0; k < oldTrainings[i][j].length ; k++, l++) {
                     if(oldTrainings[i][j][k]==null) break;
                     canvas.save();
-                    mTextPaint.setTextSize(Units.dpToPx(getContext(),czcionkaWartośćiIlośćPowtózeń));
+                    mTextPaint.setTextSize(Units.dpToPx(getContext(),fontValueReps));
                     width = (int) mTextPaint.measureText(String.valueOf(oldTrainings[i][j][k].getReps()));
                     mTextPaint.getTextBounds(String.valueOf(oldTrainings[i][j][k].getReps()), 0,String.valueOf(oldTrainings[i][j][k].getReps()).length(), bounds);
                     canvas.translate(width1-(widthColumn *l*2+ widthColumn /2+width/2), getHeight()- bottomMargin - scaleOneColumnReps * oldTrainings[i][j][k].getReps());
@@ -407,7 +391,7 @@ public class Diagram extends HorizontalScrollView {
                     mStaticLayout.draw(canvas);
                     canvas.restore();
                     canvas.save();
-                    mTextPaint.setTextSize(Units.dpToPx(getContext(),czcionkaWartośćiObciążenieDp));
+                    mTextPaint.setTextSize(Units.dpToPx(getContext(),fontValueWeight));
                     width = (int) mTextPaint.measureText(String.valueOf(oldTrainings[i][j][k].getWeight()));
                     mTextPaint.getTextBounds(String.valueOf(oldTrainings[i][j][k].getWeight()), 0,String.valueOf(oldTrainings[i][j][k].getWeight()).length() , bounds);
                     canvas.translate(width1-(widthColumn *l*2+ widthColumn /2+ widthColumn +width/2), (float) (getHeight()- bottomMargin - scaleOneColumnWeight * oldTrainings[i][j][k].getWeight()));

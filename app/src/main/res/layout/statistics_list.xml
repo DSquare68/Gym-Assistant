@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Filtruj" />
+            android:text="@string/filter" />
 
         <Spinner
             android:id="@+id/statistics_list_filter_training"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:textSize="10dp"
             android:layout_weight="1.8"
-            android:text="Wybrane ćwiczenia" />
+            android:text="Chosen Exercise" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

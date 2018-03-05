@@ -13,8 +13,8 @@ public class TrainingValue {
     private int trainingId=-1, roundsNumber, exerciseNumber, repetition;
     private String trainingName, weekDays, trainingMode, schedule, addDate, firstDayTraining, lastTrainingDayDate;
 
-    public TrainingValue(String treningName, int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
-        this.trainingName = treningName;
+    public TrainingValue(String trainingName, int trainingID, String weekDays, String trainingMode, String schedule, int roundsNumber, int exerciseNumber, String addDate, String firstDayTraining, String lastTrainingDayDate, int repetition, long averageTime) {
+        this.trainingName = trainingName;
         this.weekDays = weekDays;
         this.trainingMode = trainingMode;
         this.schedule = schedule;

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dodajcwiczenieKomponent"
+    android:id="@+id/exercise"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         />
 
     <ImageView
-        android:id="@+id/suwak"
+        android:id="@+id/slider_image"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
         app:srcCompat="@drawable/slider"
@@ -38,7 +38,7 @@
        >
 
         <TextView
-            android:id="@+id/round_number_textview"
+            android:id="@+id/round_number_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -49,7 +49,7 @@
             android:textSize="10dp" />
 
         <EditText
-            android:id="@+id/round_number_edittext"
+            android:id="@+id/round_number_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000000"
@@ -59,7 +59,7 @@
             android:inputType="number"
             />
         <TextView
-            android:id="@+id/weight_textview"
+            android:id="@+id/weight_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
 
             />
         <EditText
-            android:id="@+id/weight_edittext"
+            android:id="@+id/weight_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000000"
@@ -82,7 +82,7 @@
             />
 
         <TextView
-            android:id="@+id/reps_textview"
+            android:id="@+id/reps_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -93,7 +93,7 @@
             android:textSize="12dp" />
 
         <EditText
-            android:id="@+id/reps_edittext"
+            android:id="@+id/reps_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000000"

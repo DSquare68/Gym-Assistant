@@ -16,7 +16,7 @@ android:orientation="horizontal">
     android:textColor="#000000"
     android:textSize="18dp"
     android:inputType="textMultiLine"
-    android:text="Poniedziałek" />
+    android:text="Monday" />
 
 <ScrollView
     android:id="@+id/scrollView_timetable_many_trainings"

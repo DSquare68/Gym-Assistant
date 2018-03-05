@@ -21,9 +21,10 @@ public class SettingsValues {
     public static int startModeTraining = 1;
     public final static String TRAINING_START_MODE ="training_start_mode";
     /**
-     * domyślnaw wartość 1 tryb "Nazwy okienek"
-     *  2 tryb "Wartości"
-     *  3 tryb "Nazwy i Wartości"
+     * default value
+     *  1 mode 'names'
+     *  2 mode 'values'
+     *  3 mode 'names & values'
      */
     public static int  whichTextDisplayOnExerciseRound=1;
     public final static String DISPLAY_TIPS ="display_tips";
@@ -36,7 +37,6 @@ public class SettingsValues {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(key, newValue);
         editor.commit();
-        //Log.d("CZy poszło",String.valueOf(editor.commit()));
     }
 
     public static int getValue(String key, Context context){

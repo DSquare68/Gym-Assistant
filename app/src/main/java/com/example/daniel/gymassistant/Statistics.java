@@ -85,10 +85,10 @@ public class Statistics extends AppCompatActivity {
             radioGroup.addView(radioButtons[i]);
         }
         Button okButton =  dialog.findViewById(R.id.ok);
-        Button anulujButton= dialog.findViewById(R.id.cancel);
+        Button cancelButton= dialog.findViewById(R.id.cancel);
         okButton.setOnClickListener(okButtonActionListenerShowMode(radioGroup, dialog));
 
-        anulujButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Statistics.this, MainActivity.class);
@@ -185,7 +185,7 @@ public class Statistics extends AppCompatActivity {
             ((LinearLayout) namesLinearLayout.get(i).getParent()).removeView(namesLinearLayout.get(i));
             TextView name = namesLinearLayout.get(i).findViewById(R.id.statistics_name_of_training_choose);
             ImageView slider = namesLinearLayout.get(i).findViewById(R.id.slide_button);
-            slider.setOnClickListener(ustawSuwakOnClickLisener(trainingNames[i].getName(),i));
+            slider.setOnClickListener(setSliderOnClickListener(trainingNames[i].getName(),i));
             name.setText(trainingNames[i].getName());
             LL.addView(namesLinearLayout.get(i));
         }
@@ -193,8 +193,8 @@ public class Statistics extends AppCompatActivity {
         parentLayout.addView(mainScrollView);
     }
 
-    private View.OnClickListener ustawSuwakOnClickLisener(final String trainingName,final int i) {
-        View.OnClickListener lisener = new View.OnClickListener() {
+    private View.OnClickListener setSliderOnClickListener(final String trainingName, final int i) {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DateTraining dateTraining = new DateTraining(Statistics.this);
@@ -217,13 +217,13 @@ public class Statistics extends AppCompatActivity {
                         dateAndTime[i][0]=dateTraining.switchYearWithDay(dateAndTime[i][0]);
                     }
                     for (int i = 0; i < dateAndTime.length; i++) {
-                        LinearLayout całyKontener = (LinearLayout) View.inflate(Statistics.this, R.layout.statistics_position_of_training, null);
-                        dateAndTimeArrayLL.add(i, (LinearLayout) całyKontener.findViewById(R.id.container_date_and_time_2));
+                        LinearLayout wholeContainer = (LinearLayout) View.inflate(Statistics.this, R.layout.statistics_position_of_training, null);
+                        dateAndTimeArrayLL.add(i, (LinearLayout) wholeContainer.findViewById(R.id.container_date_and_time_2));
                         ((LinearLayout) dateAndTimeArrayLL.get(i).getParent()).removeView(dateAndTimeArrayLL.get(i));
                         TextView data =  dateAndTimeArrayLL.get(i).findViewById(R.id.date_chooser);
-                        TextView czas =  dateAndTimeArrayLL.get(i).findViewById(R.id.time_chooser);
+                        TextView time =  dateAndTimeArrayLL.get(i).findViewById(R.id.time_chooser);
                         data.setText(dateAndTime[i][0]);
-                        czas.setText(dateAndTime[i][1]);
+                        time.setText(dateAndTime[i][1]);
                         ((LinearLayout) dateAndTimeScroll.getChildAt(0)).addView(dateAndTimeArrayLL.get(i),i);
                     }
                     ((LinearLayout) dateAndTimeScroll.getParent()).removeView(dateAndTimeScroll);
@@ -236,25 +236,13 @@ public class Statistics extends AppCompatActivity {
                     }
                 } else {
                     isSliderTurnOn[i]=false;
-                    //((LinearLayout) LL.getParent()).removeView(dataICzasScroll);
                     ((LinearLayout)(  v.getParent()).getParent()).removeViewAt(1);
 
                 }
             }
 
-            private int sumSerii(OldTraining[] dane, int koniec) {
-                int sum=0, seria=1, nrSerii=0;
-                for(int i=0;i<dane.length;i++){
-                    if(seria==dane[i].getRoundNumber()){
-                        nrSerii++;
-                    }
-                    if(nrSerii==koniec) return i;
-                }
-                return sum;
-            }
-
             private View.OnClickListener setOpenTrainingResultOnClickListener(final OldTraining[][] currentTraining, final OldTraining[][] lastTraining) {
-                View.OnClickListener lisener = new View.OnClickListener() {
+                View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (lastTraining==null) {
@@ -270,14 +258,10 @@ public class Statistics extends AppCompatActivity {
                         startActivity(intent);
                     }
                 };
-                return  lisener;
+                return  listener;
             }
         };
-        return lisener;
-    }
-
-    private void sortowanieDataICzasPlusDaneStaruchTreningów(String[][] dataICzas, OldTraining[] dst) {
-
+        return listener;
     }
 
 }

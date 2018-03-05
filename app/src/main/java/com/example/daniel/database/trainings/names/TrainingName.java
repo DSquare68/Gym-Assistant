@@ -23,8 +23,8 @@ public class TrainingName {
         return name;
     }
 
-    public void setname(String nazwa) {
-        this.name = nazwa;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getID() {

@@ -3,6 +3,14 @@
     <string name="app_name_gym">Gym</string>
     <string name="app_name_assistant">Assistant</string>
 
+    <string name="filter">Filter</string>
+    <string name="reset_the_date">Reset the Date</string>
+    <string name="change_training">Change training</string>
+    <string name="stopwatch">Stopwatch</string>
+    <string name="sort">Sort by</string>
+    <string name="delete_all">Delete all</string>
+    <string name="delete_training">Delete training</string>
+    <string name="add_training">Add training</string>
     <string name="welcome">WELCOME</string>
     <string name="exercise">Exercise</string>
     <string name="change_mode">Change mode</string>
@@ -29,7 +37,8 @@
     <string name="short_saturday">Sat</string>
     <string name="short_Sunday">Sun</string>
     <string name="rounds_number">Rounds number</string>
-
+    <string name="set_name">Set Name</string>
+    <string name="toast_add_training_training_exist">The training with that name already exists. Change it.</string>
     <string-array name="statistics_show_mode">
         <item>Show trainings</item>
         <item>Show exercise</item>

@@ -2,18 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".planZajec"
+    tools:context=".Timetable"
+    android:textSize=20dp
     android:icon="@drawable/ic_action_more_vert">
     <item
-        android:id="@+id/dodajTreningUstawNazwę"
-        android:title="Dodaj Trening"
+        android:id="@+id/add_training_set_name"
+        android:title="@string/add_training"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
         />
     <item
         android:id="@+id/action_settings1"
-        android:title="Usuń Trening"
+        android:title="@string/delete_training"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
@@ -21,21 +22,21 @@
 
     <item
         android:id="@+id/action_settings2"
-        android:title="Usuń Wszystkie"
+        android:title="@string/delete_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
         />
     <item
         android:id="@+id/action_settings3"
-        android:title="Sortuj Według"
+        android:title="@string/sort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
         />
     <item
         android:id="@+id/action_settings4"
-        android:title="Tryb wyświetlania"
+        android:title="@string/view_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"

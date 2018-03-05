@@ -43,7 +43,7 @@ public class WeekDayButton extends android.support.v7.widget.AppCompatButton {
         this.trainingValue =trainingValue;
         this.currentMonth =currentMonth;
         this.trainingDate =trainingDate;
-        sprCzyJestTrening();
+        isTraining();
         init();
         setOnClickListener(new OnClickListener() {
             @Override
@@ -53,13 +53,13 @@ public class WeekDayButton extends android.support.v7.widget.AppCompatButton {
                 ScrollView scrollView = new ScrollView(v.getContext());
                 LinearLayout scrollLL = new LinearLayout(v.getContext());
                 scrollView.addView(scrollLL);
-                LinearLayout trening =(LinearLayout) View.inflate(v.getContext(), R.layout.timetable_training,null);
-                trening.setOnClickListener(new OnClickListener() {
+                LinearLayout training =(LinearLayout) View.inflate(v.getContext(), R.layout.timetable_training,null);
+                training.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ExerciseValuesDatabase wtd = new ExerciseValuesDatabase(context);
-                        TrainingValuesDatabase wtrend = new TrainingValuesDatabase(context);
-                        AddTraining.trainingValue = wtrend.get(WeekDayButton.this.trainingValue.getTrainingName());
+                        TrainingValuesDatabase tvd = new TrainingValuesDatabase(context);
+                        AddTraining.trainingValue = tvd.get(WeekDayButton.this.trainingValue.getTrainingName());
                         AddTraining.exerciseValues = wtd.get(WeekDayButton.this.trainingValue.getTrainingName());
                         AddTraining.defaultTrainingName = WeekDayButton.this.trainingValue.getTrainingName();
                         AddTraining.openMode = AddTrainingValues.OPEN_FROM_SCHEDULE;
@@ -67,14 +67,14 @@ public class WeekDayButton extends android.support.v7.widget.AppCompatButton {
                         context.startActivity(intent);
                     }
                 });
-                TextView name =trening.findViewById(R.id.training_name);
-                TextView dataTV = trening.findViewById(R.id.date_of_training);
-                TextView exerciseNumber= trening.findViewById(R.id.number_of_exercises);
-                TextView timeExercise = trening.findViewById(R.id.time);
-                ImageView deleteTraining = trening.findViewById(R.id.delete_icon);
+                TextView name =training.findViewById(R.id.training_name);
+                TextView dataTV = training.findViewById(R.id.date_of_training);
+                TextView exerciseNumber= training.findViewById(R.id.number_of_exercises);
+                TextView timeExercise = training.findViewById(R.id.time);
+                ImageView deleteTraining = training.findViewById(R.id.delete_icon);
                 deleteTraining.setVisibility(View.GONE);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                trening.setLayoutParams(lp);
+                training.setLayoutParams(lp);
                 lp.weight=-1;
                 deleteTraining.setLayoutParams(lp);
                 if(chosenTrainingValue !=null) {
@@ -83,7 +83,7 @@ public class WeekDayButton extends android.support.v7.widget.AppCompatButton {
                     exerciseNumber.setText(getResources().getString(R.string.number_of_exercises)+" : " + chosenTrainingValue.getExerciseNumber());
                     timeExercise.setText(String.valueOf(chosenTrainingValue.getAverageTime()));
                 } else  name.setText(getResources().getString(R.string.no_trainings));
-                scrollLL.addView(trening);
+                scrollLL.addView(training);
                 Timetable.parentLayout.addView(scrollView,2);
             }
 
@@ -91,7 +91,7 @@ public class WeekDayButton extends android.support.v7.widget.AppCompatButton {
 
     }
 
-    private void sprCzyJestTrening() {
+    private void isTraining() {
         if(trainingValue !=null){
             isTraining = true;
         }

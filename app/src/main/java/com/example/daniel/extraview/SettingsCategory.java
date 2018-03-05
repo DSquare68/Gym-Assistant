@@ -16,8 +16,8 @@ import com.example.daniel.gymassistant.R;
  */
 
 public class SettingsCategory extends PreferenceCategory {
-    ColorStateList colorTekstu;
-    Float rozmiarCzcinki;
+    ColorStateList textColor;
+    Float fontSize;
     public SettingsCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.getTheme().obtainStyledAttributes(
@@ -26,8 +26,8 @@ public class SettingsCategory extends PreferenceCategory {
                 0, 0);
 
         try {
-            colorTekstu = a.getColorStateList(R.styleable.settings_category_text_color);
-            rozmiarCzcinki = a.getDimension(R.styleable.settings_category_font_size, TypedValue.COMPLEX_UNIT_DIP);
+            textColor = a.getColorStateList(R.styleable.settings_category_text_color);
+            fontSize = a.getDimension(R.styleable.settings_category_font_size, TypedValue.COMPLEX_UNIT_DIP);
         } finally {
             a.recycle();
         }
@@ -38,8 +38,8 @@ public class SettingsCategory extends PreferenceCategory {
     protected void onBindView(View view) {
         super.onBindView(view);
         TextView titleView = (TextView) view.findViewById(android.R.id.title);
-        titleView.setTextColor(colorTekstu);
-        titleView.setTextSize(rozmiarCzcinki);
+        titleView.setTextColor(textColor);
+        titleView.setTextSize(fontSize);
     }
 
 }

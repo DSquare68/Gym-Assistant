@@ -111,7 +111,6 @@ public class StartTraining extends AppCompatActivity {
                     isStopWatcherVisible =true;
                     stopWatch.setVisibility(View.VISIBLE);
                 }
-                //ustawWymiary();
 
                 return true;
             }
@@ -193,7 +192,7 @@ public class StartTraining extends AppCompatActivity {
         radioButtons[s.length].setText(getResources().getString(R.string.new_training));
         radioGroup.addView(radioButtons[s.length]);
         Button okButton =(Button)  dialog.findViewById(R.id.ok);
-        Button anulujButton=(Button) dialog.findViewById(R.id.cancel);
+        Button cancelButton=(Button) dialog.findViewById(R.id.cancel);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,7 +222,7 @@ public class StartTraining extends AppCompatActivity {
 
             }
         });
-        anulujButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartTraining.this, MainActivity.class);
@@ -353,8 +352,8 @@ public class StartTraining extends AppCompatActivity {
 
 
                     });
-                    Button anuluj = d.findViewById(R.id.cancel_button);
-                    anuluj.setOnClickListener(new View.OnClickListener() {
+                    Button cancel = d.findViewById(R.id.cancel_button);
+                    cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             d.dismiss();
@@ -390,8 +389,8 @@ public class StartTraining extends AppCompatActivity {
                     weekDay=arrayShortDays[(i==0 ? 6 : --i)];
                 }
             }
-            //TODO round number
-            trainingValuesDatabase.add(new TrainingValue(trainingName,trainingNamesDatabase.getIndex(trainingName),weekDay,"Seria","",3,ll.getChildCount(), dataTraining.getDate(date), dataTraining.getDate(date), dataTraining.getDate(date),0,updateTime));
+            //TODO SERIES
+            trainingValuesDatabase.add(new TrainingValue(trainingName,trainingNamesDatabase.getIndex(trainingName),weekDay,"SERIES","",3,ll.getChildCount(), dataTraining.getDate(date), dataTraining.getDate(date), dataTraining.getDate(date),0,updateTime));
         }
         //exercises
         for(int i=0;i<ll.getChildCount();i++){
@@ -453,7 +452,7 @@ public class StartTraining extends AppCompatActivity {
         });
     }
     long startTime=0L, timeInMilliseconds =0L, timeSwapBuff=0L,updateTime=0L;
-    boolean zegerTyka=false;
+    boolean clockTicking =false;
     TextView timer;
     Handler handler = new Handler();
     Runnable updateTimerThread = new Runnable() {
@@ -484,17 +483,17 @@ public class StartTraining extends AppCompatActivity {
     }
 
     public void pause(View view) {
-        if(zegerTyka) {
+        if(clockTicking) {
             timeSwapBuff += timeInMilliseconds;
             handler.removeCallbacks(updateTimerThread);
-            zegerTyka=false;
+            clockTicking =false;
         }
     }
 
     public void play(View view) {
-        if(!zegerTyka){
+        if(!clockTicking){
             timer =(TextView) parentLayout.findViewById(R.id.stopwatch);
-            zegerTyka=true;
+            clockTicking =true;
             startTime= SystemClock.uptimeMillis();
             handler.postDelayed(updateTimerThread,0);
         }
@@ -507,9 +506,9 @@ public class StartTraining extends AppCompatActivity {
     public void deleteRound(View view) {
         LinearLayout LL = (LinearLayout) view.getParent().getParent();
         LinearLayout LL3 =LL.findViewById(R.id.rounds);
-        int ilość = LL3.getChildCount();
-        if (ilość>0)
-            LL3.removeViewAt(ilość-1);
+        int number = LL3.getChildCount();
+        if (number>0)
+            LL3.removeViewAt(number-1);
     }
 
     public void addRound(View view) {

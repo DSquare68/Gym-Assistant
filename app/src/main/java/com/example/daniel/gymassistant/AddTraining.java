@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -52,7 +51,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     public static int openMode=1;
     
     private static LinearLayout recyclerViewLinearLayout;
-    private static LinearLayout przyciski;
+    private static LinearLayout buttonsLayout;
     public static ExerciseAdapter adapter;
     static Toolbar mActionBarToolbar;
     public static ExerciseValue[] exerciseValues;
@@ -77,26 +76,26 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setToolbar();
         switch(openMode){
-            case AddTrainingValues.OPEN_FROM_MAIN_MENU: otwartePrzezMenuGłówne();
+            case AddTrainingValues.OPEN_FROM_MAIN_MENU: openFromMainMenu();
                 break;
-            case AddTrainingValues.OPEN_FROM_SCHEDULE: otwartePrzezPlanZajęćLista();
+            case AddTrainingValues.OPEN_FROM_SCHEDULE: openFromTimeTable();
                 break;
             case AddTrainingValues.OPEN_FROM_PROGRESS:
-                otwartePrzezStatystyki();
+                openFromProgress();
                 break;
         }
         setContentView(parentLayout);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        sprCzyklawiaturaJestWłączona();
+        isKeyboardVisible();
     }
 
-    private void otwartePrzezStatystyki() {
+    private void openFromProgress() {
     }
 
-    private void sprCzyklawiaturaJestWłączona(){
+    private void isKeyboardVisible(){
 
         parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            int prevoiusHeight=0;
+            int previousHeight =0;
             @Override
             public void onGlobalLayout() {
                 final Handler handler = new Handler();
@@ -108,10 +107,10 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                         parentLayout.getWindowVisibleDisplayFrame(measureRect);
                         // measureRect.bottom is the position above soft keypad
                         int keypadHeight = parentLayout.getRootView().getHeight() - measureRect.bottom;
-                        if(keypadHeight!=prevoiusHeight) {
-                            recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerViewLinearLayout.getHeight() - keypadHeight + prevoiusHeight)));
-                            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerView.getHeight() - keypadHeight  + prevoiusHeight)));
-                            prevoiusHeight = keypadHeight;
+                        if(keypadHeight!= previousHeight) {
+                            recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerViewLinearLayout.getHeight() - keypadHeight + previousHeight)));
+                            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerView.getHeight() - keypadHeight  + previousHeight)));
+                            previousHeight = keypadHeight;
                         }
                     }
                 },100);
@@ -119,7 +118,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         });
     }
 
-    private void otwartePrzezPlanZajęćLista() {
+    private void openFromTimeTable() {
         //setToolbar();
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.CENTER_HORIZONTAL;
@@ -141,13 +140,13 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ustawEditTextWToolbar(mActionBarToolbar);
+                setEditTextToolbar(mActionBarToolbar);
                 return false;
             }
         });
         return true;
     }
-    private void otwartePrzezMenuGłówne(){
+    private void openFromMainMenu(){
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.CENTER_HORIZONTAL;
         lp.weight = 1;
@@ -155,27 +154,27 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     }
 
     private void setToolbar() {
-        mActionBarToolbar = (Toolbar) parentLayout.getChildAt(0); //findViewById(R.id.toolbar_dodaj_trening);
+        mActionBarToolbar = (Toolbar) parentLayout.getChildAt(0);
         setSupportActionBar(mActionBarToolbar);
         getSupportActionBar().setTitle(defaultTrainingName);
         switch(openMode) {
-            case 1: mActionBarToolbar.setOnLongClickListener(ustawOnLongClickLitsenerToolbar());break;
+            case 1: mActionBarToolbar.setOnLongClickListener(setOnLongClickListenerToolbar());break;
             case 2: break;
         }
     }
 
-    private  View.OnLongClickListener ustawOnLongClickLitsenerToolbar(){
+    private  View.OnLongClickListener setOnLongClickListenerToolbar(){
         View.OnLongClickListener listener = new View.OnLongClickListener(){
             @Override
             public boolean onLongClick(View v){
-                ustawEditTextWToolbar(mActionBarToolbar);
+                setEditTextToolbar(mActionBarToolbar);
                 return true;
             }
         };
         return listener;
     }
 
-    public void ustawEditTextWToolbar(final Toolbar mActionBarToolbar){
+    public void setEditTextToolbar(final Toolbar mActionBarToolbar){
         getSupportActionBar().setTitle("");
         final EditText editText = new EditText(getApplicationContext());
         editText.setSingleLine();
@@ -235,13 +234,13 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             }
         }
         recyclerViewLinearLayout = (LinearLayout) View.inflate(this, R.layout.add_training_recycler_view, null);
-        przyciski = (LinearLayout) View.inflate(this, R.layout.add_training_buttons, null);
+        buttonsLayout = (LinearLayout) View.inflate(this, R.layout.add_training_buttons, null);
         recyclerView = (RecyclerView) recyclerViewLinearLayout.getChildAt(0);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setScrollContainer(true);
         LinearLayout.LayoutParams lpScroll=null;
 
-        przyciski.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+        buttonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
         adapter = new ExerciseAdapter(listData, this);
         recyclerView.setAdapter(adapter);
         if(lpScroll!=null){
@@ -250,7 +249,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             parentLayout.addView(recyclerViewLinearLayout, lp);
         }
         //lp.gravity=Gravity.CENTER_HORIZONTAL;
-        parentLayout.addView(przyciski, przyciski.getLayoutParams());
+        parentLayout.addView(buttonsLayout, buttonsLayout.getLayoutParams());
         if(!Resolution.hasSoftKeys){
             Rect measureRect = new Rect(); //you should cache this, onGlobalLayout can get called often
             recyclerViewLinearLayout.getWindowVisibleDisplayFrame(measureRect);
@@ -264,17 +263,16 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             {
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
             }
-            Log.d("Wymiary",String.valueOf(recyclerViewLinearLayout.getRootView().getMeasuredHeight()-measureRect.bottom -actionBarHeight)+"   "+String.valueOf(recyclerViewLinearLayout.getRootView().getHeight())+"   "+String.valueOf(measureRect.bottom)+"    "+actionBarHeight);
             lpScroll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(int) (measureRect.bottom/3.2), getResources().getDisplayMetrics()));
         }
         recyclerViewLinearLayout.setLayoutParams(lpScroll);
         recyclerView.setLayoutParams(lpScroll);
         if(exerciseValues==null) {
-            ustawItemTouchHelper();
+            setItemTouchHelper();
         }
     }
 
-    private void ustawItemTouchHelper() {
+    private void setItemTouchHelper() {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
@@ -314,7 +312,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                     @Override
                     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
                         if(actionState == ItemTouchHelper.ACTION_STATE_IDLE){
-                            sprCzyklawiaturaJestWłączona();
+                            isKeyboardVisible();
                         }
                         super.onSelectedChanged(viewHolder, actionState);
 
@@ -367,9 +365,8 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     public void onSecondaryIconClick(int p) {
 
     }
-    //Todo: Można dodawać trainingLinearLayout bez nazwy. Poprawić
     public static void saveData(){
-        zapiszDaneDoArrayList();
+        saveDataDoArrayList();
         ExerciseDatabase cw = new ExerciseDatabase(recyclerView.getContext());
         TrainingNamesDatabase nt = new TrainingNamesDatabase(recyclerView.getContext());
         ExerciseValuesDatabase wc = new ExerciseValuesDatabase(recyclerView.getContext());
@@ -402,7 +399,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
 
     }
 
-    private static void zapiszDaneDoArrayList(){
+    private static void saveDataDoArrayList(){
         String exerciseName;
         int roundNumber ;
         double weight ;
@@ -428,38 +425,38 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
 
 
     }
-    public void następnyLayout(View view) {
+    public void nextLayout(View view) {
         switch(openMode) {
 
             case AddTrainingValues.OPEN_FROM_MAIN_MENU:
                 if (trainingNamesDatabase.isTrainingNameRepeated(defaultTrainingName)) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Już istnieje trainingLinearLayout o takiej nazwie. Zmień  nazwę", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_add_training_training_exist), Toast.LENGTH_LONG);
                     toast.show();
                     return;
                 }
                 break;
         }
-        ustawFreezeTextView();
-        //zapiszDaneDoArrayList();
+        setFreezeTextView();
+        //saveDataDoArrayList();
         Intent intentMain = new Intent(AddTraining.this ,
                 AddTrainingSettings.class);
         AddTraining.this.startActivity(intentMain);
     }
 
-    private void ustawFreezeTextView() {
-        EditText ilośćSeriiET, obciążenieET, ilośćPowtórzeńET;
-        AutoCompleteTextView ACTV;
+    private void setFreezeTextView() {
+        EditText numberOfRoundsET, weightET, repsET;
+        AutoCompleteTextView ACT;
         for(int i=0;i<recyclerView.getChildCount();i++) {
-            LinearLayout LL = (LinearLayout) recyclerView.getChildAt(i);  // Cały konteiner
-            ACTV = (AutoCompleteTextView) LL.getChildAt(0);
-            LinearLayout LL2 = (LinearLayout) LL.getChildAt(2);       //ten co się rozsuwa
-            ilośćSeriiET = (EditText) LL2.getChildAt(1);
-            obciążenieET = (EditText) LL2.getChildAt(3);
-            ilośćPowtórzeńET = (EditText) LL2.getChildAt(5);
-            ilośćPowtórzeńET.setFreezesText(true);
-            ilośćSeriiET.setFreezesText(true);
-            obciążenieET.setFreezesText(true);
-            ACTV.setFreezesText(true);
+            LinearLayout LL = (LinearLayout) recyclerView.getChildAt(i);
+            ACT = (AutoCompleteTextView) LL.getChildAt(0);
+            LinearLayout LL2 = (LinearLayout) LL.getChildAt(2);
+            numberOfRoundsET = (EditText) LL2.getChildAt(1);
+            weightET = (EditText) LL2.getChildAt(3);
+            repsET = (EditText) LL2.getChildAt(5);
+            repsET.setFreezesText(true);
+            numberOfRoundsET.setFreezesText(true);
+            weightET.setFreezesText(true);
+            ACT.setFreezesText(true);
         }
     }
 }

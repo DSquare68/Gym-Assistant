@@ -6,14 +6,14 @@
     android:icon="@drawable/ic_action_more">
     <item
         android:id="@+id/statistics_item_change_mode"
-        android:title="Stoper"
+        android:title="@string/stopwatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
         />
     <item
         android:id="@+id/action_settings1"
-        android:title="Zmień Trening"
+        android:title="@string/change_training"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
@@ -21,14 +21,14 @@
 
     <item
         android:id="@+id/action_settings2"
-        android:title="Zresetuj Dane"
+        android:title="@string/reset_the_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"
         />
     <item
         android:id="@+id/action_settings3"
-        android:title="Zakończ Trening"
+        android:title="@string/finished"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orderInCategory="200"

@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             SettingsValues.setValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext(),-1);
             for(int i = 0; i< DatebaseOfexerciseNames.nazwyTreningów.length; i++){
-                ExerciseDatabase nazwaTreningu = new ExerciseDatabase(getApplicationContext());
-                nazwaTreningu.addExercise(new Exercise(DatebaseOfexerciseNames.nazwyTreningów[i]));
+                ExerciseDatabase trainingName = new ExerciseDatabase(getApplicationContext());
+                trainingName.addExercise(new Exercise(DatebaseOfexerciseNames.nazwyTreningów[i]));
             }
         }
     }

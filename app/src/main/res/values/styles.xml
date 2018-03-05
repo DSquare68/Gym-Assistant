@@ -33,11 +33,11 @@
         <item name="android:paddingRight">16dp</item>
     </style>
 
-    <style name="generalnotitle">
+    <style name="general_no_title">
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="przesun_views_dla_klawiatury">
+    <style name="move_view_for_keyboard">
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
@@ -45,7 +45,7 @@
         <item name="android:textSize">26sp</item>
     </style>
 
-    <style name="ustawienia_przegrodka">
+    <style name="settings_header">
         <item name="android:textColor">@color/color_settings_header</item>
     </style>
 

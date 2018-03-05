@@ -24,22 +24,22 @@ public class Settings extends PreferenceActivity {
         Preference  dialogPreference2 = (Preference) getPreferenceScreen().findPreference(getResources().getString(R.string.key_what_display_on_exercise_round));
         dialogPreference1.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                utwórzDialog(1);  // 1 odnosi sie do trybu rozpocznij trening, 2 co wyświetlać przy seriach treningu jako podpowiedź
+                setDialog(1);
                 return true;
             }
         });
         dialogPreference2.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                utwórzDialog(2);  // 1 odnosi sie do trybu rozpocznij trening, 2 co wyświetlać przy seriach treningu jako podpowiedź
+                setDialog(2);
                 return true;
             }
         });
     }
-    private void utwórzDialog(int buttonNumber){
+    private void setDialog(int buttonNumber){
         final Dialog dialog = new Dialog(Settings.this);
         String[] s= new String[3];
         dialog.setContentView(R.layout.dialog_radio_group_cancel_ok);
-        dialog.setTitle("Wybierz Trening");
+        dialog.setTitle(getResources().getString(R.string.choose_training));
         final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radio_group_start_mode);
         switch(buttonNumber){
             case 1:
@@ -57,12 +57,12 @@ public class Settings extends PreferenceActivity {
             radioGroup.addView(radioButtons[i]);
         }
         Button okButton =(Button)  dialog.findViewById(R.id.ok);
-        Button anulujButton=(Button) dialog.findViewById(R.id.cancel);
+        Button cancelButton=(Button) dialog.findViewById(R.id.cancel);
         switch(buttonNumber) {
             case 1: okButton.setOnClickListener(okButtonActionListenerStartTrainingMode(radioGroup, dialog)); break;
-            case 2: okButton.setOnClickListener(okButtonActionListenerPodpowiedziDoSerii(radioGroup,dialog)); break;
+            case 2: okButton.setOnClickListener(okButtonActionListenerHints(radioGroup,dialog)); break;
         }
-        anulujButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Settings.this, MainActivity.class);
@@ -96,7 +96,7 @@ public class Settings extends PreferenceActivity {
         return listener;
     }
 
-    private View.OnClickListener okButtonActionListenerPodpowiedziDoSerii(final RadioGroup radioGroup, final Dialog dialog) {
+    private View.OnClickListener okButtonActionListenerHints(final RadioGroup radioGroup, final Dialog dialog) {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 public class Slider {
 
-    public View.OnClickListener setListerer(final LinearLayout layout){
+    public View.OnClickListener setListener(final LinearLayout layout){
         View.OnClickListener clickListener=  new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -23,22 +23,22 @@ public class Slider {
         return clickListener;
     }
 
-    private void expand(LinearLayout collapsablelayout)
+    private void expand(LinearLayout layout)
     {
-        collapsablelayout.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.VISIBLE);
 
         final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        collapsablelayout.measure(widthSpec, heightSpec);
+        layout.measure(widthSpec, heightSpec);
 
-        ValueAnimator mAnimator = slideAnimator(0, collapsablelayout.getMeasuredHeight(), collapsablelayout);
+        ValueAnimator mAnimator = slideAnimator(0, layout.getMeasuredHeight(), layout);
         mAnimator.start();
     }
 
-    private void collapse(final LinearLayout collapsablelayout) {
-        int finalHeight = collapsablelayout.getHeight();
+    private void collapse(final LinearLayout layout) {
+        int finalHeight = layout.getHeight();
 
-        ValueAnimator mAnimator = slideAnimator(finalHeight, 0, collapsablelayout);
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0, layout);
 
         mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -49,7 +49,7 @@ public class Slider {
             @Override
             public void onAnimationEnd(Animator animator) {
                 //Height=0, but it set visibility to GONE
-                collapsablelayout.setVisibility(View.GONE);
+                layout.setVisibility(View.GONE);
             }
 
             @Override

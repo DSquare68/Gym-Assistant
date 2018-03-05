@@ -16,10 +16,10 @@ public class OldTraining {
     private double weight;
 
 
-    public OldTraining(String trainingname,int trainingID, String execiseName,int exerciseID, String date, String time, String duration, int roundNumber, int reps, double weight){
-        this.trainingName=trainingname;
+    public OldTraining(String trainingName,int trainingID, String exerciseName,int exerciseID, String date, String time, String duration, int roundNumber, int reps, double weight){
+        this.trainingName=trainingName;
         this.trainingID=trainingID;
-        this.exerciseName=execiseName;
+        this.exerciseName=exerciseName;
         this.exerciseID=exerciseID;
         this.trainingDate=date;
         this.trainingTime=time;

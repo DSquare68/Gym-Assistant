@@ -27,6 +27,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:clickable="true"
-        android:onClick="następnyLayout"
+        android:onClick="nextLayout"
         app:srcCompat="@drawable/arrow" />
 </LinearLayout>

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:inputType="textMultiLine"
-        android:text="exerise name"
+        android:text="exercise name"
         android:textColor="@color/dark"
         android:textSize="16dp" />
 

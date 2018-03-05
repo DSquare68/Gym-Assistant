@@ -60,23 +60,22 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.insert(TrainingValuesColumns.TABLE_NAME, null, values);
         db.close();
     }
-    public void update(TrainingValue ćwiczenie) {
+    public void update(TrainingValue trainingValue) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //db.delete(TrainingValuesColumns.TABLE_NAME,TrainingValuesColumns.NAZWA_TRENINGU+" = ? ",new String[]{exercises.getNazwaTreningu()});
         ContentValues values = new ContentValues();
-        values.put(TrainingValuesColumns.TRAINING_ID, ćwiczenie.getTrainingId());
-        values.put(TrainingValuesColumns.WEEK_DAYS, ćwiczenie.getWeekDays());
-        values.put(TrainingValuesColumns.TRAINING_MODE, ćwiczenie.getTrainingMode());
-        values.put(TrainingValuesColumns.SCHEDULE, ćwiczenie.getSchedule());
-        values.put(TrainingValuesColumns.ROUNDS_NUMBER, ćwiczenie.getRoundsNumber());
-        values.put(TrainingValuesColumns.EXERCISE_NUMBER, ćwiczenie.getExerciseNumber());
-        values.put(TrainingValuesColumns.ADD_DATE, ćwiczenie.getAddDate());
-        values.put(TrainingValuesColumns.FIRST_DAY_DATE, ćwiczenie.getFirstDayTraining());
-        values.put(TrainingValuesColumns.LAST_TRAINING_DAY_DATE, ćwiczenie.getLastTrainingDayDate());
-        values.put(TrainingValuesColumns.REPETITION, ćwiczenie.getRepetition());
-        values.put(TrainingValuesColumns.AVERAGE_TIME, ćwiczenie.getAverageTime());
+        values.put(TrainingValuesColumns.TRAINING_ID, trainingValue.getTrainingId());
+        values.put(TrainingValuesColumns.WEEK_DAYS, trainingValue.getWeekDays());
+        values.put(TrainingValuesColumns.TRAINING_MODE, trainingValue.getTrainingMode());
+        values.put(TrainingValuesColumns.SCHEDULE, trainingValue.getSchedule());
+        values.put(TrainingValuesColumns.ROUNDS_NUMBER, trainingValue.getRoundsNumber());
+        values.put(TrainingValuesColumns.EXERCISE_NUMBER, trainingValue.getExerciseNumber());
+        values.put(TrainingValuesColumns.ADD_DATE, trainingValue.getAddDate());
+        values.put(TrainingValuesColumns.FIRST_DAY_DATE, trainingValue.getFirstDayTraining());
+        values.put(TrainingValuesColumns.LAST_TRAINING_DAY_DATE, trainingValue.getLastTrainingDayDate());
+        values.put(TrainingValuesColumns.REPETITION, trainingValue.getRepetition());
+        values.put(TrainingValuesColumns.AVERAGE_TIME, trainingValue.getAverageTime());
 
-        db.update(TrainingValuesColumns.TABLE_NAME, values, TrainingValuesColumns.TRAINING_ID + " = ? ", new String[]{String.valueOf(ćwiczenie.getTrainingId())});
+        db.update(TrainingValuesColumns.TABLE_NAME, values, TrainingValuesColumns.TRAINING_ID + " = ? ", new String[]{String.valueOf(trainingValue.getTrainingId())});
         db.close();
     }
 
@@ -107,9 +106,9 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.query(TrainingValuesColumns.TABLE_NAME, new String[] {TrainingValuesColumns._ID,TrainingValuesColumns.TRAINING_ID,TrainingValuesColumns.WEEK_DAYS,TrainingValuesColumns.TRAINING_MODE,TrainingValuesColumns.SCHEDULE, TrainingValuesColumns.ROUNDS_NUMBER, TrainingValuesColumns.EXERCISE_NUMBER,TrainingValuesColumns.ADD_DATE, TrainingValuesColumns.FIRST_DAY_DATE, TrainingValuesColumns.LAST_TRAINING_DAY_DATE,TrainingValuesColumns.REPETITION, TrainingValuesColumns.AVERAGE_TIME}, TrainingValuesColumns.TRAINING_ID +" = '"+ID+"'",null,null,null,TrainingValuesColumns._ID);
         if(cursor.getCount()==0) return null;
         cursor.moveToFirst();
-        TrainingValue ćwiczenie = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11),context);
+        TrainingValue trainingValue = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11),context);
         db.close();
-        return  ćwiczenie;
+        return  trainingValue;
     }
 
     public int[] getAllID(){
@@ -132,17 +131,17 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         if (cursor!=null){
             cursor.moveToFirst();
         }
-        TrainingValue[] ćwiczenie = new TrainingValue[cursor.getCount()];
+        TrainingValue[] trainingValues = new TrainingValue[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
-            ćwiczenie[i] = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11),context);
+            trainingValues[i] = new TrainingValue(cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getInt(5),cursor.getInt(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getInt(10),cursor.getLong(11),context);
             cursor.moveToNext();
         }
         db.close();
-        return  ćwiczenie;
+        return  trainingValues;
     }
-    public void deleteTrainingValueByID(int numer){
+    public void deleteTrainingValueByID(int ID){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TrainingValuesColumns.TABLE_NAME, TrainingValuesColumns._ID+" =?", new String[]{String.valueOf(numer)});
+        db.delete(TrainingValuesColumns.TABLE_NAME, TrainingValuesColumns._ID+" =?", new String[]{String.valueOf(ID)});
         db.close();
     }
     public void deleteTrainingValueByTrainingID(int trainingID){
@@ -150,12 +149,12 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.delete(TrainingValuesColumns.TABLE_NAME, TrainingValuesColumns.TRAINING_ID+" =?", new String[]{String.valueOf(trainingID)});
         db.close();
     }
-    public void delateAll() {
+    public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TrainingValuesColumns.TABLE_NAME, null, null);
         db.close();
     }
-    public void delateFile(Context context){
+    public void deleteFile(Context context){
         context.deleteDatabase(TrainingValuesColumns.TABLE_NAME+".db");
     }
     public int getCount() {

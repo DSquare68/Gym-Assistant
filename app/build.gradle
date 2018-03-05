@@ -17,18 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    /*sourceSets {
-        main {
-            //manifest.srcFile '/src/main/AndroidMainifest.xml'
-            java.srcDirs = ['/src/main/java', '/.apt_generated']
-            aidl.srcDirs = ['/src/main/aidl', '/.apt_generated']
-            assets.srcDirs = ['/src/main/assets']
-            res.srcDirs = [
-                    'src/main/res',
-                    'src/main/res/layout',
-            ]
-        }
-    }*/
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/values-pl'] } }
 }
 

@@ -19,8 +19,8 @@ public class Exercise {
         this.name =n;
     }
 
-    public void setName(String nazwa){
-        this.name = nazwa;
+    public void setName(String name){
+        this.name = name;
     }
     public String getName(){
         return name;

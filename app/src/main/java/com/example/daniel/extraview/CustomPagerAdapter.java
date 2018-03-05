@@ -48,7 +48,6 @@ public class CustomPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        //LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.plan_zajec_pokaz_tygodniowo, collection, false);
         LinearLayout layout = new LinearLayout(mContext);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -62,7 +61,6 @@ public class CustomPagerAdapter extends PagerAdapter {
         collection.addView(layout,lp);
         return layout;
     }
-    //TODO nie wyświeta się treninng
     private void setTrainings(LinearLayout layout, int position){
         String noTraining =mContext.getResources().getString(R.string.no_trainings);
         String[] weekDays = mContext.getResources().getStringArray(R.array.week_days);
@@ -111,11 +109,11 @@ public class CustomPagerAdapter extends PagerAdapter {
             }
             textView.setText(noTraining);
             for(int j = 0; j< trainingValues.length; j++){
-                String pomdzien =trainingDate.getDate(monday);
-                pomdzien = trainingDate.switchYearWithDay(pomdzien);
-                pomdzien = removeZeroFromMounth(pomdzien);
+                String help =trainingDate.getDate(monday);
+                help = trainingDate.switchYearWithDay(help);
+                help = removeZeroFromMonth(help);
                 for(int k=0;k<dates[j].length;k++) {
-                    if (dates[j][k].equals(pomdzien)) {
+                    if (dates[j][k].equals(help)) {
                         if (textView.getText().equals(noTraining)) {
                             textView.setText(trainingValues[j].getTrainingName());
                         } else {
@@ -132,30 +130,30 @@ public class CustomPagerAdapter extends PagerAdapter {
         }
     }
 
-    private String removeZeroFromMounth(String date) {
-        int ilKrope=0;
+    private String removeZeroFromMonth(String date) {
+        int numberOfDots=0;
         for (int i=0;i<date.length();i++){
-            if(date.charAt(i)=='.') ilKrope++;
-            if(ilKrope==0&&date.charAt(i)=='0'&&i==0) date= date.substring(0,i) + date.substring(i + 1);
-            if(ilKrope==1&&date.charAt(i)=='0') date= date.substring(0,i) + date.substring(i + 1);
+            if(date.charAt(i)=='.') numberOfDots++;
+            if(numberOfDots==0&&date.charAt(i)=='0'&&i==0) date= date.substring(0,i) + date.substring(i + 1);
+            if(numberOfDots==1&&date.charAt(i)=='0') date= date.substring(0,i) + date.substring(i + 1);
         }
         return date;
     }
     private View.OnClickListener setOnClickListener(final String s) {
-        View.OnClickListener lisener = new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ExerciseValuesDatabase wtd = new ExerciseValuesDatabase(mContext);
-                TrainingValuesDatabase wtrend = new TrainingValuesDatabase(mContext);
+                TrainingValuesDatabase tvd = new TrainingValuesDatabase(mContext);
                 AddTraining.openMode = AddTrainingValues.OPEN_FROM_SCHEDULE;
                 Intent intent = new Intent(mContext, AddTraining.class);
-                AddTraining.trainingValue = wtrend.get(s);
+                AddTraining.trainingValue = tvd.get(s);
                 AddTraining.exerciseValues = wtd.get(s);
                 AddTraining.defaultTrainingName = s;
                 mContext.startActivity(intent);
             }
         };
-        return lisener;
+        return listener;
     }
 
     @Override

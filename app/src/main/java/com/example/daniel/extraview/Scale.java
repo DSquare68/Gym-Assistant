@@ -1,16 +1,16 @@
 package com.example.daniel.extraview;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+        import android.content.Context;
+        import android.graphics.Canvas;
+        import android.graphics.Color;
+        import android.graphics.Paint;
+        import android.text.Layout;
+        import android.text.StaticLayout;
+        import android.text.TextPaint;
+        import android.view.ViewGroup;
+        import android.widget.LinearLayout;
 
-import com.example.daniel.procedures.Units;
+        import com.example.daniel.procedures.Units;
 
 /**
  * Created by Daniel on 2017-08-18.
@@ -21,11 +21,11 @@ public class Scale extends LinearLayout {
     double step;
     double maxValue;
     TextPaint mTextPaint;
-    public Scale(Context context, double poczWartość, double coIleWzrasta, double maxWartość) {
+    public Scale(Context context, double startValue, double step, double maxValue) {
         super(context);
-        this.startValue =poczWartość;
-        this.step =coIleWzrasta;
-        this.maxValue =maxWartość;
+        this.startValue =startValue;
+        this.step =step;
+        this.maxValue =maxValue;
         setBackgroundColor(Color.WHITE);
         init();
     }
@@ -49,9 +49,7 @@ public class Scale extends LinearLayout {
         int scale = (int) (((height - Diagram.bottomMargin) / maxValue)* step);
         Paint paint = new Paint();
 
-        //canvas.drawLine(0, 0, getWidth(), getHeight(), paint);
-        //canvas.drawLine(100,100,getWidth(),getHeight(),paint);
-        paint.setColor(0x00FF00FF00); // zielony
+        paint.setColor(0x00FF00FF00); // green
         paint.setStrokeWidth(Units.dpToPx(getContext(), 5));
         paint.setTextSize(Units.dpToPx(getContext(), 5));
         paint.setStyle(Paint.Style.FILL);

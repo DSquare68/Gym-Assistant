@@ -7,12 +7,12 @@ import android.provider.BaseColumns;
  */
 
 public interface ExerciseValuesColumns extends BaseColumns {
-    public static final String TABLE_NAME ="exercise_values";
-    public static final String EXERCISE_ID = "nexercise_id";
-    public static final String TRANING_ID = "training_id";
-    public static final String ROUND_NUMBER ="round_number";
-    public static final String WEIGHT = "weight";
-    public static final String REPS ="reps";
-    public static final String EXERCISE_NUMBER ="Eexercise_number";
+    String TABLE_NAME ="exercise_values";
+    String EXERCISE_ID = "exercise_id";
+    String TRAINING_ID = "training_id";
+    String ROUND_NUMBER ="round_number";
+    String WEIGHT = "weight";
+    String REPS ="reps";
+    String EXERCISE_NUMBER ="exercise_number";
 
 }

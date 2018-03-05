@@ -38,11 +38,11 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+ TrainingNamesColumns.TABLE_NAME);
         onCreate(db);
     }
-    public void addTrainingName(TrainingName ćwiczenie){
+    public void addTrainingName(TrainingName exercise){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TrainingNamesColumns.TRAINING_NAME, ćwiczenie.getName());
+        values.put(TrainingNamesColumns.TRAINING_NAME, exercise.getName());
 
         db.insert(TrainingNamesColumns.TABLE_NAME, null, values);
         db.close();
@@ -50,8 +50,6 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
 
     public void addTrainingName(String training){
         SQLiteDatabase db = this.getWritableDatabase();
-
-        //if(czyNazwaĆwiczeniaJużByła(exercises.getNazwa())) return;
         ContentValues values = new ContentValues();
         values.put(TrainingNamesColumns.TRAINING_NAME, training);
 
@@ -127,9 +125,9 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
         db.delete(TrainingNamesColumns.TABLE_NAME, TrainingNamesColumns._ID+" =?", new String[]{String.valueOf(id)});
         db.close();
     }
-    public void deleteTrainingName(String nazwaTreningu){
+    public void deleteTrainingName(String trainingName){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TrainingNamesColumns.TABLE_NAME, TrainingNamesColumns.TABLE_NAME+" =?", new String[]{nazwaTreningu});
+        db.delete(TrainingNamesColumns.TABLE_NAME, TrainingNamesColumns.TABLE_NAME+" =?", new String[]{trainingName});
         db.close();
     }
     public void deleteAll(){

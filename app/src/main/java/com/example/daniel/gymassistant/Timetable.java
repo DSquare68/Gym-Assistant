@@ -87,7 +87,7 @@ public class Timetable extends AppCompatActivity {
                     ImageView delete = (ImageView) trainings.get(i).getChildAt(1);
                     LinearLayout.LayoutParams lp =(LinearLayout.LayoutParams) delete.getLayoutParams();
                     if(lp.weight!=1){
-                        delete.setOnClickListener(setOnClickListenerImageViewDelete(i)); //dodać DAneStarychTreningów
+                        delete.setOnClickListener(setOnClickListenerImageViewDelete(i));
                     } else{
 
                     }
@@ -96,14 +96,13 @@ public class Timetable extends AppCompatActivity {
                     } else {
                         lp.weight=-1;
                     }
-                    //  Poprawidź widoczność Text view dla daty, i innych
                     delete.setLayoutParams(lp);
                 }
                 return false;
             }
 
             private View.OnClickListener setOnClickListenerImageViewDelete(final int i) {
-                View.OnClickListener clickLisener = new View.OnClickListener() {
+                View.OnClickListener clickListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         TrainingNamesDatabase nt = new TrainingNamesDatabase(context);
@@ -112,7 +111,7 @@ public class Timetable extends AppCompatActivity {
                         OldTrainingsDatabase otd = new OldTrainingsDatabase(context,null);
 
                         nt.deleteTrainingName(trainingNames[i].getID());
-                        wc.delate(trainingNames[i].getID());
+                        wc.delete(trainingNames[i].getID());
                         wt.deleteTrainingValueByTrainingID(trainingNames[i].getID());
                         otd.deleteAll();
 
@@ -122,7 +121,7 @@ public class Timetable extends AppCompatActivity {
                     }
 
                 };
-                return clickLisener;
+                return clickListener;
             }
         });
         menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -138,21 +137,21 @@ public class Timetable extends AppCompatActivity {
                 }
 
                 nt.deleteAll();
-                wc.delateAll();
-                wt.delateAll();
+                wc.deleteAll();
+                wt.deleteAll();
                 containerTrainings.removeAllViews();
                 containerTrainings.invalidate();
                 return false;
             }
         });
-        menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() { //sortowanie według
+        menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
                 return true;
             }
         });
-        menu.getItem(4).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() { //sortowanie według
+        menu.getItem(4).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 createShowModeDialog();
@@ -312,47 +311,47 @@ public class Timetable extends AppCompatActivity {
 
     private void showTraining(int i) {
         ExerciseValuesDatabase wtd = new ExerciseValuesDatabase(this);
-        TrainingValuesDatabase wtrend = new TrainingValuesDatabase(this);
-        AddTraining.trainingValue = wtrend.getByTrainingID(trainingNames[i].getID());
+        TrainingValuesDatabase tvd = new TrainingValuesDatabase(this);
+        AddTraining.trainingValue = tvd.getByTrainingID(trainingNames[i].getID());
         AddTraining.exerciseValues = wtd.get(trainingNames[i].getName());
         AddTraining.defaultTrainingName = trainingNames[i].getName();
         AddTraining.openMode = AddTrainingValues.OPEN_FROM_SCHEDULE;
         Intent intent = new Intent(this, AddTraining.class);
         startActivity(intent);
     }
-    private void sortChronological(int[] numer, TrainingValue[] właściwości) {
+    private void sortChronological(int[] number, TrainingValue[] trainingValues) {
         TrainingValue tempStr;
         int tempInt;
-        for(int j=0;j<numer.length;j++) {
-            for (int i = 0; i < numer.length - j - 1; i++) {
-                if (dateTraining.readDateFromString(dateTraining.getNearestTrainingDate( właściwości[i + 1])).before(
-                        dateTraining.readDateFromString(dateTraining.getNearestTrainingDate( właściwości[i]))
+        for(int j=0;j<number.length;j++) {
+            for (int i = 0; i < number.length - j - 1; i++) {
+                if (dateTraining.readDateFromString(dateTraining.getNearestTrainingDate( trainingValues[i + 1])).before(
+                        dateTraining.readDateFromString(dateTraining.getNearestTrainingDate( trainingValues[i]))
                 )) {
-                    tempStr = właściwości[i];
-                    właściwości[i] = właściwości[i + 1];
-                    właściwości[i + 1] = tempStr;
+                    tempStr = trainingValues[i];
+                    trainingValues[i] = trainingValues[i + 1];
+                    trainingValues[i + 1] = tempStr;
 
-                    tempInt =numer[i];
-                    numer[i]=numer[i+1];
-                    numer[i+1]=tempInt;
+                    tempInt =number[i];
+                    number[i]=number[i+1];
+                    number[i+1]=tempInt;
                 }
             }
         }
     }
 
-    private void sortAlphabetically(int[] numer, TrainingName[] nazwy) {
+    private void sortAlphabetically(int[] number, TrainingName[] trainingNames) {
         TrainingName tempStr;
         int tempInt;
-        for(int j=0;j<numer.length;j++){
-            for (int i= 0; i < numer.length - j -1; i++) {
-                if(nazwy[i+1].getName().compareTo(nazwy[i].getName())<0) {
-                    tempStr = nazwy[i];
-                    nazwy[i] = nazwy[i + 1];
-                    nazwy[i + 1] = tempStr;
+        for(int j=0;j<number.length;j++){
+            for (int i= 0; i < number.length - j -1; i++) {
+                if(trainingNames[i+1].getName().compareTo(trainingNames[i].getName())<0) {
+                    tempStr = trainingNames[i];
+                    trainingNames[i] = trainingNames[i + 1];
+                    trainingNames[i + 1] = tempStr;
 
-                    tempInt =numer[i];
-                    numer[i]=numer[i+1];
-                    numer[i+1]=tempInt;
+                    tempInt =number[i];
+                    number[i]=number[i+1];
+                    number[i+1]=tempInt;
                 }
             }
 

@@ -34,23 +34,4 @@
             android:title="@string/displaying_tips"
             android:summary="@string/displaying_tips_summary"/>
     </com.example.daniel.extraview.SettingsCategory>
-    <!--
-    <com.example.daniel.extraview.SettingsCategory
-        style:text_color="@color/color_settings_header"
-        style:font_size="25dp"
-        android:title="@string/language"
-        android:key="pref_key_storage_settings">
-
-        <Preference
-            android:key="@string/key_start_mode_preferences"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#000000"
-            android:title="@string/choose_language"/>
-
-
-
-    </com.example.daniel.extraview.SettingsCategory>
--->
 </PreferenceScreen >

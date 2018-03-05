@@ -24,7 +24,6 @@ public class CalendarViewNew extends LinearLayout {
     static String[] monthNames;
     static Date today = new Date();
     static int whichMonth =0;
-    //Todo: czy wyświetlać skończone treningi???
     public CalendarViewNew(Context context) {
         super(context,null);
         monthNames =context.getResources().getStringArray(R.array.month);
@@ -66,13 +65,13 @@ public class CalendarViewNew extends LinearLayout {
         monthName.setText(monthNames[today.getMonth()]+" "+ String.valueOf(today.getYear()+1900));
         DateTraining trainingDate = new DateTraining(getContext());
 
-        Date pomPondziałek=null;
-        pomPondziałek = new Date(today.getYear(), today.getMonth(),0);
-        int pompomDzień=pomPondziałek.getDay();
-        if(pompomDzień!=0) pompomDzień--; else pompomDzień=6;
-        pomPondziałek = new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()-pompomDzień);
-        if(pomPondziałek.getDate()==1){
-            pomPondziałek = new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()-7);
+        Date helpDay=null;
+        helpDay = new Date(today.getYear(), today.getMonth(),0);
+        int pompomDay=helpDay.getDay();
+        if(pompomDay!=0) pompomDay--; else pompomDay=6;
+        helpDay = new Date(helpDay.getYear(),helpDay.getMonth(),helpDay.getDate()-pompomDay);
+        if(helpDay.getDate()==1){
+            helpDay = new Date(helpDay.getYear(),helpDay.getMonth(),helpDay.getDate()-7);
         }
         int sum=0,max=0;
         for(int i=0;i<trainingValues.length;i++){
@@ -96,8 +95,8 @@ public class CalendarViewNew extends LinearLayout {
         }
         trainingDates = changeNull(trainingDates);
         trainingDates =  sort(trainingDates);
-        trainingDates = poprawDate(trainingDates, pomPondziałek,trainingNames);
-        boolean braktreningu=true;
+        trainingDates = correctDate(trainingDates, helpDay,trainingNames);
+        boolean noTraining;
         int[] tabLength = new int[trainingValues.length];
         for (int i=0;i<tabLength.length;i++){
             tabLength[i]=0;
@@ -106,110 +105,105 @@ public class CalendarViewNew extends LinearLayout {
             weekLayout[i] =(LinearLayout) ((LinearLayout)getChildAt(0)).getChildAt(i+2);
             weekLayout[i].removeAllViews();
             for(int j=0;j<7;j++){
-                braktreningu=true;
+                noTraining=true;
                 for(int p=0;p<tabLength.length;p++) {
-                    if (i == 0 && pomPondziałek.getDate() > 20) {
-                        if (tabLength[p] < trainingDates[p].length && trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
+                    if (i == 0 && helpDay.getDate() > 20) {
+                        if (tabLength[p] < trainingDates[p].length && trainingDate.getDate(helpDay).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
-                            braktreningu=false;
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), false, pomPondziałek));
+                            noTraining=false;
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), wtd.get(trainingNames[p]), false, helpDay));
                         }
-                        else if(p==tabLength.length-1&&braktreningu)
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
-                        //pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
-                    } else if (i == 4 && pomPondziałek.getDate() < 6) {
-                        if (tabLength[p] < trainingDates[p].length && trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
+                        else if(p==tabLength.length-1&&noTraining)
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), null, false, helpDay));
+                    } else if (i == 4 && helpDay.getDate() < 6) {
+                        if (tabLength[p] < trainingDates[p].length && trainingDate.getDate(helpDay).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
-                            braktreningu=false;
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), false, pomPondziałek));
+                            noTraining=false;
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), wtd.get(trainingNames[p]), false, helpDay));
                         }
-                        else if(p==tabLength.length-1&&braktreningu)
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
-                        // pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
-                    } else if (i == 5 && pomPondziałek.getDate() < 25) {
-                        if (tabLength[p]< trainingDates[p].length &&  trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
+                        else if(p==tabLength.length-1&&noTraining)
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), null, false, helpDay));
+                    } else if (i == 5 && helpDay.getDate() < 25) {
+                        if (tabLength[p]< trainingDates[p].length &&  trainingDate.getDate(helpDay).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
-                            braktreningu=false;
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), false, pomPondziałek));
+                            noTraining=false;
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), wtd.get(trainingNames[p]), false, helpDay));
                         }
-                        else if(p==tabLength.length-1&&braktreningu)
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, false, pomPondziałek));
-                        // pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
+                        else if(p==tabLength.length-1&&noTraining)
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), null, false, helpDay));
                     } else if (tabLength[p] < trainingDates[p].length) {
-                        if (trainingDate.getDate(pomPondziałek).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
+                        if (trainingDate.getDate(helpDay).equals(trainingDate.getDate(trainingDates[p][tabLength[p]]))) {
                             tabLength[p]++;
-                            braktreningu=false;
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), wtd.get(trainingNames[p]), true, pomPondziałek));
+                            noTraining=false;
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), wtd.get(trainingNames[p]), true, helpDay));
                         }
-                        else if(p==tabLength.length-1&&braktreningu)
-                            weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, true, pomPondziałek));
-                        // pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
-                    } else if(p==tabLength.length-1&&braktreningu){
-                        weekLayout[i].addView(new WeekDayButton(getContext(), pomPondziałek.getDate(), null, true, pomPondziałek));
-                        //pomPondziałek= new Date(pomPondziałek.getYear(),pomPondziałek.getMonth(),pomPondziałek.getDate()+1);
+                        else if(p==tabLength.length-1&&noTraining)
+                            weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), null, true, helpDay));
+                    } else if(p==tabLength.length-1&&noTraining){
+                        weekLayout[i].addView(new WeekDayButton(getContext(), helpDay.getDate(), null, true, helpDay));
                     }
 
 
                 }
-                pomPondziałek = new Date(pomPondziałek.getYear(), pomPondziałek.getMonth(), pomPondziałek.getDate() + 1);
+                helpDay = new Date(helpDay.getYear(), helpDay.getMonth(), helpDay.getDate() + 1);
             }
         }
 
     }
 
-    private Date[][] poprawDate(Date[][] dataTreninguDate, Date pomPondziałek, String[] nazwyTreningów) {// przerobic całkowicie
-        String rodzajTreningu;
+    private Date[][] correctDate(Date[][] dataTrainingsDate, Date helpDay, String[] trainingsNames) {
+        String trainingMode;
         TrainingNamesDatabase tnd = new TrainingNamesDatabase(getContext());
-        int coIle=0;
-        boolean pierwsza =true;
+        int coIle;
+        boolean first;
         TrainingValuesDatabase wtd = new TrainingValuesDatabase(getContext());
-        for(int j=0;j<dataTreninguDate.length;j++) {
-            rodzajTreningu= wtd.getByTrainingID(tnd.getIndex(nazwyTreningów[j])).getSchedule();
-            coIle=wtd.getByTrainingID(tnd.getIndex(nazwyTreningów[j])).getRepetition();
+        for(int j=0;j<dataTrainingsDate.length;j++) {
+            trainingMode= wtd.getByTrainingID(tnd.getIndex(trainingsNames[j])).getSchedule();
+            coIle=wtd.getByTrainingID(tnd.getIndex(trainingsNames[j])).getRepetition();
             String[] scheduleRules = getResources().getStringArray(R.array.repetition);
             for(int i=0;i<scheduleRules.length;i++){
-                if(scheduleRules[i].equals(rodzajTreningu)&&(i==0||i==1)){
-                    pierwsza =true;
-                    dodajDni(true,dataTreninguDate,pomPondziałek,nazwyTreningów,pierwsza,j,7*(i+1));
-                    dodajDni(false,dataTreninguDate,pomPondziałek,nazwyTreningów,pierwsza,j,7*(i+1));
-                } else if(scheduleRules[i].equals(rodzajTreningu)&&(i==3)){
-                    pierwsza =true;
-                    while (pomPondziałek.after(dataTreninguDate[j][0])) {
-                        if (pomPondziałek.after(dataTreninguDate[j][0])) { // przypadek gdy równy
+                if(scheduleRules[i].equals(trainingMode)&&(i==0||i==1)){
+                    first =true;
+                    addDays(true,dataTrainingsDate,helpDay,trainingsNames,first,j,7*(i+1));
+                    addDays(false,dataTrainingsDate,helpDay,trainingsNames,first,j,7*(i+1));
+                } else if(scheduleRules[i].equals(trainingMode)&&(i==3)){
+                    first =true;
+                    while (helpDay.after(dataTrainingsDate[j][0])) {
+                        if (helpDay.after(dataTrainingsDate[j][0])) {
                             do {
-                                dataTreninguDate[j][0] = new Date(dataTreninguDate[j][0].getYear(), dataTreninguDate[j][0].getMonth(), dataTreninguDate[j][0].getDate() + coIle);
+                                dataTrainingsDate[j][0] = new Date(dataTrainingsDate[j][0].getYear(), dataTrainingsDate[j][0].getMonth(), dataTrainingsDate[j][0].getDate() + coIle);
                             }
-                            while (dataTreninguDate[j][dataTreninguDate[j].length - 1].after(dataTreninguDate[j][0]) || pomPondziałek.after(dataTreninguDate[j][0]));
-                            if(pierwsza==true&&!(dataTreninguDate[j][dataTreninguDate[j].length-1].equals(dataTreninguDate[j][0]))){
-                                pierwsza=false;
+                            while (dataTrainingsDate[j][dataTrainingsDate[j].length - 1].after(dataTrainingsDate[j][0]) || helpDay.after(dataTrainingsDate[j][0]));
+                            if(first==true&&!(dataTrainingsDate[j][dataTrainingsDate[j].length-1].equals(dataTrainingsDate[j][0]))){
+                                first=false;
                             } else {
 
-                                dataTreninguDate[j][0] = new Date(dataTreninguDate[j][0].getYear(), dataTreninguDate[j][0].getMonth(), dataTreninguDate[j][0].getDate() + coIle);
+                                dataTrainingsDate[j][0] = new Date(dataTrainingsDate[j][0].getYear(), dataTrainingsDate[j][0].getMonth(), dataTrainingsDate[j][0].getDate() + coIle);
                             }
-                            dataTreninguDate = sort(dataTreninguDate);
+                            dataTrainingsDate = sort(dataTrainingsDate);
                         }
 
                     }
-                    if(dataTreninguDate[j][dataTreninguDate[j].length-1].equals(dataTreninguDate[j][dataTreninguDate[j].length-2])){
-                        dataTreninguDate[j][dataTreninguDate[j].length-1]= new Date(dataTreninguDate[j][0].getYear(), dataTreninguDate[j][0].getMonth(), dataTreninguDate[j][0].getDate() + coIle);
+                    if(dataTrainingsDate[j][dataTrainingsDate[j].length-1].equals(dataTrainingsDate[j][dataTrainingsDate[j].length-2])){
+                        dataTrainingsDate[j][dataTrainingsDate[j].length-1]= new Date(dataTrainingsDate[j][0].getYear(), dataTrainingsDate[j][0].getMonth(), dataTrainingsDate[j][0].getDate() + coIle);
                     }
                 }
             }
         }
-        return dataTreninguDate;
+        return dataTrainingsDate;
     }
 
-    private void dodajDni(boolean adding, Date[][] datesTraining, Date help, String[] nazwyTreningów, boolean firts, int j, int ile){
+    private void addDays(boolean adding, Date[][] datesTraining, Date help, String[] trainingsNames, boolean first, int j, int ile){
         int compared,ended;
         boolean condition, count;
-        Date pomPondziałek2= new Date(help.getYear(),help.getMonth(),help.getDate()+41);
+        Date helpDay= new Date(help.getYear(),help.getMonth(),help.getDate()+41);
         if(!adding) {ile=-ile; compared=datesTraining[0].length-1;ended=0; } else {compared=0;ended=datesTraining[0].length-1;}
         Date pomDni = new Date(150, 1, 1);
        for(int i=0;i<datesTraining[0].length;i++){
            if(pomDni.equals(datesTraining[j][ended])) ended--;
            if(pomDni.equals(datesTraining[j][compared])) compared--;
        }
-       if(adding){ count=help.after(datesTraining[j][compared]);} else {count=pomPondziałek2.before(datesTraining[j][compared]);}
+       if(adding){ count=help.after(datesTraining[j][compared]);} else {count=helpDay.before(datesTraining[j][compared]);}
         while (count) {
             if (count) {
                 do {
@@ -218,18 +212,18 @@ public class CalendarViewNew extends LinearLayout {
                         condition = datesTraining[j][ended].after(datesTraining[j][compared]) || help.after(datesTraining[j][compared]);
                     } else{
 
-                        condition = datesTraining[j][ended].before(datesTraining[j][compared]) || pomPondziałek2.before(datesTraining[j][compared]);
+                        condition = datesTraining[j][ended].before(datesTraining[j][compared]) || helpDay.before(datesTraining[j][compared]);
                     }
                 }
                 while (condition);
-                if(firts==true&&!(datesTraining[j][ended].equals(datesTraining[j][compared]))){
-                    firts=false;
+                if(first==true&&!(datesTraining[j][ended].equals(datesTraining[j][compared]))){
+                    first=false;
                 } else {
                     datesTraining[j][compared] = new Date(datesTraining[j][compared].getYear(), datesTraining[j][compared].getMonth(), datesTraining[j][compared].getDate() + ile);
                 }
                 datesTraining = sort(datesTraining);
             }
-            if(adding){count=help.after(datesTraining[j][compared]);} else{count=pomPondziałek2.before(datesTraining[j][compared]);}
+            if(adding){count=help.after(datesTraining[j][compared]);} else{count=helpDay.before(datesTraining[j][compared]);}
 
         }
     }

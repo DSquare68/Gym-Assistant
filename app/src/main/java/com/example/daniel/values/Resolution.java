@@ -32,7 +32,7 @@ public class Resolution {
         getResolution();
         hasNavBar(activity.getResources());
     }
-    public static Point avaiableSpaceInPixels(Context c, Activity a){
+    public static Point availableSpaceInPixels(Context c, Activity a){
         Point p=new Point(0,0);
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.JELLY_BEAN_MR1){
             Display d = a.getWindowManager().getDefaultDisplay();
@@ -104,15 +104,4 @@ public class Resolution {
         hasNavigationBar= id > 0 && resources.getBoolean(id);
     }
 
-    public static  void setButtonsBoolean(){
-        hasMenuKey = ViewConfiguration.get(activity).hasPermanentMenuKey();
-        hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-
-        if(!hasMenuKey && !hasBackKey) {
-            // Do whatever you need to do, this device has a navigation bar
-        }
-    }
-    public static boolean czySąPRzyciskiNaEkranie(){
-    return !hasMenuKey && !hasBackKey;
-    }
 }

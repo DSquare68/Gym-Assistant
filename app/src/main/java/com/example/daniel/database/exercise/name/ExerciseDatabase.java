@@ -75,13 +75,13 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
     }
 
 
-    private boolean isExerciseNameExists(String nazwa) {
+    private boolean isExerciseNameExists(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(ExerciseColumnNames.TABLE_NAME, new String[] {ExerciseColumnNames._ID, ExerciseColumnNames.EXERCISE_NAME}, null,null,null,null, ExerciseColumnNames._ID);
         int number = cursor.getCount();
         cursor.moveToFirst();
         for(int i=0;i<number;i++){
-            if(nazwa.equals(cursor.getString(1))){
+            if(name.equals(cursor.getString(1))){
                 return true;
             } else{
                 cursor.moveToNext();
@@ -124,20 +124,20 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
 
         return  exercises;
     }
-    public void delete(int numer){
+    public void delete(int ID){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(ExerciseColumnNames.TABLE_NAME, ExerciseColumnNames._ID+" =?", new String[]{String.valueOf(numer)});
+        db.delete(ExerciseColumnNames.TABLE_NAME, ExerciseColumnNames._ID+" =?", new String[]{String.valueOf(ID)});
 
     }
-    public void deletaAll(){
+    public void deleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ExerciseColumnNames.TABLE_NAME,null,null);
     }
-    public void delateFile(){
+    public void deleteFile(){
         Context.deleteDatabase(ExerciseColumnNames.TABLE_NAME);
     }
 
-    public int getĆwiczeniaCount() {
+    public int getCount() {
         String countQuery = "SELECT  * FROM " + ExerciseColumnNames.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);

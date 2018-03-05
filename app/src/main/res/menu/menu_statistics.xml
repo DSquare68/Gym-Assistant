@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Statystyki"
+    tools:context=".St"
     android:icon="@drawable/ic_action_more_vert">
     <item
         android:id="@+id/statistics_item_change_mode"

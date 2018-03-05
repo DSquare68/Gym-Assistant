@@ -51,7 +51,7 @@ public class DateTraining {
                 trainingDate = getNextTrainingXDays(trainingValue,0);
                 break;
         }
-        updataTrainingDates(trainingValue,trainingDate);
+        updateTrainingDates(trainingValue,trainingDate);
         return  trainingDate.getDate()+"."+(trainingDate.getMonth()+1)+"."+(calendar.get(Calendar.YEAR));
     }
 
@@ -66,7 +66,7 @@ public class DateTraining {
             switch (scheduleValue) {
                 case ONE_WEEK:
                     trainingDate = new Date(calendar.get(Calendar.YEAR) - 1900, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) + (dayValues[l] - calendar.get(Calendar.DAY_OF_WEEK )+1) + 7*position);
-                    updataTrainingDates(trainingValue, trainingDate);
+                    updateTrainingDates(trainingValue, trainingDate);
                     break;
                 case TWO_WEEKS:
                     trainingDate = new Date(calendar.get(Calendar.YEAR) - 1900, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE) + (dayValues[l] - calendar.get(Calendar.DAY_OF_WEEK )+1) + addWeek(trainingValue) + (position>=2 ? 14 :0));
@@ -269,30 +269,30 @@ public class DateTraining {
                     if(date.getDay()==0){
                         trainingDate= new java.util.Date(date.getYear(),date.getMonth(),date.getDate()+7*(scheduleValue-1));
                     }
-                    updataTrainingDates(trainingValue,trainingDate);
+                    updateTrainingDates(trainingValue,trainingDate);
                     break;
                 }
             }
             if(daysValue[j]>=(date.getDay()-1)&&(scheduleValue==1||scheduleValue==2)){
                 trainingDate= new java.util.Date(date.getYear(),date.getMonth(),date.getDate()+(daysValue[j]-date.getDay()+7*(howManyWeeksElapsed)));
-                updataTrainingDates(trainingValue,trainingDate);
+                updateTrainingDates(trainingValue,trainingDate);
                 break;
             }
             if(daysValue[j]<(date.getDay()-1)&&(scheduleValue==1||scheduleValue==2)){
                 trainingDate= new java.util.Date(date.getYear(),date.getMonth(),date.getDate()+(+7*(howManyWeeksElapsed+1)-(date.getDay()-daysValue[j])));
-                updataTrainingDates(trainingValue,trainingDate);
+                updateTrainingDates(trainingValue,trainingDate);
                 break;
             }
             if(scheduleValue==3){
                 if(readDateFromString(trainingValue.getFirstDayTraining()).after(date)) {trainingDate= readDateFromString(trainingValue.getFirstDayTraining());
-                    updataTrainingDates(trainingValue,trainingDate);String dataTreninguString= switchYearWithDay(getDate(trainingDate)); dataTreninguString = removeZeros(dataTreninguString); Log.d("DFSAADFSASDAS", dataTreninguString); return dataTreninguString;  }
+                    updateTrainingDates(trainingValue,trainingDate);String dataTrainingString= switchYearWithDay(getDate(trainingDate)); dataTrainingString = removeZeros(dataTrainingString); return dataTrainingString;  }
                     trainingDate= new java.util.Date(date.getYear(),date.getMonth()+1, nextTrainingNextMonth(date,trainingValue.getFirstDayTraining(),howManyDaysElapsed));
-                updataTrainingDates(trainingValue,trainingDate);
+                updateTrainingDates(trainingValue,trainingDate);
                 break;
             }
             if(scheduleValue==4){
                 trainingDate = new java.util.Date(date.getYear(),date.getMonth(), nextTraining(date,trainingValue.getFirstDayTraining(),trainingValue.getRepetition()));
-                updataTrainingDates(trainingValue,trainingDate);
+                updateTrainingDates(trainingValue,trainingDate);
                 break;
             }
         }
@@ -303,7 +303,7 @@ public class DateTraining {
         return data;
     }
 
-    public String getNearestTrainingDateInMonth(TrainingValue wt, int któryTreningLiczy, int któryMiesiąc) {
+    public String getNearestTrainingDateInMonth(TrainingValue wt, int whichTraining, int whichMonth) {
             String trainingDate = getNearestTrainingDate(wt);
             int scheduleValue=0;
             String schedule = wt.getSchedule();
@@ -313,56 +313,56 @@ public class DateTraining {
                     scheduleValue=j+1;
                 }
             }
-            if(scheduleValue==1) {trainingDate = addHowManyDays(trainingDate, któryTreningLiczy,któryMiesiąc); return trainingDate;}
+            if(scheduleValue==1) {trainingDate = addHowManyDays(trainingDate, whichTraining,whichMonth); return trainingDate;}
             if(scheduleValue==3) {return trainingDate;}
-            if(scheduleValue==4) {trainingDate=dodajIleDni(trainingDate,któryTreningLiczy,wt.getRepetition());return trainingDate;}
-            if(scheduleValue==2) {trainingDate = addHowManyDays(trainingDate, któryTreningLiczy*2,któryMiesiąc); return trainingDate;}  else {return getNearestTrainingDate(wt);}
+            if(scheduleValue==4) {trainingDate= addDays(trainingDate,whichTraining,wt.getRepetition());return trainingDate;}
+            if(scheduleValue==2) {trainingDate = addHowManyDays(trainingDate, whichTraining*2,whichMonth); return trainingDate;}  else {return getNearestTrainingDate(wt);}
         }
 
 
-    private String addHowManyDays(String dataTreningu, int któryTydzieńDoPrzodu, int któryMieciąc) {
-        dataTreningu= switchYearWithDay(dataTreningu);
-        java.util.Date data = readDateFromString(dataTreningu);
+    private String addHowManyDays(String dataTraining, int weekAhead, int whichMonth) {
+        dataTraining= switchYearWithDay(dataTraining);
+        java.util.Date data = readDateFromString(dataTraining);
         // Log.d("d1111 2",data.toString());
-        data = new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+7*któryTydzieńDoPrzodu+4*7*któryMieciąc);
+        data = new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+7*weekAhead+4*7*whichMonth);
         //Log.d("d1111 4",data.toString());
-        dataTreningu = getDate(data);
-        dataTreningu= switchYearWithDay(dataTreningu);
-        dataTreningu = removeZeros(dataTreningu);
-        return dataTreningu;
+        dataTraining = getDate(data);
+        dataTraining= switchYearWithDay(dataTraining);
+        dataTraining = removeZeros(dataTraining);
+        return dataTraining;
     }
-    private String dodajIleDni(String dataTreningu, int któryTydzieńDoPrzodu, int ilośćDniDodawanych) {
-        dataTreningu= switchYearWithDay(dataTreningu);
-        java.util.Date data = readDateFromString(dataTreningu);
+    private String addDays(String dataTraining, int weekAhead, int daysAhead) {
+        dataTraining= switchYearWithDay(dataTraining);
+        java.util.Date data = readDateFromString(dataTraining);
         // Log.d("d1111 2",data.toString());
-        data = new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+ilośćDniDodawanych*któryTydzieńDoPrzodu);
+        data = new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+daysAhead*weekAhead);
         //Log.d("d1111 4",data.toString());
-        dataTreningu = getDate(data);
-        dataTreningu= switchYearWithDay(dataTreningu);
-        dataTreningu = removeZeros(dataTreningu);
-        return dataTreningu;
+        dataTraining = getDate(data);
+        dataTraining= switchYearWithDay(dataTraining);
+        dataTraining = removeZeros(dataTraining);
+        return dataTraining;
     }
 
-    private String removeZeros(String pomdzien) {
-        int ilKrope=0;
-        boolean popKropka=false;
-        for (int i=0;i<pomdzien.length();i++){
-            if(pomdzien.charAt(i)=='.') {ilKrope++;popKropka=true;}
-            if(ilKrope==0&&pomdzien.charAt(i)=='0'&&i==0) {pomdzien= pomdzien.substring(0,i) + pomdzien.substring(i + 1);}
-            if(ilKrope==1&&pomdzien.charAt(i)=='0'&&popKropka==true) pomdzien= pomdzien.substring(0,i) + pomdzien.substring(i + 1);
-            if(pomdzien.charAt(i)!='.')popKropka=false;
+    private String removeZeros(String helpDay) {
+        int numberOfDots=0;
+        boolean helpDot=false;
+        for (int i=0;i<helpDay.length();i++){
+            if(helpDay.charAt(i)=='.') {numberOfDots++;helpDot=true;}
+            if(numberOfDots==0&&helpDay.charAt(i)=='0'&&i==0) {helpDay= helpDay.substring(0,i) + helpDay.substring(i + 1);}
+            if(numberOfDots==1&&helpDay.charAt(i)=='0'&&helpDot==true) helpDay= helpDay.substring(0,i) + helpDay.substring(i + 1);
+            if(helpDay.charAt(i)!='.')helpDot=false;
         }
-        return pomdzien;
+        return helpDay;
     }
 
     public TrainingValue getNearestTraining(){
-        TrainingValue[] treningi = trainingValuesDatabase.getAll();
-        String[] daty = new String[trainingValuesDatabase.getCount()];
+        TrainingValue[] trainings = trainingValuesDatabase.getAll();
+        String[] data = new String[trainingValuesDatabase.getCount()];
         java.util.Date[] date = new java.util.Date[trainingValuesDatabase.getCount()];
         int a=0;
         for (int i = 0; i< trainingValuesDatabase.getCount(); i++){
-            daty[i]= getNearestTrainingDate(treningi[i]);
-            date[i]= readDateFromString(daty[i]);
+            data[i]= getNearestTrainingDate(trainings[i]);
+            date[i]= readDateFromString(data[i]);
         }
         for(int i = 0; i< trainingValuesDatabase.getCount()-1; i++){
             if(date[i].after(date[i+1])){
@@ -370,10 +370,10 @@ public class DateTraining {
                 break;
             }
         }
-        if(treningi.length==0){
+        if(trainings.length==0){
             return null;
         }
-        return treningi[a];
+        return trainings[a];
     }
     private int howManyWeeksElapsed(Date date, TrainingValue trainingValue){
         if (trainingValue.getFirstDayTraining().equals("")) {return 0; }
@@ -426,13 +426,13 @@ public class DateTraining {
             }
         }
     }
-    private void updataTrainingDates(TrainingValue trainingValue, java.util.Date dataTreningu){
+    private void updateTrainingDates(TrainingValue trainingValue, java.util.Date dataTraining){
         if(String.valueOf(trainingValue.getFirstDayTraining()).equals(null)|| String.valueOf(trainingValue.getFirstDayTraining()).equals("")){
-            trainingValue.setFirstDayTraining((dataTreningu.getYear()+1900)+"."+(dataTreningu.getMonth()+1)+"."+dataTreningu.getDate());
+            trainingValue.setFirstDayTraining((dataTraining.getYear()+1900)+"."+(dataTraining.getMonth()+1)+"."+dataTraining.getDate());
             trainingValuesDatabase.update(trainingValue);
         }
         if(String.valueOf(trainingValue.getLastTrainingDayDate()).equals(null)|| String.valueOf(trainingValue.getLastTrainingDayDate()).equals("")){
-            trainingValue.setLastTrainingDayDate((dataTreningu.getYear()+1900)+"."+(dataTreningu.getMonth()+1)+"."+dataTreningu.getDate());
+            trainingValue.setLastTrainingDayDate((dataTraining.getYear()+1900)+"."+(dataTraining.getMonth()+1)+"."+dataTraining.getDate());
             trainingValuesDatabase.update(trainingValue);
         }
     }
@@ -457,23 +457,23 @@ public class DateTraining {
             if(data.charAt(i)!='.'&&j==1){s=s+data.charAt(i);}else if(data.charAt(i)=='.'&&j==1){j++;month= Integer.valueOf(s);s="";}
             if(data.charAt(i)!='.'&&j==0){s=s+data.charAt(i);} else if (data.charAt(i)=='.'&&j==0){j++;numberDay= Integer.valueOf(s);s="";}
         }
-        int sekundy=0, minuty=0,godziny=0;
+        int seconds=0, minutes=0,hours=0;
         j=0;
         s="";
         for(int i=0;i<timeTraining.length();i++){
-            if(timeTraining.charAt(i)!=':'&&j==2){s=s+timeTraining.charAt(i);}if(i==timeTraining.length()-1){j++; sekundy= Integer.valueOf(s);s="";}
-            if(timeTraining.charAt(i)!=':'&&j==1){s=s+timeTraining.charAt(i);}else if(timeTraining.charAt(i)==':'&&j==1){j++;minuty= Integer.valueOf(s);s="";}
-            if(timeTraining.charAt(i)!=':'&&j==0){s=s+timeTraining.charAt(i);} else if (timeTraining.charAt(i)==':'&&j==0){j++;godziny= Integer.valueOf(s);s="";}
+            if(timeTraining.charAt(i)!=':'&&j==2){s=s+timeTraining.charAt(i);}if(i==timeTraining.length()-1){j++; seconds= Integer.valueOf(s);s="";}
+            if(timeTraining.charAt(i)!=':'&&j==1){s=s+timeTraining.charAt(i);}else if(timeTraining.charAt(i)==':'&&j==1){j++;minutes= Integer.valueOf(s);s="";}
+            if(timeTraining.charAt(i)!=':'&&j==0){s=s+timeTraining.charAt(i);} else if (timeTraining.charAt(i)==':'&&j==0){j++;hours= Integer.valueOf(s);s="";}
         }
-        return new java.util.Date(year-1900,month-1,numberDay,godziny,minuty,sekundy);
+        return new java.util.Date(year-1900,month-1,numberDay,hours,minutes,seconds);
     }
 
-    private int nextTrainingNextMonth(java.util.Date date, String firstTrainingDate, int ileTygodniMineło){
+    private int nextTrainingNextMonth(java.util.Date date, String firstTrainingDate, int weeksPassed){
         int dayNumber;
-        if(ileTygodniMineło<0) ileTygodniMineło=0;
-        java.util.Date firtsDay= readDateFromString(firstTrainingDate);
-        java.util.Date helpString =firtsDay;
-        date = new Date(date.getYear(),date.getMonth(),date.getDate()+30-ileTygodniMineło);
+        if(weeksPassed<0) weeksPassed=0;
+        java.util.Date firstDay= readDateFromString(firstTrainingDate);
+        java.util.Date helpString =firstDay;
+        date = new Date(date.getYear(),date.getMonth(),date.getDate()+30-weeksPassed);
         if(date.before(helpString)){
             return helpString.getDate();
         }
@@ -488,9 +488,9 @@ public class DateTraining {
         return dayNumber;
     }
     private int nextTraining(Date date, String data, int coIle){
-        int dayNumber=0;
-        java.util.Date firtsDay= readDateFromString(data);
-        java.util.Date helpString =firtsDay;
+        int dayNumber;
+        java.util.Date firstDay= readDateFromString(data);
+        java.util.Date helpString =firstDay;
         if(date.before(helpString)){
             return helpString.getDate();
         }
@@ -505,18 +505,18 @@ public class DateTraining {
         return dayNumber;
     }
     public String getDate(java.util.Date date){
-        String miesiąc,dzień;
+        String month,day;
         if(date.getMonth()<9){
-             miesiąc = "0"+ String.valueOf(date.getMonth()+1);
+             month = "0"+ String.valueOf(date.getMonth()+1);
         } else {
-            miesiąc = String.valueOf(date.getMonth()+1);
+            month = String.valueOf(date.getMonth()+1);
         }
         if(date.getDate()<=9){
-            dzień = "0"+ String.valueOf(date.getDate());
+            day = "0"+ String.valueOf(date.getDate());
         } else {
-            dzień = String.valueOf(date.getDate());
+            day = String.valueOf(date.getDate());
         }
-        return String.valueOf(String.valueOf(date.getYear()+1900)+"."+miesiąc+"."+dzień);
+        return String.valueOf(String.valueOf(date.getYear()+1900)+"."+month+"."+day);
     }
     public String switchYearWithDay(String data){
         String finalData=""; int dayNumber=0,month=0,year=0;
@@ -563,66 +563,50 @@ public class DateTraining {
                 }
             }
         }
-        int dzieńtygodnia=data.getDay();
-        if (dzieńtygodnia==0) dzieńtygodnia=6; else dzieńtygodnia--;
-        java.util.Date dzień=null;
+        int weekDay=data.getDay();
+        if (weekDay==0) weekDay=6; else weekDay--;
+        java.util.Date day=null;
         for (int i=0;i<7;i++){
-            if(dzieńtygodnia==shortDaysValue[i]){
-                dzień  = data;
-            } else if (dzieńtygodnia<shortDaysValue[i]){
-                dzień= new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+shortDaysValue[i]-dzieńtygodnia);
+            if(weekDay==shortDaysValue[i]){
+                day  = data;
+            } else if (weekDay<shortDaysValue[i]){
+                day= new java.util.Date(data.getYear(),data.getMonth(),data.getDate()+shortDaysValue[i]-weekDay);
             }
         }
-        if(dzień==null){
+        if(day==null){
             for (int i=0;i<7;i++) {
-                if (dzieńtygodnia > shortDaysValue[i]) {
+                if (weekDay > shortDaysValue[i]) {
                     if(shortDaysValue[i]==-1) break;
-                    dzień = new java.util.Date(data.getYear(), data.getMonth(), data.getDate() + shortDaysValue[i] - dzieńtygodnia);
+                    day = new java.util.Date(data.getYear(), data.getMonth(), data.getDate() + shortDaysValue[i] - weekDay);
                 }
             }
         }
-        return getDate(dzień);
+        return getDate(day);
     }
 
-    public OldTraining[][] lastTraining(OldTraining old, Context context){
-        OldTrainingsDatabase dstd = new OldTrainingsDatabase(context,old.getTrainingName());
-        String[][] dane = dstd.getDateAndTime();
-        java.util.Date dataTreningu= readDateFromString(old.getTrainingDate(),old.getTrainingTime());
-        java.util.Date poprzednia=null;
-        String[] wynik= new String[3];
-        for(int i=0;i<dane.length;i++){
-            poprzednia= readDateFromString(dane[i][0],dane[i][2]);
-            if (poprzednia.before(dataTreningu)){
-                wynik=dane[i];
-                break;
-            }
-        }
-        return dstd.getAll(wynik[0],wynik[2]);
-    }
-
-    public OldTraining[][] lastTraining(String data, String godzina, String name, Context context){
+    public OldTraining[][] lastTraining(String data, String hour, String name, Context context){
         OldTrainingsDatabase dstd = new OldTrainingsDatabase(context,name);
         String[][] dane = dstd.getDateAndTime();
-        java.util.Date trainingDate= readDateFromString(data,godzina);
-        java.util.Date last=null;
-        String[] wynik= new String[3];
+        java.util.Date trainingDate= readDateFromString(data,hour);
+        java.util.Date last;
+        String[] result= new String[3];
         for(int i=0;i<dane.length;i++){
             last= readDateFromString(dane[i][0],dane[i][2]);
             if (last.before(trainingDate)){
-                wynik=dane[i];
+                result=dane[i];
                 break;
             }
         }
-        if(wynik[0]==null) return null;
-        return dstd.getAll(wynik[0],wynik[2]);
+        if(result[0]==null) return null;
+        return dstd.getAll(result[0],result[2]);
     }
 
-    public OldTraining[][] lastTraining(String name, Context context){ // jeśli by działał tylko do rozpocznij trening to czy nie wystarczy wczytywać tylko ostatni trening?????
+    public OldTraining[][] lastTraining(String name, Context context){
         OldTrainingsDatabase dstd = new OldTrainingsDatabase(context,name);
         String[][] dane = dstd.getDateAndTime();
         if (dane==null) return null;
         dane = reverseTab(dane);
-        java.util.Date trainingDate= new java.util.Date();//readDateFromString(data,godzina);
+        java.util.Date trainingDate= new java.util.Date();
         java.util.Date last=null;
         String[] result= new String[3];
         for(int i=0;i<dane.length;i++){
@@ -636,15 +620,15 @@ public class DateTraining {
     }
 
     private String[][] reverseTab(String[][] dane) {
-        String[][] wynik = new String[dane.length][dane[0].length];
+        String[][] result = new String[dane.length][dane[0].length];
         for(int i=0;i<dane.length;i++){
-            wynik[i]=dane[dane.length-1];
+            result[i]=dane[dane.length-1];
         }
-        return wynik;
+        return result;
     }
 
     public int readNumberOfTrainingsInMonth(TrainingValue wt) {
-        int  numberDT=0;// ilość Dni Trenignowych gdy trening jest co tydzień lub dwa np trzy, gdy jest pon, śr, sob
+        int  numberDT=0;
         String schedule = wt.getSchedule();
         int repetition=0;
         int [] daysValues = new int[7];
@@ -682,36 +666,25 @@ public class DateTraining {
         return -1;
     }
 
-    private java.util.Date policzDateKoncowDlaMiesiąca(java.util.Date pierwsza) {
-        java.util.Date date = new java.util.Date(pierwsza.getYear(),pierwsza.getMonth()+2,1);
-        int  weekDay=date.getDay();
-        if(weekDay==0){
-            return date;
-        } else{
-            date= new java.util.Date(date.getYear(),date.getMonth(),date.getDate()+1);
-        }
-        return null;
-    }
 
-
-    public java.util.Date wczydajDateZeStringaIGodzine(String aktualny, String Czas) {
-        java.util.Date data = readDateFromString(aktualny);
-        data=dodajGodzine(data,Czas);
+    public java.util.Date getDataFromDateAndTime(String current, String time) {
+        java.util.Date data = readDateFromString(current);
+        data= addHour(data,time);
         return data;
     }
-    private java.util.Date dodajGodzine(java.util.Date data, String czasS){
-        String[] czas = wczytajWartościGodziny(czasS);
-        return  new java.util.Date(data.getYear(),data.getMonth(),data.getDate(), Integer.valueOf(czas[0]), Integer.valueOf(czas[1]), Integer.valueOf(czas[2]));
+    private java.util.Date addHour(java.util.Date data, String timeS){
+        String[] time = getTimes(timeS);
+        return  new java.util.Date(data.getYear(),data.getMonth(),data.getDate(), Integer.valueOf(time[0]), Integer.valueOf(time[1]), Integer.valueOf(time[2]));
     }
 
-    private String[] wczytajWartościGodziny(String czas){
+    private String[] getTimes(String time){
         String[] dane=new String[3];
         String finalData="";
         int j=0;
-        for (int i=0;i<czas.length();i++){
-            if(czas.charAt(i)!=':'&&j==2){finalData=finalData+czas.charAt(i);} if(i==czas.length()-1){j++;dane[2]=finalData;finalData="";}
-            if(czas.charAt(i)!=':'&&j==1){finalData=finalData+czas.charAt(i);}else if(czas.charAt(i)==':'&&j==1){j++;dane[1]=finalData;finalData="";}
-            if(czas.charAt(i)!=':'&&j==0){finalData=finalData+czas.charAt(i);}else if (czas.charAt(i)==':'&&j==0){j++; dane[0]=finalData;finalData="";}
+        for (int i=0;i<time.length();i++){
+            if(time.charAt(i)!=':'&&j==2){finalData=finalData+time.charAt(i);} if(i==time.length()-1){j++;dane[2]=finalData;finalData="";}
+            if(time.charAt(i)!=':'&&j==1){finalData=finalData+time.charAt(i);}else if(time.charAt(i)==':'&&j==1){j++;dane[1]=finalData;finalData="";}
+            if(time.charAt(i)!=':'&&j==0){finalData=finalData+time.charAt(i);}else if (time.charAt(i)==':'&&j==0){j++; dane[0]=finalData;finalData="";}
         }
         return dane;
     }

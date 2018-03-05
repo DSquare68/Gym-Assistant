@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Daniel on 2017-08-12.
  */
 
-public class StatisticsExerciseAdapter extends RecyclerView.Adapter<StatisticsExerciseAdapter.ĆwiczenieHolder>{
+public class StatisticsExerciseAdapter extends RecyclerView.Adapter<StatisticsExerciseAdapter.ExerciseHolder>{
 
     public static List<Exercise> exerciseList;
 
@@ -40,24 +40,23 @@ public class StatisticsExerciseAdapter extends RecyclerView.Adapter<StatisticsEx
     }
 
 
-    public class ĆwiczenieHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        boolean wTreningu=false;
-        public TextView nazwaCwiczenia = new TextView(inflater.getContext());
+    public class ExerciseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView name = new TextView(inflater.getContext());
         public StatisticsExerciseAdapter.MyCustomEditTextListener myCustomEditTextListener;
 
-        public ĆwiczenieHolder(View view) {
+        public ExerciseHolder(View view) {
             super(view);
-            ((LinearLayout) view).addView(nazwaCwiczenia);
+            ((LinearLayout) view).addView(name);
             myCustomEditTextListener= new MyCustomEditTextListener();
-            ustawNazweILisener(nazwaCwiczenia,myCustomEditTextListener);
+            setNameAndListener(name,myCustomEditTextListener);
 
 
         }
 
-        private void ustawNazweILisener(TextView nazwaCwiczenia, final MyCustomEditTextListener myCustomEditTextListener) {
-            nazwaCwiczenia.setTextSize(Units.dpToPx(inflater.getContext(),10));
-            nazwaCwiczenia.setPadding(0,0,0,Units.dpToPx(inflater.getContext(),10));
-            nazwaCwiczenia.setOnClickListener(new View.OnClickListener() {
+        private void setNameAndListener(TextView exerciseName, final MyCustomEditTextListener myCustomEditTextListener) {
+            exerciseName.setTextSize(Units.dpToPx(inflater.getContext(),10));
+            exerciseName.setPadding(0,0,0,Units.dpToPx(inflater.getContext(),10));
+            exerciseName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     StatisticsCompareExercise.exercise= exerciseList.get(myCustomEditTextListener.position);
@@ -96,7 +95,7 @@ public class StatisticsExerciseAdapter extends RecyclerView.Adapter<StatisticsEx
         }
     }
     @Override
-    public void onViewRecycled(ĆwiczenieHolder holder) {
+    public void onViewRecycled(ExerciseHolder holder) {
         super.onViewRecycled(holder);
     }
 
@@ -105,29 +104,27 @@ public class StatisticsExerciseAdapter extends RecyclerView.Adapter<StatisticsEx
 
 
     @Override
-    public StatisticsExerciseAdapter.ĆwiczenieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExerciseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = new LinearLayout(inflater.getContext());
-        return new ĆwiczenieHolder(itemView);
+        return new ExerciseHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ĆwiczenieHolder holder, int position) {
-        // WartościĆwiczenia item = exerciseList.get(position);
-        //holder.title.setText(item.getNazwa());
+    public void onBindViewHolder(ExerciseHolder holder, int position) {
+
         holder.myCustomEditTextListener.updatePosition(position);
-        holder.nazwaCwiczenia.setText(exerciseList.get(position).getName());
+        holder.name.setText(exerciseList.get(position).getName());
         boolean czyJest=false;
         for(int i = 0; i< Statistics.allExercises.length; i++){
-            //Log.d("position",String.valueOf(String.valueOf(position))+"    "+exerciseList.get(position).getNazwa()+"   "+Statystyki.wszystkieĆwiczenia[i].getNazwa()+"   "+exerciseList.get(position).getNazwa().equals(Statystyki.wszystkieĆwiczenia[i].getNazwa()));
             if(exerciseList.get(position).getName().equals(Statistics.allExercises[i].getName())){
                 czyJest=true;
                 break;
             }
         }
         if(czyJest){
-            holder.nazwaCwiczenia.setTextColor(Color.parseColor("#000000"));
+            holder.name.setTextColor(Color.parseColor("#000000"));
         } else {
-            holder.nazwaCwiczenia.setTextColor(Color.parseColor("#939393"));
+            holder.name.setTextColor(Color.parseColor("#939393"));
         }
     }
 

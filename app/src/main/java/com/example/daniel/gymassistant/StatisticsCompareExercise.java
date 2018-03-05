@@ -22,7 +22,6 @@ public class StatisticsCompareExercise extends AppCompatActivity {
     LinearLayout parentLayout;
     Diagram diagram;
     public  static Exercise exercise;
-    //Todo: pobawić się skalą
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,36 +40,34 @@ public class StatisticsCompareExercise extends AppCompatActivity {
 
         }
         diagram.setLayoutParams(new LinearLayout.LayoutParams(width- Units.dpToPx(this,30)*2, ViewGroup.LayoutParams.MATCH_PARENT));
-        LinearLayout tabelaISkala = new LinearLayout(this);
-        tabelaISkala.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        int skala=1;
+        LinearLayout tableAndScale = new LinearLayout(this);
+        tableAndScale.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        int scale=1;
         if(Diagram.maxWeight>10&&Diagram.maxWeight<20){
-            skala=2;
+            scale=2;
         } else if(Diagram.maxWeight<50&&Diagram.maxWeight>20){
-            skala=5;
+            scale=5;
         } else if(Diagram.maxWeight>=50){
-            skala=10;
+            scale=10;
         }
-        Scale weightScale= new Scale(this,1,skala,Diagram.maxWeight);
-        skala=1;
+        Scale weightScale= new Scale(this,1,scale,Diagram.maxWeight);
+        scale=1;
         if(Diagram.maxReps>10&&Diagram.maxReps<20){
-            skala=2;
+            scale=2;
         } else if(Diagram.maxReps<50&&Diagram.maxReps>20){
-            skala=5;
+            scale=5;
         } else if(Diagram.maxReps>=50){
-            skala=10;
+            scale=10;
         }
-        Scale repsScale = new Scale(this,1,skala,Diagram.maxReps);
-        tabelaISkala.addView(weightScale,0);
-        tabelaISkala.addView(diagram,1);
-        tabelaISkala.addView(repsScale,2);
+        Scale repsScale = new Scale(this,1,scale,Diagram.maxReps);
+        tableAndScale.addView(weightScale,0);
+        tableAndScale.addView(diagram,1);
+        tableAndScale.addView(repsScale,2);
 
         LinearLayout marginTop = setMarginTop();
 
-        LinearLayout nazwyISerie = new LinearLayout(this);
-
         parentLayout.addView(marginTop);
-        parentLayout.addView(tabelaISkala);
+        parentLayout.addView(tableAndScale);
 
         setContentView(parentLayout);
     }
