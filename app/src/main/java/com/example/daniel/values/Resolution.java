@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -21,6 +20,7 @@ public class Resolution {
 
     static public int width;
     static public int height;
+    static public int softwareKeysHeight;
     static public boolean hasNavigationBar = false;
     static public boolean hasBackKey;
     static public boolean hasMenuKey;
@@ -31,6 +31,7 @@ public class Resolution {
         this.activity=activity;
         getResolution();
         hasNavBar(activity.getResources());
+        hasSoftKeys=hasSoftKeys(activity.getWindowManager(),activity.getApplicationContext(),activity);
     }
     public static Point availableSpaceInPixels(Context c, Activity a){
         Point p=new Point(0,0);
@@ -72,6 +73,7 @@ public class Resolution {
             int displayWidth = displayMetrics.widthPixels;
 
             hasSoftwareKeys =  (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
+            softwareKeysHeight = (realWidth-displayHeight) >0 ?  (realWidth-displayHeight) : (realHeight - displayHeight);
         }else{
             boolean hasMenuKey = ViewConfiguration.get(c).hasPermanentMenuKey();
             boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);

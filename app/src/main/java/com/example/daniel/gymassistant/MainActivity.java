@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.daniel.database.exercise.name.DatebaseOfexerciseNames;
 import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseDatabase;
+import com.example.daniel.values.Resolution;
 import com.example.daniel.values.SettingsValues;
 
 import java.sql.Time;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 trainingName.addExercise(new Exercise(DatebaseOfexerciseNames.nazwyTreningów[i]));
             }
         }
+        new Resolution(this);
     }
 
     public void startTraining(View view) {

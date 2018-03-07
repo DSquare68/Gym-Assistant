@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -60,11 +60,13 @@ public class StartTraining extends AppCompatActivity {
     LinearLayout parentLayout;
     Dialog dialog;
     LinearLayout stopWatch;
+    RelativeLayout finishR;
     OldTraining[][] oldTrainings;
     boolean isStopWatcherVisible =false;
     boolean isKeyboardVisible =false;
     boolean isNewTrainingOpening =false;
     boolean newTraining=false;
+    boolean firstOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,19 +77,22 @@ public class StartTraining extends AppCompatActivity {
         trainingValuesDatabase = new TrainingValuesDatabase(this);
         dialog = new Dialog(StartTraining.this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setComponents();
         switch (SettingsValues.getValue(SettingsValues.TRAINING_START_MODE, getApplicationContext())) {
             case 1:
                 readAndShowTraining();
                 isTrainingAvailable();
                 setToolbar();
+                firstOpen=true;
                 break;
             case 2:
                 isTrainingAvailable();
                 setDialog();
                 break;
         }
-
+        ((LinearLayout)finishR.getParent()).removeView(finishR);
+        addContentView(finishR,finishR.getLayoutParams());
         resizeComponents();
     }
 
@@ -166,6 +171,8 @@ public class StartTraining extends AppCompatActivity {
     }
     private void setComponents(){
         parentLayout = (LinearLayout) View.inflate(this, R.layout.activity_start_training, null);
+        finishR =parentLayout.findViewById(R.id.finished_relative_layout);
+        finishR.setVisibility(View.GONE);
         parentLayout.setOrientation(LinearLayout.VERTICAL);
         mActionBarToolbar = parentLayout.findViewById(R.id.toolbar_start_training);
         trainingNames = trainingNamesDatabase.getAll();
@@ -219,6 +226,7 @@ public class StartTraining extends AppCompatActivity {
                     setToolbar();
                     dialog.dismiss();
                 }
+                firstOpen=true;
 
             }
         });
@@ -261,16 +269,9 @@ public class StartTraining extends AppCompatActivity {
             fillRoundsWithHints(i,exercises[i]);
         }
         LinearLayout LL =(LinearLayout) scrollView.getChildAt(0);
-        if(!Resolution.hasSoftKeys){
-            scrollView.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 480, getResources().getDisplayMetrics())));
-        } else {
-            scrollView.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 440, getResources().getDisplayMetrics())));
-        }
-        RelativeLayout finishedRelativeLayout =parentLayout.findViewById(R.id.finished_relative_layout);
-        finishedRelativeLayout.setGravity(RelativeLayout.ALIGN_BOTTOM);
-
-        TextView Finished = finishedRelativeLayout.findViewById(R.id.finished_text);
-        if(newTraining) finishedRelativeLayout.findViewById(R.id.add_exercise_button).setVisibility(View.VISIBLE);
+        scrollView.setLayoutParams(new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        TextView Finished = finishR.findViewById(R.id.finished_text);
+        if(newTraining) finishR.findViewById(R.id.add_exercise_button).setVisibility(View.VISIBLE);
         Finished.setOnClickListener(setFinishedOnClickListener());
         for(int i = 0; i< exerciseValues.length; i++) {
             LL.addView(exercises[i]);
@@ -421,6 +422,7 @@ public class StartTraining extends AppCompatActivity {
         parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             int previousHeight =0;
             boolean stopWatchSupport =false;
+
             @Override
             public void onGlobalLayout() {
                 final Handler handler = new Handler();
@@ -429,8 +431,10 @@ public class StartTraining extends AppCompatActivity {
                     public void run() {
                         Rect measureRect = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(measureRect);
-                        int keypadHeight = parentLayout.getRootView().getHeight() - measureRect.bottom;
+                        int keypadHeight = parentLayout.getHeight() - measureRect.bottom;
+                        Log.d("wymiary",String.valueOf(scrollView.findViewById(R.id.linearLayout_scrollView).getHeight())+"    "+String.valueOf(scrollView.getHeight())+"      "+String.valueOf(keypadHeight)+"     " + String.valueOf(previousHeight));
                         if(keypadHeight!= previousHeight) {
+                            scrollView.findViewById(R.id.linearLayout_scrollView).setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (scrollView.findViewById(R.id.linearLayout_scrollView).getHeight() - keypadHeight + previousHeight)));
                             scrollView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (scrollView.getHeight() - keypadHeight + previousHeight)));
                             previousHeight = keypadHeight;
                         }
@@ -441,6 +445,14 @@ public class StartTraining extends AppCompatActivity {
                                 scrollView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (scrollView.getHeight() - keypadHeight +stopWatch.getHeight()+ previousHeight)));
                             }
                             stopWatchSupport = isStopWatcherVisible;
+                        }
+                        if(firstOpen){
+                            finishR.setVisibility(View.VISIBLE);
+                            Log.d("first",String.valueOf(  ((TextView)finishR.findViewById(R.id.finished_text)).getLineHeight() ));
+                            scrollView.findViewById(R.id.linearLayout_scrollView).setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (scrollView.findViewById(R.id.linearLayout_scrollView).getHeight() -((TextView)finishR.findViewById(R.id.finished_text)).getLineHeight())));
+                            scrollView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (scrollView.getHeight()-((TextView)finishR.findViewById(R.id.finished_text)).getLineHeight())));
+                            firstOpen=false;
+
                         }
                     }
                 }, 10);

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -26,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +53,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     public static int openMode=1;
     
     private static LinearLayout recyclerViewLinearLayout;
-    private static LinearLayout buttonsLayout;
+    private static RelativeLayout buttonsLayout;
     public static ExerciseAdapter adapter;
     static Toolbar mActionBarToolbar;
     public static ExerciseValue[] exerciseValues;
@@ -73,7 +75,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         trainingNamesDatabase = new TrainingNamesDatabase(getApplicationContext());
         parentLayout =(LinearLayout) View.inflate(this,R.layout.activity_add_training,null);
         parentLayout.setOrientation(LinearLayout.VERTICAL);
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setToolbar();
         switch(openMode){
             case AddTrainingValues.OPEN_FROM_MAIN_MENU: openFromMainMenu();
@@ -85,17 +87,19 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                 break;
         }
         setContentView(parentLayout);
+        addContentView(buttonsLayout,buttonsLayout.getLayoutParams());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         isKeyboardVisible();
     }
 
     private void openFromProgress() {
     }
-
+    //TODO tomek phone mayby more space between exercises
     private void isKeyboardVisible(){
 
         parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             int previousHeight =0;
+            boolean firstOpen=true;
             @Override
             public void onGlobalLayout() {
                 final Handler handler = new Handler();
@@ -111,6 +115,11 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                             recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerViewLinearLayout.getHeight() - keypadHeight + previousHeight)));
                             recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (recyclerView.getHeight() - keypadHeight  + previousHeight)));
                             previousHeight = keypadHeight;
+                        }
+                        if(firstOpen){
+                            recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) (recyclerViewLinearLayout.getHeight() -buttonsLayout.findViewById(R.id.add_exercise_button).getHeight()*1.5)));
+                            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) (recyclerView.getHeight() -buttonsLayout.findViewById(R.id.add_exercise_button).getHeight()*1.5)));
+                            firstOpen=false;
                         }
                     }
                 },100);
@@ -234,13 +243,13 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             }
         }
         recyclerViewLinearLayout = (LinearLayout) View.inflate(this, R.layout.add_training_recycler_view, null);
-        buttonsLayout = (LinearLayout) View.inflate(this, R.layout.add_training_buttons, null);
+        buttonsLayout = (RelativeLayout) View.inflate(this, R.layout.add_training_buttons, null);
         recyclerView = (RecyclerView) recyclerViewLinearLayout.getChildAt(0);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setScrollContainer(true);
         LinearLayout.LayoutParams lpScroll=null;
 
-        buttonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+        buttonsLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         adapter = new ExerciseAdapter(listData, this);
         recyclerView.setAdapter(adapter);
         if(lpScroll!=null){
@@ -249,7 +258,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             parentLayout.addView(recyclerViewLinearLayout, lp);
         }
         //lp.gravity=Gravity.CENTER_HORIZONTAL;
-        parentLayout.addView(buttonsLayout, buttonsLayout.getLayoutParams());
+        //parentLayout.addView(buttonsLayout)
         if(!Resolution.hasSoftKeys){
             Rect measureRect = new Rect(); //you should cache this, onGlobalLayout can get called often
             recyclerViewLinearLayout.getWindowVisibleDisplayFrame(measureRect);
