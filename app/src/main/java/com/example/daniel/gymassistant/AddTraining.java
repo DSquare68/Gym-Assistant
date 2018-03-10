@@ -1,5 +1,6 @@
 package com.example.daniel.gymassistant;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -25,8 +25,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +39,10 @@ import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseDatabase;
 import com.example.daniel.database.exercise.values.ExerciseValue;
 import com.example.daniel.database.exercise.values.ExerciseValuesDatabase;
+import com.example.daniel.database.trainings.names.TrainingName;
 import com.example.daniel.database.trainings.names.TrainingNamesDatabase;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
+import com.example.daniel.database.trainings.trainingvalues.TrainingValuesDatabase;
 import com.example.daniel.extraview.ExerciseAdapter;
 import com.example.daniel.extraview.Slider;
 import com.example.daniel.values.AddTrainingValues;
@@ -57,10 +62,12 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     public static ExerciseAdapter adapter;
     static Toolbar mActionBarToolbar;
     public static ExerciseValue[] exerciseValues;
+    TrainingName[] trainingNameDialog;
     public static int numberOfExercises;
     public static TrainingValue trainingValue;
     static Context context;
-
+    static int index=-1;
+    Dialog dialog;
     LinearLayout parentLayout;
     static RecyclerView recyclerView;
 
@@ -77,6 +84,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         parentLayout.setOrientation(LinearLayout.VERTICAL);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setToolbar();
+        setDialogValues();
         switch(openMode){
             case AddTrainingValues.OPEN_FROM_MAIN_MENU: openFromMainMenu();
                 break;
@@ -153,7 +161,87 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                 return false;
             }
         });
+        menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                dialog.show();
+
+                return  false;
+            }
+
+
+        });
         return true;
+    }
+    private void setDialogValues(){
+        TrainingValuesDatabase tvd = new TrainingValuesDatabase(context);
+        TrainingValue[] trainingValues = tvd.getAllModules();
+        TrainingNamesDatabase tnd = new TrainingNamesDatabase(context);
+        trainingNameDialog = tnd.getTrainingNames(trainingValues);
+        dialog = new Dialog(this);
+        setDialog(trainingNameDialog);
+    }
+    private void setModuleValues(ExerciseValue[] byID) {
+        int firstFree=0;
+        int k=0;
+        for(int i=0;i<adapter.getItemCount();i++){
+            boolean nameIsEntered=false; boolean dataAreEntered=false;
+            if(!adapter.exerciseList.get(i).getName().equals("")) {k=0;firstFree=i+1;} else {k++;}
+            if((adapter.exerciseList.get(i).getRoundNumber()!=0)) {k=0;firstFree=i+1;} else {k++;}
+            if((adapter.exerciseList.get(i).getWeight()!=0.0)) {k=0;firstFree=i+1;} else {k++;}
+            if((adapter.exerciseList.get(i).getReps()!=0)) {k=0;firstFree=i+1;} else {k++; }
+        if(k==byID.length) break;
+
+        }
+        if(adapter.getItemCount()<byID.length+firstFree){
+            for(int i=0;i<byID.length-(adapter.getItemCount()-firstFree-1);i++){
+                addItemToList();
+            }
+        }
+        for(int i=0;i<byID.length;i++){
+            adapter.setItem(byID[i],firstFree+i);
+        }
+        adapter.notifyDataSetChanged();
+    }
+    private void setDialog(TrainingName[] trainingNames) {
+        dialog.setContentView(R.layout.dialog_radio_group_cancel_ok);
+        dialog.setTitle(R.string.choose_training);
+        final RadioGroup radioGroup = dialog.findViewById(R.id.radio_group_start_mode);
+        final RadioButton[] radioButtons = new RadioButton[trainingNames.length];
+        for (int i = 0; i < trainingNames.length; i++) {
+            radioButtons[i] = new RadioButton(context);
+            radioButtons[i].setText(trainingNames[i].getName());
+            radioGroup.addView(radioButtons[i]);
+        }
+        Button okButton = dialog.findViewById(R.id.ok);
+        Button cancelButton = dialog.findViewById(R.id.cancel);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int radioButtonID = radioGroup.getCheckedRadioButtonId();
+                if (radioButtonID != -1) {
+                    View radioButton = radioGroup.findViewById(radioButtonID);
+                    index = radioGroup.indexOfChild(radioButton);
+                    if(index==-1){
+
+                    } else{
+                        ExerciseValuesDatabase ed = new ExerciseValuesDatabase(context);
+                        setModuleValues(ed.getByID(trainingNameDialog[index].getID()));
+                    }
+                    dialog.dismiss();
+                }else {
+                    index=-1;
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
     private void openFromMainMenu(){
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -321,7 +409,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                     @Override
                     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
                         if(actionState == ItemTouchHelper.ACTION_STATE_IDLE){
-                            isKeyboardVisible();
+                            //isKeyboardVisible();
                         }
                         super.onSelectedChanged(viewHolder, actionState);
 

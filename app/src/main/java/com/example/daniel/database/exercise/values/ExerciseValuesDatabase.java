@@ -42,7 +42,7 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ExerciseValuesColumns.EXERCISE_ID, exercise.getNameID());
         values.put(ExerciseValuesColumns.TRAINING_ID, exercise.getTrainingID());
-        values.put(ExerciseValuesColumns.EXERCISE_NUMBER, exercise.getRoundNumber());
+        values.put(ExerciseValuesColumns.EXERCISE_NUMBER, exercise.getExerciseNumber());
         values.put(ExerciseValuesColumns.ROUND_NUMBER, exercise.getRoundNumber());
         values.put(ExerciseValuesColumns.WEIGHT, exercise.getWeight());
         values.put(ExerciseValuesColumns.REPS, exercise.getReps());

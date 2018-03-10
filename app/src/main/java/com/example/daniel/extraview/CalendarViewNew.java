@@ -60,7 +60,7 @@ public class CalendarViewNew extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.calendar,this);
         TrainingValuesDatabase wtd = new TrainingValuesDatabase(getContext());
-        TrainingValue[] trainingValues = wtd.getAll();
+        TrainingValue[] trainingValues = wtd.getAllTrainings();
         TextView monthName =findViewById(R.id.textView4);
         monthName.setText(monthNames[today.getMonth()]+" "+ String.valueOf(today.getYear()+1900));
         DateTraining trainingDate = new DateTraining(getContext());

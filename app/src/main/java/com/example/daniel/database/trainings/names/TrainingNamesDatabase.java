@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.daniel.database.exercise.name.ExerciseColumnNames;
+import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValuesColumns;
+import com.example.daniel.database.trainings.trainingvalues.TrainingValuesDatabase;
 
 
 public class TrainingNamesDatabase extends SQLiteOpenHelper {
@@ -101,6 +103,19 @@ public class TrainingNamesDatabase extends SQLiteOpenHelper {
         }
         TrainingName trainingName = new TrainingName(cursor.getString(1));
         db.close();
+        return  trainingName;
+    }
+    public TrainingName[] getTrainingNames(TrainingValue[] trainingValues){
+        SQLiteDatabase db = this.getReadableDatabase();
+        TrainingName[] trainingName= new TrainingName[trainingValues.length];
+        for(int i=0;i<trainingValues.length;i++) {
+            Cursor cursor = db.query(TrainingNamesColumns.TABLE_NAME, new String[]{TrainingNamesColumns._ID, TrainingNamesColumns.TRAINING_NAME}, TrainingNamesColumns._ID + " = " + String.valueOf(trainingValues[i].getTrainingId()), null, null, null, TrainingNamesColumns._ID);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            trainingName[i] = new TrainingName(cursor.getString(1),cursor.getInt(0));
+            db.close();
+        }
         return  trainingName;
     }
 

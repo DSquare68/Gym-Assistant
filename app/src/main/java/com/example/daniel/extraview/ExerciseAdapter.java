@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseDatabase;
 import com.example.daniel.database.exercise.values.ExerciseValue;
+import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.gymassistant.R;
 
 
@@ -40,6 +41,11 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
         this.exerciseList = moviesList;
         this.inflater = LayoutInflater.from(c);
     }
+
+    public void setItem(ExerciseValue exerciseValue, int firstFree) {
+        exerciseList.set(firstFree,exerciseValue);
+    }
+
     public interface ItemClickCallback {
         void onItemClick(int p);
         void onSecondaryIconClick(int p);
@@ -52,6 +58,7 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
         public TextView roundNumberTV, weightTV, repsTV;
         public EditText roundNumberET, weightET, repsET;
         public MyCustomEditTextListener[] customEditTextListener = new MyCustomEditTextListener[4];
+
 
         public ExerciseHolder(View view) {
             super(view);
@@ -173,4 +180,5 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
         this.itemClickCallback = itemClickCallback;
     }
+
 }

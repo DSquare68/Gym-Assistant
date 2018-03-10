@@ -356,15 +356,15 @@ public class DateTraining {
     }
 
     public TrainingValue getNearestTraining(){
-        TrainingValue[] trainings = trainingValuesDatabase.getAll();
-        String[] data = new String[trainingValuesDatabase.getCount()];
-        java.util.Date[] date = new java.util.Date[trainingValuesDatabase.getCount()];
+        TrainingValue[] trainings = trainingValuesDatabase.getAllTrainings();
+        String[] data = new String[trainings.length];
+        java.util.Date[] date = new java.util.Date[trainings.length];
         int a=0;
-        for (int i = 0; i< trainingValuesDatabase.getCount(); i++){
+        for (int i = 0; i< trainings.length; i++){
             data[i]= getNearestTrainingDate(trainings[i]);
             date[i]= readDateFromString(data[i]);
         }
-        for(int i = 0; i< trainingValuesDatabase.getCount()-1; i++){
+        for(int i = 0; i<trainings.length-1; i++){
             if(date[i].after(date[i+1])){
                 a=i;
                 break;

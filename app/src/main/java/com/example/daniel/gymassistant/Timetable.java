@@ -275,7 +275,7 @@ public class Timetable extends AppCompatActivity {
             TextView date =LL.findViewById(R.id.date_of_training);
             TextView exercisesNumber =LL.findViewById(R.id.number_of_exercises);
             TextView time = LL.findViewById(R.id.time);
-            name.setText(trainingNames[i].getName());
+            name.setText(ntd.getTrainingName(trainingValues[i].getTrainingId()).getName());
             date.setText(dateTraining.getNearestTrainingDate(trainingValues[i]));
             exercisesNumber.setText(getResources().getString(R.string.number_of_exercises)+": "+trainingValues[i].getExerciseNumber());
             Date timeD = new Date(trainingValues[i].getAverageTime());
