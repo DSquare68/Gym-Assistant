@@ -77,7 +77,7 @@ public class StartTraining extends AppCompatActivity {
         trainingValuesDatabase = new TrainingValuesDatabase(this);
         dialog = new Dialog(StartTraining.this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setComponents();
         switch (SettingsValues.getValue(SettingsValues.TRAINING_START_MODE, getApplicationContext())) {
             case 1:
@@ -431,7 +431,7 @@ public class StartTraining extends AppCompatActivity {
                     public void run() {
                         Rect measureRect = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(measureRect);
-                        int keypadHeight = parentLayout.getHeight() - measureRect.bottom;
+                        int keypadHeight = parentLayout.getRootView().getHeight() - measureRect.bottom;
                         Log.d("wymiary",String.valueOf(scrollView.findViewById(R.id.linearLayout_scrollView).getHeight())+"    "+String.valueOf(scrollView.getHeight())+"      "+String.valueOf(keypadHeight)+"     " + String.valueOf(previousHeight));
                         if(keypadHeight!= previousHeight) {
                             scrollView.findViewById(R.id.linearLayout_scrollView).setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (scrollView.findViewById(R.id.linearLayout_scrollView).getHeight() - keypadHeight + previousHeight)));

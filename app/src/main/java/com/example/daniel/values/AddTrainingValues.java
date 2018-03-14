@@ -8,4 +8,5 @@ public class AddTrainingValues {
     final public static int OPEN_FROM_MAIN_MENU =1;
     final public static int OPEN_FROM_SCHEDULE =2;
     final public static int OPEN_FROM_PROGRESS =3;
+    static public boolean DROP_SET=true;
 }

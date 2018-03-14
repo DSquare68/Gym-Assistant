@@ -29,78 +29,96 @@
         app:srcCompat="@drawable/slider"
         android:layout_weight="0.01"
         android:clickable="true" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone"
-       >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">]
 
-        <TextView
-            android:id="@+id/round_number_text_view"
+        <LinearLayout
+            android:id="@+id/exercise_values"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:inputType="textMultiLine"
-            android:text="@string/rounds_number"
-            android:textColor="#000000"
-            android:textSize="10dp" />
+            android:orientation="horizontal"
+           >
 
-        <EditText
-            android:id="@+id/round_number_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:gravity="center_horizontal"
-            android:textSize="12dp"
-            android:layout_weight="1"
-            android:inputType="number"
-            />
-        <TextView
-            android:id="@+id/weight_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:inputType="textMultiLine"
-            android:text="@string/weight"
-            android:textColor="#000000"
-            android:textSize="12dp"
+            <TextView
+                android:id="@+id/round_number_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="textMultiLine"
+                android:text="@string/rounds_number"
+                android:textColor="#000000"
+                android:textSize="10dp" />
 
-            />
-        <EditText
-            android:id="@+id/weight_edit_text"
+            <EditText
+                android:id="@+id/round_number_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:gravity="center_horizontal"
+                android:textSize="12dp"
+                android:layout_weight="1"
+                android:inputType="number"
+                />
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkbox_drop_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/weight_and_reps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:gravity="center_horizontal"
-            android:textSize="12dp"
             android:layout_weight="1"
-            android:inputType="numberDecimal"
-            />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/weight_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="textMultiLine"
+                android:text="@string/weight"
+                android:textColor="#000000"
+                android:textSize="12dp"
 
-        <TextView
-            android:id="@+id/reps_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:inputType="textMultiLine"
-            android:text="@string/reps"
-            android:textColor="#000000"
-            android:textSize="12dp" />
+                />
+            <EditText
+                android:id="@+id/weight_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:gravity="center_horizontal"
+                android:textSize="12dp"
+                android:layout_weight="1"
+                android:inputType="numberDecimal"
+                />
 
-        <EditText
-            android:id="@+id/reps_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:gravity="center_horizontal"
-            android:textSize="12dp"
-            android:inputType="number"
-            android:layout_weight="1"
-            />
+            <TextView
+                android:id="@+id/reps_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="textMultiLine"
+                android:text="@string/reps"
+                android:textColor="#000000"
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/reps_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:gravity="center_horizontal"
+                android:textSize="12dp"
+                android:inputType="number"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

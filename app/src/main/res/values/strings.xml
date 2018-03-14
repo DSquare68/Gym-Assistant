@@ -39,6 +39,7 @@
     <string name="rounds_number">Rounds number</string>
     <string name="set_name">Set Name</string>
     <string name="add_module">Add module</string>
+    <string name="round">Round</string>
     <string name="toast_add_training_training_exist">The training with that name already exists. Change it.</string>
     <string-array name="statistics_show_mode">
         <item>Show trainings</item>

@@ -12,6 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -94,10 +97,36 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                 openFromProgress();
                 break;
         }
+        for(int i=0 ; i<recyclerView.getChildCount();i++) {
+            if (AddTrainingValues.DROP_SET)
+                setOnTextChangeListener(i);
+        }
         setContentView(parentLayout);
         addContentView(buttonsLayout,buttonsLayout.getLayoutParams());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         isKeyboardVisible();
+    }
+
+    private void setOnTextChangeListener(int i) {
+        ((EditText)(( recyclerView.getChildAt(i)).findViewById(R.id.exercise_values)).findViewById(R.id.round_number_edit_text)).addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                Log.d("erqweqwerewqeqwr",s.toString());
+
+            }
+        });
     }
 
     private void openFromProgress() {
@@ -125,8 +154,8 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                             previousHeight = keypadHeight;
                         }
                         if(firstOpen){
-                            recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) (recyclerViewLinearLayout.getHeight() -buttonsLayout.findViewById(R.id.add_exercise_button).getHeight()*1.5)));
-                            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) (recyclerView.getHeight() -buttonsLayout.findViewById(R.id.add_exercise_button).getHeight()*1.5)));
+                            recyclerViewLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) (recyclerViewLinearLayout.getHeight() -buttonsLayout.findViewById(R.id.add_exercise_button).getHeight()*(Resolution.hasSoftKeys ? 1.5 : 1))));
+                            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) (recyclerView.getHeight() -buttonsLayout.findViewById(R.id.add_exercise_button).getHeight()*(Resolution.hasSoftKeys ? 1.5 : 1))));
                             firstOpen=false;
                         }
                     }
@@ -185,12 +214,13 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         int firstFree=0;
         int k=0;
         for(int i=0;i<adapter.getItemCount();i++){
-            boolean nameIsEntered=false; boolean dataAreEntered=false;
-            if(!adapter.exerciseList.get(i).getName().equals("")) {k=0;firstFree=i+1;} else {k++;}
-            if((adapter.exerciseList.get(i).getRoundNumber()!=0)) {k=0;firstFree=i+1;} else {k++;}
-            if((adapter.exerciseList.get(i).getWeight()!=0.0)) {k=0;firstFree=i+1;} else {k++;}
-            if((adapter.exerciseList.get(i).getReps()!=0)) {k=0;firstFree=i+1;} else {k++; }
-        if(k==byID.length) break;
+            boolean free=false;
+            if(!adapter.exerciseList.get(i).getName().equals("")) {free=false;firstFree=i+1;} else {free=true;}
+            if((adapter.exerciseList.get(i).getRoundNumber()!=0)) {free=false;firstFree=i+1;} else {free=true;}
+            if((adapter.exerciseList.get(i).getWeight()!=0.0)) {free=false;firstFree=i+1;} else {free=true;}
+            if((adapter.exerciseList.get(i).getReps()!=0)) {free=false;firstFree=i+1;} else {free=true;}
+            if(free) k++; else k=0;
+            if(k==byID.length) break;
 
         }
         if(adapter.getItemCount()<byID.length+firstFree){
@@ -350,7 +380,8 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         if(!Resolution.hasSoftKeys){
             Rect measureRect = new Rect(); //you should cache this, onGlobalLayout can get called often
             recyclerViewLinearLayout.getWindowVisibleDisplayFrame(measureRect);
-            lpScroll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, recyclerViewLinearLayout.getRootView().getHeight() - measureRect.bottom, getResources().getDisplayMetrics()));
+            Log.d("wysokość",String.valueOf(recyclerViewLinearLayout.getRootView().getHeight()));
+            lpScroll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         } else{
             Rect measureRect = new Rect(); //you should cache this, onGlobalLayout can get called often
             recyclerViewLinearLayout.getWindowVisibleDisplayFrame(measureRect);
@@ -367,6 +398,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         if(exerciseValues==null) {
             setItemTouchHelper();
         }
+
     }
 
     private void setItemTouchHelper() {
@@ -547,9 +579,9 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             LinearLayout LL = (LinearLayout) recyclerView.getChildAt(i);
             ACT = (AutoCompleteTextView) LL.getChildAt(0);
             LinearLayout LL2 = (LinearLayout) LL.getChildAt(2);
-            numberOfRoundsET = (EditText) LL2.getChildAt(1);
-            weightET = (EditText) LL2.getChildAt(3);
-            repsET = (EditText) LL2.getChildAt(5);
+            numberOfRoundsET =  LL2.findViewById(R.id.round_number_edit_text);
+            weightET =  LL2.findViewById(R.id.weight_edit_text);
+            repsET =  LL2.findViewById(R.id.reps_edit_text);
             repsET.setFreezesText(true);
             numberOfRoundsET.setFreezesText(true);
             weightET.setFreezesText(true);
