@@ -20,9 +20,9 @@ import android.widget.TextView;
 import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseDatabase;
 import com.example.daniel.database.exercise.values.ExerciseValue;
-import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.gymassistant.R;
 import com.example.daniel.values.AddTrainingValues;
+import com.example.daniel.values.Training;
 
 
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.List;
 public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseHolder> {
 
 
-    public static List<ExerciseValue> exerciseList;
+    public static Training training;
 
 
     private LayoutInflater inflater;
@@ -43,16 +43,16 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
     RecyclerView.Adapter<ExerciseAdapter.ExerciseHolder> adapter;
     Slider slider = new Slider();
     public ExerciseAdapter(List<ExerciseValue> moviesList, Context c) {
-        this.exerciseList = moviesList;
+        training = new Training();
+        this.training.setExercises(moviesList);
         this.inflater = LayoutInflater.from(c);
         this.context=c;
         adapter=this;
     }
 
     public void setItem(ExerciseValue exerciseValue, int firstFree) {
-        exerciseList.set(firstFree,exerciseValue);
+        //training.set(firstFree, exerciseValue);
     }
-
     public interface ItemClickCallback {
         void onItemClick(int p);
         void onSecondaryIconClick(int p);
@@ -67,8 +67,8 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
         public View view;
         public CheckBox dropSetCB;
         public MyCustomEditTextListener[] customEditTextListener = new MyCustomEditTextListener[4];
-
-
+        public DropSetEditTextListener[][] dropSetListener= new DropSetEditTextListener[2][];
+        int position=-1;
         public ExerciseHolder(View view) {
             super(view);
             this.view=view;
@@ -106,14 +106,25 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int oldRoundNumber = ((LinearLayout) view).getChildCount() - 3;
+                    AddTrainingValues.setDropSet(isChecked);
                     if(isChecked){
                         int newRoundsNumber=0;
                         if(!roundNumberET.getText().toString().equals("")) newRoundsNumber=Integer.valueOf(roundNumberET.getText().toString());
+                        dropSetListener[0] = new DropSetEditTextListener[newRoundsNumber];
+                        dropSetListener[1] = new DropSetEditTextListener[newRoundsNumber];
+                        for(int i=0;i<newRoundsNumber;i++) {
+                            dropSetListener[0][i] = new DropSetEditTextListener(1, i);
+                            dropSetListener[0][i].updatePosition(position);
+                            dropSetListener[1][i] = new DropSetEditTextListener(2, i);
+                            dropSetListener[1][i].updatePosition(position);
+                        }
                         for(int j=0;j<newRoundsNumber;j++) {
                             if (newRoundsNumber > oldRoundNumber ) {
                                 view.findViewById(R.id.weight_and_reps).setVisibility(View.GONE);
                                 ((LinearLayout) view).addView(View.inflate(context, R.layout.add_training_round_values, null));
                                 ((TextView) ((LinearLayout) view).getChildAt(3 + j).findViewById(R.id.round_number_edit_text)).setText(context.getResources().getString(R.string.round) + " " + (j + 1) + ": ");
+                                ((TextView) ((LinearLayout) view).getChildAt(3 + j).findViewById(R.id.weight_edit_text)).addTextChangedListener(dropSetListener[0][j]);
+                                ((TextView) ((LinearLayout) view).getChildAt(3 + j).findViewById(R.id.reps_edit_text)).addTextChangedListener(dropSetListener[1][j]);
                             } else {
                                 break;
                             }
@@ -125,6 +136,7 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
                                 ((LinearLayout) view).removeViewAt(oldRoundNumber + 2);
                                 oldRoundNumber--;
                             }
+                        training.align(position,1);
                         }
                 }
             };
@@ -149,6 +161,8 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
         private int index;
         View view;
         CheckBox checkBox;
+
+        public DropSetEditTextListener[][] dropSetListener= new DropSetEditTextListener[2][];
         public MyCustomEditTextListener(int index){
             this.index = index;
         }
@@ -165,33 +179,82 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
             switch (index){
-                case 1: exerciseList.get(position).setName(charSequence.toString()); break;
+                case 1: training.set(Training.NAME,charSequence.toString(),position,0); break;
                 case 2: if(!(charSequence.toString().equals(""))){
-                    exerciseList.get(position).setRoundNumber(Integer.valueOf(charSequence.toString()));
-                    //TODO by pojawiała sie odpowiednia ilość
+                    training.set(Training.ROUND_NUMBER,Integer.valueOf(charSequence.toString()),position,0);
                     int newRoundsNumber=Integer.valueOf(charSequence.toString());
                     int oldRoundNumber = ((LinearLayout) view).getChildCount()-3;
+                    dropSetListener[0] = new DropSetEditTextListener[newRoundsNumber];
+                    dropSetListener[1] = new DropSetEditTextListener[newRoundsNumber];
+                    for(int k=0;k<newRoundsNumber;k++) {
+                        dropSetListener[0][k] = new DropSetEditTextListener(1, k);
+                        dropSetListener[0][k].updatePosition(position);
+                        dropSetListener[1][k] = new DropSetEditTextListener(2, k);
+                        dropSetListener[1][k].updatePosition(position);
+                    }
                     for(int j=0;j<newRoundsNumber;j++){
                         if(newRoundsNumber>oldRoundNumber&&((CheckBox) view.findViewById(R.id.checkbox_drop_set)).isChecked()){
                             view.findViewById(R.id.weight_and_reps).setVisibility(View.GONE);
                             ((LinearLayout) view).addView(View.inflate(context,R.layout.add_training_round_values,null));
                             ((TextView) ((LinearLayout) view).getChildAt(3+j).findViewById(R.id.round_number_edit_text)).setText(context.getResources().getString(R.string.round)+" "+(j+1)+": ");
+                            ((TextView) ((LinearLayout) view).getChildAt(3 + j).findViewById(R.id.weight_edit_text)).addTextChangedListener(dropSetListener[0][j]);
+                            ((TextView) ((LinearLayout) view).getChildAt(3 + j).findViewById(R.id.reps_edit_text)).addTextChangedListener(dropSetListener[1][j]);
                         }else{
                             break;
                         }
                     }
                 } else {
-                    exerciseList.get(position).setRoundNumber(0);
+                    training.set(Training.ROUND_NUMBER,Integer.valueOf(charSequence.toString().equals("") ? String.valueOf(0) : charSequence.toString()),position,0);
                     int newRoundsNumber=Integer.valueOf(0);
                     int oldRoundNumber = ((LinearLayout) view).getChildCount()-3;
                     while (newRoundsNumber<oldRoundNumber&&((CheckBox) view.findViewById(R.id.checkbox_drop_set)).isChecked()) {
                         ((LinearLayout) view).removeViewAt(oldRoundNumber + 2);
                         oldRoundNumber--;
                     }
+                    training.align(position,1);
                 }  break;
-                case 3: if(!(charSequence.toString().equals(""))) exerciseList.get(position).setWeight(Double.valueOf(charSequence.toString()));else exerciseList.get(position).setWeight(0); break;
-                case 4: if(!(charSequence.toString().equals(""))) exerciseList.get(position).setReps(Integer.valueOf(charSequence.toString()));else exerciseList.get(position).setReps(0); break;
+                case 3: if(!(charSequence.toString().equals(""))) training.set(Training.WEIGHT,Double.valueOf(charSequence.toString()),position,0);else training.set(Training.WEIGHT,Double.valueOf(0),position,0); break;
+                case 4: if(!(charSequence.toString().equals(""))) training.set(Training.REPS,Integer.valueOf(charSequence.toString()),position,0);else training.set(Training.REPS,Double.valueOf(0),position,0); break;
             }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // no op
+        }
+    }
+    private class DropSetEditTextListener implements TextWatcher {
+        private int position;
+        /**
+         *  1- weight 2-reps
+         */
+        private int index;
+        View view;
+        CheckBox checkBox;
+        private int indexRound;
+        public DropSetEditTextListener(int index, int indexRound){
+            this.index = index;
+            this.indexRound=indexRound;
+        }
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+        public void updatendexRound(int indexRound) {this.indexRound=indexRound;}
+        public void updateView(View view) {this.view = view;}
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            // no op
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            if(training.get(position).size()-1<indexRound) training.align(position,indexRound+1);
+            training.set(Training.ROUND_NUMBER,indexRound+1,position,indexRound);
+            switch (index){
+                case 1: if(!(charSequence.toString().equals(""))) training.set(Training.WEIGHT,Double.valueOf(charSequence.toString()),position,indexRound);else training.set(Training.WEIGHT,0.0,position,indexRound); break;
+                case 2: if(!(charSequence.toString().equals(""))) training.set(Training.REPS,Integer.valueOf(charSequence.toString()),position,indexRound);else training.set(Training.REPS,0,position,indexRound); break;
+            }
+
         }
 
         @Override
@@ -232,13 +295,23 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
             holder.customEditTextListener[i].updatePosition(position);
             holder.customEditTextListener[i].updateView(holder.view);
         }
-        holder.title.setText(exerciseList.get(holder.getPosition()).getName());
-
-        if(exerciseList.get(holder.getPosition()).getWeight()!=0)holder.weightET.setText(String.valueOf(exerciseList.get(holder.getPosition()).getWeight()));
-        if(exerciseList.get(holder.getPosition()).getReps()!=0)holder.repsET.setText(String.valueOf(exerciseList.get(holder.getPosition()).getReps()));
-        if(exerciseList.get(holder.getPosition()).getRoundNumber()!=0){
-            holder.roundNumberET.setText(String.valueOf(exerciseList.get(holder.getPosition()).getRoundNumber()));
-            Log.d("dafsdasdas","ADFSdasddfsaadfs");
+        for(int i=0;i<2;i++){
+            holder.position=position;
+            if(holder.dropSetListener[i]==null) break;
+           // for(int i=0;i< ((LinearLayout) holder.view).getChildCount()-3;i++){
+             //   holder.view.((TextView) ((LinearLayout) holder.view).getChildAt(3 + i).findViewById(R.id.round_number_edit_text));
+            //}
+            for(int j=0;j<holder.dropSetListener[i].length;j++) {
+                holder.dropSetListener[i][j].updatePosition(position);
+                holder.dropSetListener[i][j].updateView(holder.view);
+            }
+        }
+        if(!String.valueOf(training.get(Training.NAME,holder.getPosition(),0)).equals("null")&&!training.get(Training.NAME,holder.getPosition(),0).equals(null))holder.title.setText(String.valueOf(training.get(Training.NAME,holder.getPosition(),0)));
+        //TODO maybe something add
+        if(Double.valueOf(training.get(Training.WEIGHT,holder.getPosition(),0).toString())!=0)holder.weightET.setText(String.valueOf(training.get(Training.WEIGHT,holder.getPosition(),0).toString()));
+        if(Integer.valueOf(training.get(Training.REPS,holder.getPosition(),0).toString())!=0)holder.repsET.setText(String.valueOf(training.get(Training.REPS,holder.getPosition(),0).toString()));
+        if(Integer.valueOf(training.get(Training.ROUND_NUMBER,holder.getPosition(),0).toString())!=0){
+            holder.roundNumberET.setText(String.valueOf(training.get(Training.ROUND_NUMBER,holder.getPosition(),0).toString()));
             ((LinearLayout) holder.view).addView(View.inflate(context,R.layout.add_training_round_values,null));
         }
 
@@ -246,7 +319,16 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
 
     @Override
     public int getItemCount() {
-        return exerciseList.size();
+        return training.size();
+    }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {

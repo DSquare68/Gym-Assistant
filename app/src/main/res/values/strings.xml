@@ -162,6 +162,7 @@
         <item>Names of fields</item>
         <item>Default values</item>
         <item>Values from last training</item>
+        <item>Drop set</item>
     </string-array>
 
 

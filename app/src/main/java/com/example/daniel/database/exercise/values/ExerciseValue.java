@@ -13,6 +13,10 @@ public class ExerciseValue {
     private String name, trainingName;
     private int nameID, trainingID, roundNumber, reps, exerciseNumber;
     private double weight;
+    public ExerciseValue(){
+
+    }
+
     public ExerciseValue(String name,int nameID, String trainingName, int trainingID, int exerciseNumber, int roundNumber, double weight, int reps){
         this.name=name;
         this.nameID=nameID;

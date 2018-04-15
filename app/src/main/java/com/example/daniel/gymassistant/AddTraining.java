@@ -170,9 +170,8 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         lp.gravity = Gravity.CENTER_HORIZONTAL;
         lp.weight = 1;
         setRecyclerView(exerciseValues);
-
-
     }
+
 
     @Override
     public void  onConfigurationChanged(Configuration newConfig) {
@@ -211,14 +210,14 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         setDialog(trainingNameDialog);
     }
     private void setModuleValues(ExerciseValue[] byID) {
-        int firstFree=0;
+      /*  int firstFree=0;
         int k=0;
         for(int i=0;i<adapter.getItemCount();i++){
             boolean free=false;
-            if(!adapter.exerciseList.get(i).getName().equals("")) {free=false;firstFree=i+1;} else {free=true;}
-            if((adapter.exerciseList.get(i).getRoundNumber()!=0)) {free=false;firstFree=i+1;} else {free=true;}
-            if((adapter.exerciseList.get(i).getWeight()!=0.0)) {free=false;firstFree=i+1;} else {free=true;}
-            if((adapter.exerciseList.get(i).getReps()!=0)) {free=false;firstFree=i+1;} else {free=true;}
+            if(!adapter.training.get(i).getName().equals("")) {free=false;firstFree=i+1;} else {free=true;}
+            if((adapter.training.get(i).getRoundNumber()!=0)) {free=false;firstFree=i+1;} else {free=true;}
+            if((adapter.training.get(i).getWeight()!=0.0)) {free=false;firstFree=i+1;} else {free=true;}
+            if((adapter.training.get(i).getReps()!=0)) {free=false;firstFree=i+1;} else {free=true;}
             if(free) k++; else k=0;
             if(k==byID.length) break;
 
@@ -230,7 +229,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         }
         for(int i=0;i<byID.length;i++){
             adapter.setItem(byID[i],firstFree+i);
-        }
+        }*/
         adapter.notifyDataSetChanged();
     }
     private void setDialog(TrainingName[] trainingNames) {
@@ -461,19 +460,18 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     private void addItemToList() {
 
         ExerciseValue item = new ExerciseValue(0,0,0,0,0,0);
-        adapter.exerciseList.add(adapter.exerciseList.size(),item);
-        adapter.notifyItemInserted(adapter.exerciseList.indexOf(item));
+        adapter.training.add(adapter.training.size()-1,item);
+
+        adapter.notifyItemInserted(adapter.training.size()-1);
     }
 
     private void moveItem(int oldPos, int newPos) {
-        ExerciseValue item = ExerciseAdapter.exerciseList.get(oldPos);
-        ExerciseAdapter.exerciseList.remove(oldPos);
-        ExerciseAdapter.exerciseList.add(newPos, item);
+        ExerciseAdapter.training.move(oldPos,newPos);
         adapter.notifyItemMoved(oldPos, newPos);
     }
 
     private void deleteItem(final int position) {
-        ExerciseAdapter.exerciseList.remove(position);
+        ExerciseAdapter.training.getExercises().remove(position);
         adapter.notifyItemRemoved(position);
     }
     public void addExercise(View view){
@@ -536,23 +534,23 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         int exerciseNumber=0;
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(0);
-        for(int i=0;i<adapter.getItemCount();i++){
-            boolean nameIsEntered=false; boolean dataAreEntered=false;
-            if(!adapter.exerciseList.get(i).getName().equals("")){ exerciseName=adapter.exerciseList.get(i).getName();nameIsEntered=true;dataAreEntered=true;} else exerciseName="";
-            if((adapter.exerciseList.get(i).getRoundNumber()!=0)){ roundNumber=adapter.exerciseList.get(i).getRoundNumber();dataAreEntered=true;} else roundNumber = 0;
-            if((adapter.exerciseList.get(i).getWeight()!=0.0)){ weight=adapter.exerciseList.get(i).getWeight();dataAreEntered=true;} else weight = 0;
-            if((adapter.exerciseList.get(i).getReps()!=0)){ reps=adapter.exerciseList.get(i).getReps(); dataAreEntered=true;}else reps=0;
-            if(nameIsEntered) {
-                exercises.add(new Exercise(exerciseName));
-            }
-            if(dataAreEntered){
-                exerciseNumber++;
-                exerciseValuesList.add(new ExerciseValue(exerciseDatabase.getIndex(exerciseName), trainingNamesDatabase.getIndex(defaultTrainingName),exerciseNumber, roundNumber , weight, reps));
-                numberOfExercises++;
+        for(int i=0;i<adapter.training.size();i++) {
+            if (!adapter.training.get(i).isNull()) {
+                String name = null;
+                name = adapter.training.getRound(i, 0).getName();
+                for (int j = 0; j < adapter.training.get(i).size(); j++) {
+                    ExerciseValue exerciseValue = adapter.training.getRound(i, j);
+                    exerciseValue.setName(name);
+                    exerciseValue.setNameID(exerciseDatabase.getIndex(name));
+                    exerciseValue.setTrainingID(trainingNamesDatabase.getIndex(defaultTrainingName));
+                    exerciseValue.setTrainingName(defaultTrainingName);
+                    exerciseValue.setRoundNumber(j + 1);
+                    exerciseValue.setExerciseNumber(i + 1);
+                    exerciseValuesList.add(exerciseValue);
+                }
             }
         }
-
-
+        weight=0;
     }
     public void nextLayout(View view) {
         switch(openMode) {

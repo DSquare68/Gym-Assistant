@@ -25,11 +25,13 @@ public class SettingsValues {
      *  1 mode 'names'
      *  2 mode 'values'
      *  3 mode 'names & values'
+     *  4 mode 'dropSet'
      */
     public static int  whichTextDisplayOnExerciseRound=1;
     public final static String DISPLAY_TIPS ="display_tips";
 
     public final static String FIRST_OPEN_APP = "first_open_app";
+    public final static String DROPSET="drop_set";
     public final static int firstOpenApp= 1;
 
     public static  void setValue(String key, Context context, int newValue){

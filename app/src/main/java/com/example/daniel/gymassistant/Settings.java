@@ -114,6 +114,9 @@ public class Settings extends PreferenceActivity {
                         case 2:
                             SettingsValues.setValue(SettingsValues.DISPLAY_TIPS,getApplicationContext(),3);
                             break;
+                        case 3:
+                            SettingsValues.setValue(SettingsValues.DISPLAY_TIPS,getApplicationContext(),4);
+                            break;
                     }
                     dialog.dismiss();
                 }

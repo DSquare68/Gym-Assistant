@@ -264,7 +264,7 @@ public class StartTraining extends AppCompatActivity {
         }
         DateTraining dateTraining = new DateTraining(this);
         if(!newTraining) oldTrainings = dateTraining.lastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getName(), this);
-        for(int i = 0; i< exerciseValues.length; i++) {
+        for(int i = 0; i< trainingValue.getExerciseNumber(); i++) {
             exercises[i] = createExercise();
             fillRoundsWithHints(i,exercises[i]);
         }
@@ -273,7 +273,7 @@ public class StartTraining extends AppCompatActivity {
         TextView Finished = finishR.findViewById(R.id.finished_text);
         if(newTraining) finishR.findViewById(R.id.add_exercise_button).setVisibility(View.VISIBLE);
         Finished.setOnClickListener(setFinishedOnClickListener());
-        for(int i = 0; i< exerciseValues.length; i++) {
+        for(int i = 0; i< trainingValue.getExerciseNumber(); i++) {
             LL.addView(exercises[i]);
         }
     }
@@ -283,6 +283,7 @@ public class StartTraining extends AppCompatActivity {
         HorizontalScrollView horizontalScrollView= exercise.findViewById(R.id.horizontal_scroll_view);
         horizontalScrollView.setFillViewport(true);
         LinearLayout rounds = exercise.findViewById(R.id.rounds);
+        int k=-1;
         for(int j=0;j<(exerciseValues[i].getRoundNumber()==0 ? trainingValue.getRoundsNumber() : exerciseValues[i].getRoundNumber());j++){
             LayoutInflater.from(this).inflate(R.layout.start_training_exercise_round,(LinearLayout) horizontalScrollView.findViewById(R.id.rounds),true);
             LinearLayout container =(LinearLayout) rounds.getChildAt(j);
@@ -304,6 +305,16 @@ public class StartTraining extends AppCompatActivity {
                         weight.setHint(String.valueOf(oldTrainings[i][j].getWeight()));
                     if((oldTrainings==null)||(oldTrainings.length<i)|| oldTrainings[i].length>j&& oldTrainings[i][j]==null ||oldTrainings[i].length<=j)reps.setHint(String.valueOf(R.string.reps)); else reps.setHint(String.valueOf(oldTrainings[i][j].getReps()));
                     break;
+                case 4:
+                    if(exerciseValues.length!=exerciseValues[exerciseValues.length-1].getExerciseNumber()) {
+                        if(exerciseValues[k+j].getRoundNumber()==0) k=0; else k++;
+                        weight.setHint(String.valueOf(exerciseValues[k + j].getWeight()));
+                        reps.setHint(String.valueOf(exerciseValues[k + j].getReps()));
+                    } else {
+                        weight.setHint(String.valueOf(exerciseValues[i].getWeight()));
+                        reps.setHint(String.valueOf(exerciseValues[i].getReps()));
+
+                    }
             }
         }
     }

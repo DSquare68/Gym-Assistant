@@ -122,9 +122,9 @@ public class StatisticsExerciseAdapter extends RecyclerView.Adapter<StatisticsEx
             }
         }
         if(czyJest){
-            holder.name.setTextColor(Color.parseColor("#000000"));
-        } else {
             holder.name.setTextColor(Color.parseColor("#939393"));
+        } else {
+            holder.name.setTextColor(Color.parseColor("#000000"));
         }
     }
 

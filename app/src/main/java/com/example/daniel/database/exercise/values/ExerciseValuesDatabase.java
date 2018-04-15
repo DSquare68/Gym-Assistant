@@ -96,7 +96,7 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
     }
     public ExerciseValue[] getByID(int ID){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRAINING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRAINING_ID +" = '"+ID+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER);
+        Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRAINING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRAINING_ID +" = '"+ID+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER+", "+ExerciseValuesColumns.ROUND_NUMBER);
         if (cursor!=null){
             cursor.moveToFirst();
         }
