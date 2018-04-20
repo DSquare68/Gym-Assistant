@@ -505,6 +505,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         /*switch (openMode){
             case AddTrainingValues.OPEN_FROM_MAIN_MENU: nt.addTrainingName(defaultTrainingName);break;
         }*/
+        numberOfExercises=adapter.training.absoluteSize();
         switch (openMode) {
             case AddTrainingValues.OPEN_FROM_MAIN_MENU:
                 for (int i = 0; i < exerciseValuesList.size(); i++) {
@@ -527,11 +528,6 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     }
 
     private static void saveDataDoArrayList(){
-        String exerciseName;
-        int roundNumber ;
-        double weight ;
-        int reps;
-        int exerciseNumber=0;
         adapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(0);
         for(int i=0;i<adapter.training.size();i++) {
@@ -544,13 +540,12 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                     exerciseValue.setNameID(exerciseDatabase.getIndex(name));
                     exerciseValue.setTrainingID(trainingNamesDatabase.getIndex(defaultTrainingName));
                     exerciseValue.setTrainingName(defaultTrainingName);
-                    exerciseValue.setRoundNumber(j + 1);
+                    if(exerciseValue.getRoundNumber()==0) exerciseValue.setRoundNumber(j + 1);
                     exerciseValue.setExerciseNumber(i + 1);
                     exerciseValuesList.add(exerciseValue);
                 }
             }
         }
-        weight=0;
     }
     public void nextLayout(View view) {
         switch(openMode) {

@@ -43,6 +43,7 @@ import com.example.daniel.database.trainings.trainingvalues.TrainingValuesDataba
 import com.example.daniel.procedures.DateTraining;
 import com.example.daniel.values.Resolution;
 import com.example.daniel.values.SettingsValues;
+import com.example.daniel.values.Training;
 
 import java.util.Date;
 
@@ -54,7 +55,6 @@ public class StartTraining extends AppCompatActivity {
     DateTraining dataTraining;
     ExerciseValuesDatabase exerciseValuesDatabase;
     TrainingValuesDatabase trainingValuesDatabase;
-    static ExerciseValue[] exerciseValues;
     ScrollView scrollView;
     Toolbar mActionBarToolbar;
     LinearLayout parentLayout;
@@ -67,6 +67,8 @@ public class StartTraining extends AppCompatActivity {
     boolean isNewTrainingOpening =false;
     boolean newTraining=false;
     boolean firstOpen=false;
+    Training trainingValues;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -255,12 +257,7 @@ public class StartTraining extends AppCompatActivity {
 
         }
         if(!newTraining){
-            exerciseValues = exerciseValuesDatabase.getByID(trainingValue.getTrainingId());
-        } else{
-            exerciseValues = new ExerciseValue[6];
-            for(int i=0;i<6;i++){
-                exerciseValues[i]= new ExerciseValue(0,0,0,0,0,0);
-            }
+            trainingValues = exerciseValuesDatabase.getTrainingByID(trainingValue.getTrainingId());
         }
         DateTraining dateTraining = new DateTraining(this);
         if(!newTraining) oldTrainings = dateTraining.lastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getName(), this);
@@ -279,12 +276,12 @@ public class StartTraining extends AppCompatActivity {
     }
 
     private void fillRoundsWithHints(int i, LinearLayout exercise) {
-        ((TextView) exercise.findViewById(R.id.exercise_name)).setText(exerciseValues[i].getName());
+        ((TextView) exercise.findViewById(R.id.exercise_name)).setText(String.valueOf(trainingValues.get(Training.NAME,i,0)));
         HorizontalScrollView horizontalScrollView= exercise.findViewById(R.id.horizontal_scroll_view);
         horizontalScrollView.setFillViewport(true);
         LinearLayout rounds = exercise.findViewById(R.id.rounds);
         int k=-1;
-        for(int j=0;j<(exerciseValues[i].getRoundNumber()==0 ? trainingValue.getRoundsNumber() : exerciseValues[i].getRoundNumber());j++){
+        for(int j=0;j<(trainingValues.get(i).size()==1&&Integer.valueOf(trainingValues.get(Training.ROUND_NUMBER,i,0).toString())==1 ? trainingValue.getRoundsNumber() : Integer.valueOf(trainingValues.get(Training.ROUND_NUMBER,i,trainingValues.get(i).size()-1).toString()));j++){
             LayoutInflater.from(this).inflate(R.layout.start_training_exercise_round,(LinearLayout) horizontalScrollView.findViewById(R.id.rounds),true);
             LinearLayout container =(LinearLayout) rounds.getChildAt(j);
             TextView roundNumber =container.findViewById(R.id.number_of_round);
@@ -297,8 +294,8 @@ public class StartTraining extends AppCompatActivity {
                     reps.setHint(R.string.reps);
                     break;
                 case 2:
-                    weight.setHint(String.valueOf(exerciseValues[i].getWeight()));
-                    reps.setHint(String.valueOf(exerciseValues[i].getReps()));
+                    weight.setHint(String.valueOf(Double.valueOf(trainingValues.get(Training.WEIGHT,i,0).toString())));
+                    reps.setHint(String.valueOf(Integer.valueOf(trainingValues.get(Training.REPS,i,0).toString())));
                     break;
                 case 3:
                     if((oldTrainings==null)||(oldTrainings.length<i)|| oldTrainings[i].length>j&& oldTrainings[i][j]==null ||oldTrainings[i].length<=j)weight.setHint(String.valueOf(R.string.weight));else
@@ -306,14 +303,13 @@ public class StartTraining extends AppCompatActivity {
                     if((oldTrainings==null)||(oldTrainings.length<i)|| oldTrainings[i].length>j&& oldTrainings[i][j]==null ||oldTrainings[i].length<=j)reps.setHint(String.valueOf(R.string.reps)); else reps.setHint(String.valueOf(oldTrainings[i][j].getReps()));
                     break;
                 case 4:
-                    if(exerciseValues.length!=exerciseValues[exerciseValues.length-1].getExerciseNumber()) {
-                        if(exerciseValues[k+j].getRoundNumber()==0) k=0; else k++;
-                        weight.setHint(String.valueOf(exerciseValues[k + j].getWeight()));
-                        reps.setHint(String.valueOf(exerciseValues[k + j].getReps()));
+                    if(trainingValues.get(i).size()!=1) {
+                        if(trainingValues.get(i).size()>k) k++; else k=0;
+                        weight.setHint(String.valueOf(Double.valueOf(trainingValues.get(Training.WEIGHT,i,k).toString())));
+                        reps.setHint(String.valueOf(Integer.valueOf(trainingValues.get(Training.REPS,i,k).toString())));
                     } else {
-                        weight.setHint(String.valueOf(exerciseValues[i].getWeight()));
-                        reps.setHint(String.valueOf(exerciseValues[i].getReps()));
-
+                        weight.setHint(String.valueOf(Double.valueOf(trainingValues.get(Training.WEIGHT,i,0).toString())));
+                        reps.setHint(String.valueOf(Integer.valueOf(trainingValues.get(Training.REPS,i,0).toString())));
                     }
             }
         }
@@ -496,7 +492,7 @@ public class StartTraining extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         dialog.dismiss();
-        exerciseValues =null;
+        trainingValues=null;
     }
 
     @Override

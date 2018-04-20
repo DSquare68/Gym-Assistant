@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.daniel.database.exercise.name.Exercise;
+import com.example.daniel.values.Training;
 
 
 public class ExerciseValuesDatabase extends SQLiteOpenHelper {
@@ -107,6 +109,19 @@ public class ExerciseValuesDatabase extends SQLiteOpenHelper {
         }
         db.close();
         return  exerciseValues;
+    }
+    public Training getTrainingByID(int ID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ExerciseValuesColumns.TABLE_NAME, new String[] {ExerciseValuesColumns._ID, ExerciseValuesColumns.EXERCISE_ID, ExerciseValuesColumns.TRAINING_ID, ExerciseValuesColumns.EXERCISE_NUMBER,ExerciseValuesColumns.ROUND_NUMBER, ExerciseValuesColumns.WEIGHT, ExerciseValuesColumns.REPS}, ExerciseValuesColumns.TRAINING_ID +" = '"+ID+"'",null,null,null,ExerciseValuesColumns.EXERCISE_NUMBER+", "+ExerciseValuesColumns.ROUND_NUMBER);
+        if (cursor!=null){
+            cursor.moveToFirst();
+        }
+        Training training= new Training();
+        for(int i=0;i<cursor.getCount();i++, cursor.moveToNext()){
+            training.add(cursor.getInt(3)-1,cursor.getInt(4)-1,new ExerciseValue(cursor.getInt(1),cursor.getInt(2),cursor.getInt(3),cursor.getInt(4), cursor.getDouble(5),cursor.getInt(6),context));
+        }
+        db.close();
+        return  training;
     }
     public ExerciseValue[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();

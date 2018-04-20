@@ -33,12 +33,23 @@ public class Training {
         exercises.add(index,new Exercise());
         exercises.get(index).rounds.add(0,exerciseValue);
     }
+    public void add(int index, int roundIndex, ExerciseValue exerciseValue){
+        if(exercises.size()-1!=index)exercises.add(index,new Exercise());
+        if(roundIndex>exercises.get(index).rounds.size()) roundIndex=0;
+        exercises.get(index).rounds.add(roundIndex,exerciseValue);
+    }
     public ArrayList<Exercise> getExercises() {
         return exercises;
     }
 
     public int size(){
         return exercises.size();
+    }
+    public int absoluteSize(){
+        for(int i=exercises.size();i>0;i--){
+            if(!exercises.get(i-1).isNull()) return i;
+        }
+        return -1;
     }
     public Exercise get(int index){
         return exercises.get(index);

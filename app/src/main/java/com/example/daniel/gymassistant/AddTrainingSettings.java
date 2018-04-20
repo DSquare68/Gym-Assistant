@@ -163,7 +163,6 @@ public class AddTrainingSettings extends AppCompatActivity {
         (new DateTraining(getApplicationContext())).getNearestTrainingDate(wt);
         AddTraining.exerciseValuesList.clear();
         AddTraining.exercises.clear();
-        AddTraining.numberOfExercises=0;
     }
     private void setCalendarListener(){
         final CalendarView.OnDateChangeListener myCalendarListener = new CalendarView.OnDateChangeListener(){
