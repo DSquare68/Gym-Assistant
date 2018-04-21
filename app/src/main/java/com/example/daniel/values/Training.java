@@ -41,7 +41,14 @@ public class Training {
     public ArrayList<Exercise> getExercises() {
         return exercises;
     }
-
+    public void toTraining(OldTraining[][] oldTrainings){
+        for(int i=0;i<oldTrainings.length;i++){
+            for(int j=0;j<oldTrainings[i].length;j++){
+                if(oldTrainings[i][j]==null)continue;
+                add(i,j,new ExerciseValue(oldTrainings[i][j].getExerciseID(),oldTrainings[i][j].getTrainingID(),i+1,oldTrainings[i][j].getRoundNumber(),oldTrainings[i][j].getWeight(),oldTrainings[i][j].getReps()));
+            }
+        }
+    }
     public int size(){
         return exercises.size();
     }

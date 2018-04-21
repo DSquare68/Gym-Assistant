@@ -61,13 +61,12 @@ public class StartTraining extends AppCompatActivity {
     Dialog dialog;
     LinearLayout stopWatch;
     RelativeLayout finishR;
-    OldTraining[][] oldTrainings;
     boolean isStopWatcherVisible =false;
     boolean isKeyboardVisible =false;
     boolean isNewTrainingOpening =false;
     boolean newTraining=false;
     boolean firstOpen=false;
-    Training trainingValues;
+    Training trainingValues, oldTraining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,7 +259,7 @@ public class StartTraining extends AppCompatActivity {
             trainingValues = exerciseValuesDatabase.getTrainingByID(trainingValue.getTrainingId());
         }
         DateTraining dateTraining = new DateTraining(this);
-        if(!newTraining) oldTrainings = dateTraining.lastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getName(), this);
+        if(!newTraining) oldTraining = dateTraining.getLastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getName(), this);
         for(int i = 0; i< trainingValue.getExerciseNumber(); i++) {
             exercises[i] = createExercise();
             fillRoundsWithHints(i,exercises[i]);
@@ -298,9 +297,9 @@ public class StartTraining extends AppCompatActivity {
                     reps.setHint(String.valueOf(Integer.valueOf(trainingValues.get(Training.REPS,i,0).toString())));
                     break;
                 case 3:
-                    if((oldTrainings==null)||(oldTrainings.length<i)|| oldTrainings[i].length>j&& oldTrainings[i][j]==null ||oldTrainings[i].length<=j)weight.setHint(String.valueOf(R.string.weight));else
-                        weight.setHint(String.valueOf(oldTrainings[i][j].getWeight()));
-                    if((oldTrainings==null)||(oldTrainings.length<i)|| oldTrainings[i].length>j&& oldTrainings[i][j]==null ||oldTrainings[i].length<=j)reps.setHint(String.valueOf(R.string.reps)); else reps.setHint(String.valueOf(oldTrainings[i][j].getReps()));
+                    if(oldTraining.size()==0||oldTraining.get(i).size()==0||oldTraining.get(i).size()-1<j)weight.setHint(String.valueOf(R.string.weight));else
+                        weight.setHint(String.valueOf(oldTraining.get(Training.WEIGHT,i,j).toString()));
+                    if(oldTraining.size()==0||oldTraining.get(i).size()==0||oldTraining.get(i).size()-1<j)reps.setHint(String.valueOf(R.string.reps)); else reps.setHint(String.valueOf(oldTraining.get(Training.REPS,i,j).toString()));
                     break;
                 case 4:
                     if(trainingValues.get(i).size()!=1) {
@@ -535,6 +534,30 @@ public class StartTraining extends AppCompatActivity {
         LinearLayout LL3 =LL.findViewById(R.id.rounds);
         LayoutInflater.from(this).inflate(R.layout.start_training_exercise_round,LL3,true);
         ((TextView) LL3.getChildAt(LL3.getChildCount()-1).findViewById(R.id.number_of_round)).setText(String.valueOf(LL3.getChildCount()));
+        int index =((LinearLayout) view.getParent()).indexOfChild(view);
+        int indexOfRound =LL3.getChildCount()-1;
+        switch(SettingsValues.getValue(SettingsValues.DISPLAY_TIPS,getApplicationContext())) {
+            case 1:
+                ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.weight)).setHint(R.string.weight);
+                ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.reps)).setHint(R.string.reps);
+                break;
+            case 2:
+                ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.weight)).setHint(String.valueOf(trainingValues.get(Training.WEIGHT,index,0)));
+                ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.reps)).setHint(String.valueOf(trainingValues.get(Training.REPS,index,0)));
+                break;
+            case 3:
+                if(oldTraining.size()==0||oldTraining.get(index).size()==0||oldTraining.get(index).size()-1<indexOfRound) ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.weight)).setHint(String.valueOf(R.string.weight)); else ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.weight)).setHint(String.valueOf(oldTraining.get(Training.WEIGHT,index,indexOfRound)));
+                if(oldTraining.size()==0||oldTraining.get(index).size()==0||oldTraining.get(index).size()-1<indexOfRound) ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.reps)).setHint(String.valueOf(R.string.weight)); else ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.reps)).setHint(String.valueOf(oldTraining.get(Training.REPS,index,indexOfRound)));
+                break;
+            case 4:
+                if(trainingValues.get(index).size()!=1) {
+                    ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.weight)).setHint(String.valueOf(trainingValues.get(Training.WEIGHT,index,indexOfRound)));
+                    ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.reps)).setHint(String.valueOf(trainingValues.get(Training.REPS,index,indexOfRound)));
+                } else {
+                    ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.weight)).setHint(String.valueOf(trainingValues.get(Training.WEIGHT,index,0)));
+                    ((TextView) LL3.getChildAt(LL3.getChildCount() - 1).findViewById(R.id.reps)).setHint(String.valueOf(trainingValues.get(Training.REPS,index,0)));
+                }
+        }
     }
 
 

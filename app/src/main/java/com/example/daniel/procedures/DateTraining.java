@@ -9,6 +9,7 @@ import com.example.daniel.database.dataoldtrainings.OldTrainingsDatabase;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValue;
 import com.example.daniel.database.trainings.trainingvalues.TrainingValuesDatabase;
 import com.example.daniel.gymassistant.R;
+import com.example.daniel.values.Training;
 
 
 import java.util.Date;
@@ -618,6 +619,27 @@ public class DateTraining {
         }
         return dstd.getAll(result[0],result[2]);
     }
+    public Training getLastTraining(String name, Context context){
+        OldTrainingsDatabase dstd = new OldTrainingsDatabase(context,name);
+        String[][] dane = dstd.getDateAndTime();
+        if (dane==null) return null;
+        dane = reverseTab(dane);
+        java.util.Date trainingDate= new java.util.Date();
+        java.util.Date last=null;
+        String[] result= new String[3];
+        for(int i=0;i<dane.length;i++){
+            last= readDateFromString(dane[i][0],dane[i][2]);
+            if (last.before(trainingDate)){
+                result=dane[i];
+                break;
+            }
+        }
+        OldTraining[][] oldTrainings= dstd.getAll(result[0],result[2]);
+        Training training = new Training();
+        training.toTraining(oldTrainings);
+        return training;
+    }
+
 
     private String[][] reverseTab(String[][] dane) {
         String[][] result = new String[dane.length][dane[0].length];
