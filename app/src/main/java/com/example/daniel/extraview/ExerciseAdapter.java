@@ -214,7 +214,7 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
                     training.align(position,1);
                 }  break;
                 case 3: if(!(charSequence.toString().equals(""))) training.set(Training.WEIGHT,Double.valueOf(charSequence.toString()),position,0);else training.set(Training.WEIGHT,Double.valueOf(0),position,0); break;
-                case 4: if(!(charSequence.toString().equals(""))) training.set(Training.REPS,Integer.valueOf(charSequence.toString()),position,0);else training.set(Training.REPS,Double.valueOf(0),position,0); break;
+                case 4: if(!(charSequence.toString().equals(""))) training.set(Training.REPS,Integer.valueOf(charSequence.toString()),position,0);else training.set(Training.REPS,Integer.valueOf(0),position,0); break;
             }
         }
 

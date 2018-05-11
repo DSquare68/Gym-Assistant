@@ -187,9 +187,9 @@ public class AddTrainingSettings extends AppCompatActivity {
                         break;
                     case 6: AddTrainingSettings.day =dniTyg[5];
                         break;
-
-
                 }
+                DateTraining dateTraining = new DateTraining(getApplicationContext());
+                AddTrainingSettings.date = dateTraining.getDate(data);
 
             }
         };

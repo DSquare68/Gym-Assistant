@@ -205,7 +205,7 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
     }
     public int[] getRoundsNumber(String data, String time){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query="SELECT "+OldTrainingsColumnNames.EXERCISE_ID+", MAX( "+OldTrainingsColumnNames.ROUND_NUMBER+" ) FROM "+"["+TABLE_NAME+"]"+" WHERE "+OldTrainingsColumnNames.DATE+" = '"+data+"' AND "+OldTrainingsColumnNames.TIME+"= '"+time+"' GROUP BY "+OldTrainingsColumnNames.EXERCISE_ID+" ORDER BY +"+OldTrainingsColumnNames.EXERCISE_ID;
+        String query="SELECT "+OldTrainingsColumnNames.EXERCISE_ID+", MAX( "+OldTrainingsColumnNames.ROUND_NUMBER+" ) FROM "+"["+TABLE_NAME+"]"+" WHERE "+OldTrainingsColumnNames.DATE+" = '"+data+"' AND "+OldTrainingsColumnNames.TIME+"= '"+time+"' GROUP BY "+OldTrainingsColumnNames.EXERCISE_ID+" ORDER BY +"+OldTrainingsColumnNames.EXERCISE_ID+" DESC";
         Cursor cursor = db.rawQuery(query,null);
         int i=0;
         int[] count= new int[cursor.getCount()];

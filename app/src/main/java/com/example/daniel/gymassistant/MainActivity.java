@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void synchOpen(View view) {
+        Intent intent = new Intent(this, Synch.class);
+        startActivity(intent);
     }
 
     public void optionsOpen(View view) {
