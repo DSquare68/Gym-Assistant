@@ -33,6 +33,9 @@ public class Training {
         exercises.add(index,new Exercise());
         exercises.get(index).rounds.add(0,exerciseValue);
     }
+    public void add(int index,Exercise exercise){
+        exercises.add(index,exercise);
+    }
     public void add(int index, int roundIndex, ExerciseValue exerciseValue){
         if(exercises.size()-1!=index)exercises.add(index,new Exercise());
         if(roundIndex>exercises.get(index).rounds.size()) roundIndex=0;

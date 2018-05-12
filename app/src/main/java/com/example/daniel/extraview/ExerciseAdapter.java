@@ -40,19 +40,22 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
     private LayoutInflater inflater;
     private ItemClickCallback itemClickCallback;
     Context context;
-    RecyclerView.Adapter<ExerciseAdapter.ExerciseHolder> adapter;
     Slider slider = new Slider();
     public ExerciseAdapter(List<ExerciseValue> moviesList, Context c) {
         training = new Training();
         this.training.setExercises(moviesList);
         this.inflater = LayoutInflater.from(c);
         this.context=c;
-        adapter=this;
     }
 
     public void setItem(ExerciseValue exerciseValue, int firstFree) {
         //training.set(firstFree, exerciseValue);
     }
+
+    public void clearLast() {
+
+    }
+
     public interface ItemClickCallback {
         void onItemClick(int p);
         void onSecondaryIconClick(int p);
@@ -306,7 +309,8 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
                 holder.dropSetListener[i][j].updateView(holder.view);
             }
         }
-        if(!String.valueOf(training.get(Training.NAME,holder.getPosition(),0)).equals("null")&&!training.get(Training.NAME,holder.getPosition(),0).equals(null))holder.title.setText(String.valueOf(training.get(Training.NAME,holder.getPosition(),0)));
+        if(!String.valueOf(training.get(Training.NAME,holder.getPosition(),0)).equals("null")&&!training.get(Training.NAME,holder.getPosition(),0).equals(null))
+            holder.title.setText(String.valueOf(training.get(Training.NAME,holder.getPosition(),0))); else holder.title.setText("");
         //TODO maybe something add
         if(Double.valueOf(training.get(Training.WEIGHT,holder.getPosition(),0).toString())!=0)holder.weightET.setText(String.valueOf(training.get(Training.WEIGHT,holder.getPosition(),0).toString()));
         if(Integer.valueOf(training.get(Training.REPS,holder.getPosition(),0).toString())!=0)holder.repsET.setText(String.valueOf(training.get(Training.REPS,holder.getPosition(),0).toString()));

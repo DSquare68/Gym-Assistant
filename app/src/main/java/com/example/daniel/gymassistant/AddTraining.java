@@ -50,6 +50,7 @@ import com.example.daniel.extraview.ExerciseAdapter;
 import com.example.daniel.extraview.Slider;
 import com.example.daniel.values.AddTrainingValues;
 import com.example.daniel.values.Resolution;
+import com.example.daniel.values.StackAddT;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
 
     static ExerciseDatabase exerciseDatabase;
     static TrainingNamesDatabase trainingNamesDatabase;
+    static StackAddT stackAddT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +107,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         addContentView(buttonsLayout,buttonsLayout.getLayoutParams());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         isKeyboardVisible();
+        stackAddT= new StackAddT(12);
     }
 
     private void setOnTextChangeListener(int i) {
@@ -283,6 +286,16 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         mActionBarToolbar = (Toolbar) parentLayout.getChildAt(0);
         setSupportActionBar(mActionBarToolbar);
         getSupportActionBar().setTitle(defaultTrainingName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+
+            }
+        });
         switch(openMode) {
             case 1: mActionBarToolbar.setOnLongClickListener(setOnLongClickListenerToolbar());break;
             case 2: break;
@@ -471,13 +484,25 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
     }
 
     private void deleteItem(final int position) {
+        stackAddT.push(ExerciseAdapter.training.getExercises().get(position));
         ExerciseAdapter.training.getExercises().remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyItemRangeChanged(position, adapter.training.size()-1);
     }
     public void addExercise(View view){
         addItemToList();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if(!stackAddT.isEmpty()) {
+            adapter.training.add(adapter.training.size(), stackAddT.pop());
+            adapter.notifyItemInserted(adapter.training.size()-1);
+        } else {
+            super.onBackPressed();
+        }
+    }
     @Override
     public void onItemClick(int p) {
         Exercise item = (Exercise) listData.get(p);

@@ -3,20 +3,21 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 public class StackAddT {
-    ArrayList<Training> sp = new ArrayList<>();
+    ArrayList<Training.Exercise> sp = new ArrayList<>();
     private int maxSize;
     private int top;
 
     public StackAddT(int maxSize){
         top=-1;
+        this.maxSize=maxSize;
     }
-    public void push(Training training) {
-        sp.set(++top,training);
+    public void push(Training.Exercise exercise) {
+        sp.add(++top,exercise);
     }
-    public Training pop() {
+    public Training.Exercise pop() {
         return sp.get(top--);
     }
-    public Training peek() {
+    public Training.Exercise peek() {
         return sp.get(top);
     }
     public boolean isEmpty() {
