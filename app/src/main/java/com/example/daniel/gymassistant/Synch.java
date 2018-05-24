@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.daniel.values.SynchSocket;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -39,23 +41,8 @@ public class Synch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_synch);
-        USBSocket usbThread = new USBSocket();
+        SynchSocket usbThread = new SynchSocket(getApplicationContext());
         usbThread.start();
     }
-    class USBSocket extends Thread{
-        @Override
-        public void run() {
-            super.run();
-            Socket clientSock=null;
-            try {
-                clientSock= new Socket("localhost" ,38300);
-                DataInputStream dInKlient = new DataInputStream(clientSock.getInputStream());
-                DataOutputStream dOutKlient = new DataOutputStream(clientSock.getOutputStream());
-                Log.d("bool",String.valueOf(dInKlient.readBoolean()));
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

@@ -4,10 +4,17 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.daniel.database.exercise.name.Exercise;
 import com.example.daniel.database.exercise.name.ExerciseColumnNames;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Created by Daniel on 2017-04-07.
@@ -109,6 +116,39 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         Exercise exercise = new Exercise(cursor.getString(1));
         return  exercise;
     }
+    public File getCSV(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ExerciseColumnNames.TABLE_NAME,null);
+        FileOutputStream outputStream;
+
+        if(!cursor.moveToFirst()){
+            // something went wrong - bad sql or no results
+        }
+
+        File file = new File(Context.getFilesDir(), "exerciseNames.csv");
+        try {
+            outputStream = new FileOutputStream(file, true);
+            do{
+                outputStream.write(cursor.getString(0).getBytes());
+                outputStream.write(",".getBytes());
+                outputStream.write(cursor.getString(1).getBytes());
+                outputStream.write(",".getBytes());
+                outputStream.write("\n".getBytes());
+
+
+            } while(cursor.moveToNext());
+
+            outputStream.flush();
+            outputStream.close();
+
+
+        } catch (Exception e){
+
+            e.printStackTrace();
+        }
+        cursor.close();
+        return file;
+    }
     public Exercise[] getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -118,11 +158,15 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         }
         Exercise[] exercises = new Exercise[cursor.getCount()];
         for(int i=0;i<cursor.getCount();i++){
-            exercises[i] = new Exercise(cursor.getString(1));
+            exercises[i] = new Exercise(cursor.getInt(0),cursor.getString(1));
             cursor.moveToNext();
         }
 
         return  exercises;
+    }
+    public String getDB() {
+        return Context.getDatabasePath("exercise.db").toString();
+
     }
     public void delete(int ID){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -146,4 +190,6 @@ public class ExerciseDatabase extends SQLiteOpenHelper {
         cursor.close();
         return result;
     }
+
+
 }

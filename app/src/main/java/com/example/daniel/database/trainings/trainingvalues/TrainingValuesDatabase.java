@@ -171,6 +171,9 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         db.close();
         return  trainingValues;
     }
+    public String getDB() {
+        return context.getDatabasePath("trainings.db").toString();
+    }
     public void deleteTrainingValueByID(int ID){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TrainingValuesColumns.TABLE_NAME, TrainingValuesColumns._ID+" =?", new String[]{String.valueOf(ID)});
@@ -197,6 +200,7 @@ public class TrainingValuesDatabase extends SQLiteOpenHelper {
         // return count
         return cursor.getCount();
     }
+
 
 
 }

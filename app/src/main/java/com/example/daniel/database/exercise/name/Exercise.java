@@ -10,6 +10,10 @@ public class Exercise {
     private String name;
     private int ID;
 
+    public Exercise(int i, String n){
+        this.ID=i;
+        this.name =n;
+    }
     public Exercise(String n){
         this.name =n;
     }

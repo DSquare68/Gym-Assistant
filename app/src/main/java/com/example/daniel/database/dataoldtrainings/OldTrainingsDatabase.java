@@ -309,4 +309,7 @@ public class OldTrainingsDatabase extends SQLiteOpenHelper{
         }
         return result;
     }
+    public String getDB() {
+        return context.getDatabasePath("old_trainings.db").toString();
+    }
 }
