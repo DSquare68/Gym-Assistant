@@ -1,6 +1,10 @@
 package com.example.daniel.values;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.daniel.database.dataoldtrainings.OldTrainingsDatabase;
@@ -20,6 +24,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
+import static java.nio.file.StandardCopyOption.*;
 
 public class SynchSocket  extends Thread{
     private Context context;
@@ -47,7 +56,35 @@ public class SynchSocket  extends Thread{
     }
     public void synchExerciseNames(Socket socket){
         ExerciseDatabase exerciseDatabase = new ExerciseDatabase(context);
-        sendFile(exerciseDatabase.getDB(),socket);
+        copyFile("kopia.db",exerciseDatabase.getDB());
+        try {
+            dOutClient.writeBoolean(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //sendFile(exerciseDatabase.getDB(),socket);
+
+    }
+
+    private void copyFile(String path, String source) {
+        try{
+            FileInputStream fOutKlient = new FileInputStream(source);
+            File file = new File("/storage/sdcard0/test/", path);
+            file.createNewFile();
+            FileOutputStream fInKlient = new FileOutputStream(file);
+
+            FileChannel src = fOutKlient.getChannel();
+            FileChannel dst = fInKlient.getChannel();
+            dst.transferFrom(src, 0, src.size());
+
+            src.close();
+            dst.close();
+
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+                    Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void synchTrainingNames(Socket socket){
@@ -61,9 +98,7 @@ public class SynchSocket  extends Thread{
         sendFile(oldTrainingsDatabase.getDB(),socket);
 
     }
-    public void  sendTable(){
 
-    }
     public void sendFile(String path,Socket socket){
         if (path.equals(null)) return;
         try {
