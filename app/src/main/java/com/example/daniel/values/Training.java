@@ -61,6 +61,11 @@ public class Training {
         }
         return -1;
     }
+    public boolean isEmpty(int exercise){
+        if((exercises.get(exercise).get().get(0).getName()==null||exercises.get(exercise).get().get(0).getName().equals("null")||exercises.get(exercise).get().get(0).getName().equals(""))&&exercises.get(exercise).get().get(0).getNameID()==0&&exercises.get(exercise).get().get(0).getRoundNumber()==0&&
+                exercises.get(exercise).get().get(0).getExerciseNumber()==0&&exercises.get(exercise).get().get(0).getReps()==0&&exercises.get(exercise).get().get(0).getWeight()==0.0&&(exercises.get(exercise).get().get(0).getTrainingName()==null||exercises.get(exercise).get().get(0).getTrainingName().equals("null"))&&exercises.get(exercise).get().get(0).getTrainingID()==0) return true; else return false;
+
+    }
     public Exercise get(int index){
         return exercises.get(index);
     }
@@ -129,9 +134,20 @@ public class Training {
                 if(rounds.indexOf(r)!=0) rounds.remove(r);
             }
         }
-        public boolean isNull(){
-            if(rounds.equals(null)||(rounds.size()==1&&rounds.get(0).getName()==null&&rounds.get(0).getNameID()==0&&rounds.get(0).getRoundNumber()==0&&
-                    rounds.get(0).getExerciseNumber()==0&&rounds.get(0).getReps()==0&&rounds.get(0).getWeight()==0.0&&rounds.get(0).getTrainingName()==null&&rounds.get(0).getTrainingID()==0)) return true; else return false;
+        public boolean isNull() {
+            if (rounds.equals(null) ||
+                    (rounds.size() == 1 && (rounds.get(0).getName() == null || rounds.get(0).getName().equals("")) && rounds.get(0).getNameID() == 0 && rounds.get(0).getRoundNumber() == 0 &&
+                            rounds.get(0).getExerciseNumber() == 0 && rounds.get(0).getReps() == 0 && rounds.get(0).getWeight() == 0.0 && (rounds.get(0).getTrainingName() == null || rounds.get(0).getTrainingName().equals("null")) && rounds.get(0).getTrainingID() == 0))
+                return true;
+            else return false;
+        }
+
+        public ArrayList<ExerciseValue> getRounds() {
+            return rounds;
+        }
+
+        public ArrayList<ExerciseValue> get(){
+            return rounds;
         }
     }
     /*class Round extends ExerciseValue{

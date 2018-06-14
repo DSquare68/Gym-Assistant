@@ -261,6 +261,7 @@ public class StartTraining extends AppCompatActivity {
         DateTraining dateTraining = new DateTraining(this);
         if(!newTraining) oldTraining = dateTraining.getLastTraining(trainingNamesDatabase.getTrainingName(trainingValue.getTrainingId()).getName(), this);
         for(int i = 0; i< trainingValue.getExerciseNumber(); i++) {
+            if(trainingValues.size()-1<i) break;
             exercises[i] = createExercise();
             fillRoundsWithHints(i,exercises[i]);
         }
@@ -270,6 +271,7 @@ public class StartTraining extends AppCompatActivity {
         if(newTraining) finishR.findViewById(R.id.add_exercise_button).setVisibility(View.VISIBLE);
         Finished.setOnClickListener(setFinishedOnClickListener());
         for(int i = 0; i< trainingValue.getExerciseNumber(); i++) {
+            if(trainingValues.size()-1<i) break;
             LL.addView(exercises[i]);
         }
     }

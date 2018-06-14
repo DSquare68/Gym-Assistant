@@ -87,7 +87,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         trainingNamesDatabase = new TrainingNamesDatabase(getApplicationContext());
         parentLayout =(LinearLayout) View.inflate(this,R.layout.activity_add_training,null);
         parentLayout.setOrientation(LinearLayout.VERTICAL);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setToolbar();
         setDialogValues();
         switch(openMode){
@@ -403,7 +403,8 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             {
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
             }
-            lpScroll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(int) (measureRect.bottom/3.2), getResources().getDisplayMetrics()));
+            Log.d("pixels",String.valueOf(measureRect));
+            lpScroll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,(int) (measureRect.bottom/2.2), getResources().getDisplayMetrics()));
         }
         recyclerViewLinearLayout.setLayoutParams(lpScroll);
         recyclerView.setLayoutParams(lpScroll);
@@ -557,6 +558,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         recyclerView.scrollToPosition(0);
         for(int i=0;i<adapter.training.size();i++) {
             if (!adapter.training.get(i).isNull()) {
+                if(adapter.training.isEmpty(i)) continue;
                 String name = null;
                 name = adapter.training.getRound(i, 0).getName();
                 for (int j = 0; j < adapter.training.get(i).size(); j++) {
