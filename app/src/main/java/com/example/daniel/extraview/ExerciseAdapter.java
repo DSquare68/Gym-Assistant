@@ -26,6 +26,7 @@ import com.example.daniel.values.Training;
 
 
 import java.util.List;
+import java.util.Collections;
 
 /**
  * Created by Daniel on 2017-04-05.
@@ -309,6 +310,7 @@ public  class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerc
                 holder.dropSetListener[i][j].updateView(holder.view);
             }
         }
+
         if(!String.valueOf(training.get(Training.NAME,holder.getPosition(),0)).equals("null")&&!training.get(Training.NAME,holder.getPosition(),0).equals(null))
             holder.title.setText(String.valueOf(training.get(Training.NAME,holder.getPosition(),0))); else holder.title.setText("");
         //TODO maybe something add

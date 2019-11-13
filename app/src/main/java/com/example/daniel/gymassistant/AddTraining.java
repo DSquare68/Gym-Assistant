@@ -99,10 +99,10 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
                 openFromProgress();
                 break;
         }
-        for(int i=0 ; i<recyclerView.getChildCount();i++) {
-            if (AddTrainingValues.DROP_SET)
-                setOnTextChangeListener(i);
-        }
+      //  for(int i=0 ; i<recyclerView.getChildCount();i++) {
+        //    if (AddTrainingValues.DROP_SET)
+          //      setOnTextChangeListener(i);
+       // }
         setContentView(parentLayout);
         addContentView(buttonsLayout,buttonsLayout.getLayoutParams());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -110,7 +110,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
         stackAddT= new StackAddT(12);
     }
 
-    private void setOnTextChangeListener(int i) {
+    /*private void setOnTextChangeListener(int i) {
         ((EditText)(( recyclerView.getChildAt(i)).findViewById(R.id.exercise_values)).findViewById(R.id.round_number_edit_text)).addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -131,6 +131,7 @@ public class AddTraining extends AppCompatActivity implements ExerciseAdapter.It
             }
         });
     }
+    */
 
     private void openFromProgress() {
     }

@@ -12,9 +12,5 @@
         android:layout_height="match_parent"
         android:id="@+id/rec_list"
         android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:isScrollContainer="false"
-        >
-
-    </android.support.v7.widget.RecyclerView>
+        android:scrollbars="vertical" />
 </LinearLayout>
