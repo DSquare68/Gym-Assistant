@@ -21,35 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Settings"
-            android:label="@string/settings"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AddTraining"
-            android:label="@string/title_activity_add_training"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AddTrainingSettings"
-            android:label="@string/title_activity_add_training_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".StartTraining"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Statistics"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Timetable"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".StatisticsCompareTraining"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".StatisticsCompareExercise"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Synch"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
