@@ -242,4 +242,7 @@
     <string name="title_activity_add_training">AddTraining</string>
     <string name="title_activity_add_training_settings">AddTrainingSettings</string>
     <string name="title_activity_start_training">StartTraining</string>
+    <string name="home">Home</string>
+    <string name="show_training">Show training</string>
+    <string name="first_and_last_name">Danny Boar</string>
 </resources>

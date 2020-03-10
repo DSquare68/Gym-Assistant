@@ -3,12 +3,16 @@
 
     <group android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/menu_home"
+            android:title="@string/home"/>
 
-
-        <item android:id="@+id/nav_posts"
-            android:title="posts"/>
+        <item android:id="@+id/menu_add_training"
+            android:title="@string/add_training"/>
+        <item android:id="@+id/menu_training"
+            android:title="@string/training"/>
+        <item android:id="@+id/menu_show_training"
+            android:title="@string/show_training"/>
     </group>
-    <item
-        android:id="@id/profileScreen"
-        android:title="profile"/>
+
 </menu>

@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -43,30 +44,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         parent = (DrawerLayout) View.inflate(this,R.layout.activity_main,null);
         setContentView(parent);
 
-        navigationView = findViewById(R.id.nav_view);
+        navigationView =(NavigationView) findViewById(R.id.nav_view);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu_white);
 
-
         init();
     }
 
     private void init(){
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, parent);
 
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
 
         appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())
                         .setDrawerLayout(parent)
                         .build();
 
-        NavigationUI.setupWithNavController(navigationView, navController);
+        //NavigationUI.setupWithNavController(navigationView, navController);
 
     }
     @Override
@@ -78,19 +78,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        item.setChecked(true);
+        Log.d("asdfdas","adfssadf");
         switch (item.getItemId()){
-
-
-
-            case R.id.nav_posts:{
-
-
-
+            case R.id.menu_home:
+                return true;
+            case R.id.menu_add_training:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_add_training);
                 break;
-            }
+            case R.id.menu_training:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_training);
+                break;
+            case R.id.menu_show_training:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_show_training);
+                break;
         }
 
-        item.setChecked(true);
+
         parent.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -100,5 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 
 }
