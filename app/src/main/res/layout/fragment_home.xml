@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_home">
+    android:orientation="vertical">
 
 
     <TextView
@@ -13,9 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="TextView"
         android:textSize="28sp"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="40dp"
-        tools:text="@string/first_and_last_name" />
-</LinearLayout>
+        android:text="@string/first_and_last_name" />
+</FrameLayout>
