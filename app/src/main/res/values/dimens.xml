@@ -11,4 +11,7 @@
     <dimen name="stopwatch_buttons_dim">60dp</dimen>
     <dimen name="round_number">30dp</dimen>
     <dimen name="min_round_value_width">130dp</dimen>
+    <dimen name="add_delete_round_icon_size">45dp</dimen>
+    <dimen name="add_delete_round_container_width">50dp</dimen>
+    <dimen name="add_delete_round_container_height">100dp</dimen>
 </resources>
