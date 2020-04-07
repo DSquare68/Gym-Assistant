@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_margin="5dp"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/trainingName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:text="klata plecy barki"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/Time_of_Training"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="15:50"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/Duration_of_Training"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="1:15:30"
+        android:textSize="20dp" />
+</LinearLayout>
