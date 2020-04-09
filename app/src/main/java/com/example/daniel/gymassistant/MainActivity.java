@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setDrawerLayout(parent)
                         .build();
 
-        NavigationUI.setupWithNavController(navigationView, navController);
+        //NavigationUI.setupWithNavController(navigationView, navController);
 
     }
 

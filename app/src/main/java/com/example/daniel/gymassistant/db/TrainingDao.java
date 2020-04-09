@@ -14,18 +14,18 @@ import java.util.List;
 public abstract interface TrainingDao {
 
     @Query("SELECT * FROM training")
-    List<Exercise> getAll();
+    List<Training> getAll();
 
     @Query("SELECT * FROM training WHERE _ID IN (:exerciseIds)")
-    List<Exercise> loadAllByIds(int[] exerciseIds);
+    List<Training> loadAllByIds(int[] exerciseIds);
 
     @Query("SELECT * FROM training WHERE  exercises = :first")
-    Exercise findByExercise(int first);
+    Training findByExercise(int first);
 
     @Insert
-    void insertAll(Exercise... exercises);
+    void insertAll(Training... exercises);
 
     @Delete
-    void delete(Exercise user);
+    void delete(Training user);
 
 }
