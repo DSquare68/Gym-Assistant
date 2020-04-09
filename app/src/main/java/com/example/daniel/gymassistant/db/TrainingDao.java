@@ -1,6 +1,7 @@
 package com.example.daniel.gymassistant.db;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Entity;
 import androidx.room.Insert;
@@ -9,7 +10,8 @@ import androidx.room.Query;
 
 import java.util.List;
 
-public interface TrainingDao {
+@Dao
+public abstract interface TrainingDao {
 
     @Query("SELECT * FROM training")
     List<Exercise> getAll();
