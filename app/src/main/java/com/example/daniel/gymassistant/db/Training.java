@@ -10,6 +10,9 @@ public class Training {
     @PrimaryKey(autoGenerate = true)
     public int _ID;
 
+    @ColumnInfo(name = "training_info_ID")
+    public int trainingInfoID;
+
     @ColumnInfo(name = "exercises")
     public int exercises;
 

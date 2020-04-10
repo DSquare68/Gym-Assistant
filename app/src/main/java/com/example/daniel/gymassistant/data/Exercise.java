@@ -1,9 +1,9 @@
 package com.example.daniel.gymassistant.data;
 
 public class Exercise {
-    public int _ID;
-    public String name;
-    public String language;
+    private int _ID;
+    private String name;
+    private String language;
 
     public Exercise(int _ID, String name, String language) {
         this._ID = _ID;

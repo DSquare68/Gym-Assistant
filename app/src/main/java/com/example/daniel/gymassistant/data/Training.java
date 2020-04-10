@@ -6,8 +6,8 @@ import java.util.Map;
 public class Training {
 
     private int _ID;
-    ArrayList<String> exercises;
-    Map<String,ArrayList<Round>> rounds;
+    private ArrayList<String> exercises;
+    private Map<String,ArrayList<Round>> rounds;
 
     public Training(int _ID, ArrayList<String> exercises, Map<String, ArrayList<Round>> rounds) {
         this._ID = _ID;
