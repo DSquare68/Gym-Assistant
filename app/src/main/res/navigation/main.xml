@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/profile_add_training"
-        android:name="com.example.daniel.gymassistant.ui.AddTreningFragment"
+        android:name="com.example.daniel.gymassistant.ui.AddTrainingFragment"
         android:label="profile"
         tools:layout="@layout/fragment_add_training">
         <action android:id="@+id/action_add_training_to_home"

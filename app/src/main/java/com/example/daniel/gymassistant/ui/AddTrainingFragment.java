@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.daniel.gymassistant.R;
 
-public class AddTreningFragment extends Fragment {
+public class AddTrainingFragment extends Fragment {
 
     @Nullable
     @Override
