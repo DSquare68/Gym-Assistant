@@ -245,4 +245,6 @@
     <string name="home">Home</string>
     <string name="show_training">Show training</string>
     <string name="first_and_last_name">Danny Boar</string>
+    <string name="use_existing_exercise">Use existing exercise</string>
+    <string name="modify">modify</string>
 </resources>
