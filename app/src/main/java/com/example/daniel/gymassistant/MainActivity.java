@@ -3,9 +3,9 @@ package com.example.daniel.gymassistant;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,7 +17,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.room.Room;
 
+import com.example.daniel.gymassistant.db.AppDatabase;
+import com.example.daniel.gymassistant.db.Exercise;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
@@ -43,6 +46,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu_white);
 
         init();
+        firstRun();
+    }
+
+    private void firstRun() {
+        if(SettingsValues.getValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext())==1){
+            Toast toast = Toast.makeText(getApplicationContext(),getResources().getString(R.string.welcome),Toast.LENGTH_LONG);
+            toast.show();
+            SettingsValues.setValue(SettingsValues.FIRST_OPEN_APP,getApplicationContext(),-1);
+            final AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, AppDatabase.DB_NAME).build();
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < ExerciseNames.exerciseNames.length; i++) {
+                        db.exerciseDao().insert(new Exercise(ExerciseNames.exerciseNames[i]));
+                    }
+                }
+            });
+            t.start();
+        }
     }
 
     private void init() {
