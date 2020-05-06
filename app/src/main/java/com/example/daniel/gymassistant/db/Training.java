@@ -28,5 +28,7 @@ public class Training {
     @ColumnInfo(name = "series")
     public double series;
 
+    @ColumnInfo(name ="template_number")
+    public int template;
 }
 

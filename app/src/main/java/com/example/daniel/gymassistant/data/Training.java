@@ -8,6 +8,7 @@ public class Training {
     private int _ID;
     private ArrayList<String> exercises;
     private Map<String,ArrayList<Round>> rounds;
+    private boolean templete;
 
     public Training(int _ID, ArrayList<String> exercises, Map<String, ArrayList<Round>> rounds) {
         this._ID = _ID;
@@ -21,6 +22,14 @@ public class Training {
 
     public void set_ID(int _ID) {
         this._ID = _ID;
+    }
+
+    public boolean isTemplete() {
+        return templete;
+    }
+
+    public void setTemplete(boolean templete) {
+        this.templete = templete;
     }
 
     public ArrayList<String> getExercises() {

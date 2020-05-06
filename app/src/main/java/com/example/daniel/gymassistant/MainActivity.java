@@ -22,7 +22,7 @@ import androidx.room.Room;
 import com.example.daniel.gymassistant.db.AppDatabase;
 import com.example.daniel.gymassistant.db.Exercise;
 import com.google.android.material.navigation.NavigationView;
-
+import com.example.daniel.gymassistant.ExerciseNames;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
