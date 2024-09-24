@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant;
+package pl.dsquare.gymassistant;
 
 
 import android.os.Build;
@@ -19,11 +19,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.room.Room;
 
-import com.example.daniel.gymassistant.db.AppDatabase;
-import com.example.daniel.gymassistant.db.Exercise;
+import pl.dsquare.gymassistant.db.AppDatabase;
+import pl.dsquare.gymassistant.db.Exercise;
 import com.google.android.material.navigation.NavigationView;
-import com.example.daniel.gymassistant.ExerciseNames;
+import pl.dsquare.gymassistant.ExerciseNames;
 import java.util.Objects;
+import pl.dsquare.gymassistant.R.*;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -95,21 +96,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
-        switch (item.getItemId()) {
-            case R.id.menu_home:
-                break;
-            case R.id.menu_add_training:
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_add_training);
-                break;
-            case R.id.menu_training:
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_training);
-                break;
-            case R.id.menu_show_training:
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_show_training);
-                break;
-        }
-
-
+        if(item.getItemId()==R.id.menu_home)
+            return true;
+        else if(item.getItemId()== id.menu_add_training)
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_add_training);
+        else if(item.getItemId()== id.menu_training)
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_training);
+        else if(item.getItemId()== id.menu_show_training)
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_show_training);
         parent.closeDrawer(GravityCompat.START);
         return true;
     }

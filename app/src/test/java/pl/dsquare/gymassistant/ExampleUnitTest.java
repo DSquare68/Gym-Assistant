@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant;
+package pl.dsquare.gymassistant;
 
 import org.junit.Test;
 

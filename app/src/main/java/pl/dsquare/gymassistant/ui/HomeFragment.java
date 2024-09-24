@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant.ui;
+package pl.dsquare.gymassistant.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.daniel.gymassistant.R;
+import pl.dsquare.gymassistant.R;
 
 public class HomeFragment extends androidx.fragment.app.Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant.db;
+package pl.dsquare.gymassistant.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -13,6 +13,11 @@ public class Exercise {
     @ColumnInfo(name = "name")
     public String name;
 
-    @ColumnInfo(name = "language")
-    public String language;
+    //@ColumnInfo(name = "language")
+    //public String language;
+
+    public Exercise(String name) {
+        this.name=name;
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant.db;
+package pl.dsquare.gymassistant.db;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

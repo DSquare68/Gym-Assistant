@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant.ui;
+package pl.dsquare.gymassistant.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.daniel.gymassistant.R;
+import pl.dsquare.gymassistant.R;
 
-public class ShowTrainingFragment extends Fragment {
+public class TrainingFragment extends Fragment {
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_show_training,container,false);
+        return inflater.inflate(R.layout.fragment_training,container,false);
     }
+    
 }

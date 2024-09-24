@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant;
+package pl.dsquare.gymassistant;
 
 /**
  * Created by Daniel on 2017-08-10.

@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant.data;
+package pl.dsquare.gymassistant.data;
 
 import java.sql.Date;
 

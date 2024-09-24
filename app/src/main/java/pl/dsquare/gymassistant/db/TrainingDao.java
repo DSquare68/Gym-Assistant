@@ -1,4 +1,4 @@
-package com.example.daniel.gymassistant.db;
+package pl.dsquare.gymassistant.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;

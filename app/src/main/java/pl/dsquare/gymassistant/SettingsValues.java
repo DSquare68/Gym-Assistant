@@ -1,10 +1,9 @@
-package com.example.daniel.gymassistant;
+package pl.dsquare.gymassistant;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.daniel.gymassistant.R;
-
+import pl.dsquare.gymassistant.R;
 /**
  * Created by Daniel on 2018-02-05.
  */
