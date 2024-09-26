@@ -10,7 +10,7 @@
     <string name="sort">Sort by</string>
     <string name="delete_all">Delete all</string>
     <string name="delete_training">Delete training</string>
-    <string name="add_training">Add training</string>
+    <string name="add_training">Dodaj szablon</string>
     <string name="welcome">WELCOME</string>
     <string name="exercise">Exercise</string>
     <string name="change_mode">Change mode</string>
@@ -25,7 +25,7 @@
         <item>Name</item>
     </string-array>
     <string name="what_training_name_question">A title of training</string>
-    <string name="training">Training</string>
+    <string name="training">Trenuj</string>
     <string name="round_number">Round number</string>
     <string name="repetition">Repetition</string>
     <string name="choose_day">Choose day</string>
@@ -243,7 +243,7 @@
     <string name="title_activity_add_training_settings">AddTrainingSettings</string>
     <string name="title_activity_start_training">StartTraining</string>
     <string name="home">Home</string>
-    <string name="show_training">Show training</string>
+    <string name="show_training">Zaplanuj</string>
     <string name="first_and_last_name">Danny Boar</string>
     <string name="use_existing_exercise">Use existing exercise</string>
     <string name="modify">modify</string>

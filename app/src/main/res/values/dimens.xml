@@ -14,4 +14,6 @@
     <dimen name="add_delete_round_icon_size">45dp</dimen>
     <dimen name="add_delete_round_container_width">50dp</dimen>
     <dimen name="add_delete_round_container_height">100dp</dimen>
+    <dimen name="image_activity_main">125dp</dimen>
+    <dimen name="main_activity_space">25dp</dimen>
 </resources>

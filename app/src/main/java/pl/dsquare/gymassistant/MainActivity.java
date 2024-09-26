@@ -1,17 +1,16 @@
 package pl.dsquare.gymassistant;
 
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,34 +18,29 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.room.Room;
 
+import pl.dsquare.gymassistant.activity.CreateTrainingActivity;
+import pl.dsquare.gymassistant.activity.SheduleActivity;
+import pl.dsquare.gymassistant.activity.TrainActivity;
 import pl.dsquare.gymassistant.db.AppDatabase;
 import pl.dsquare.gymassistant.db.Exercise;
 import com.google.android.material.navigation.NavigationView;
-import pl.dsquare.gymassistant.ExerciseNames;
+
 import java.util.Objects;
-import pl.dsquare.gymassistant.R.*;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout parent;
-    private NavigationView navigationView;
+    private ConstraintLayout parent;
     private AppBarConfiguration appBarConfiguration;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (DrawerLayout) View.inflate(this, R.layout.activity_main, null);
+        parent = (ConstraintLayout) View.inflate(this, R.layout.activity_main, null);
         setContentView(parent);
-
-        navigationView = findViewById(R.id.nav_view);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu_white);
-
-        init();
         firstRun();
     }
 
@@ -60,30 +54,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < ExerciseNames.exerciseNames.length; i++) {
-                        db.exerciseDao().insert(new Exercise(ExerciseNames.exerciseNames[i]));
+                    for (int i = 0; i < pl.dsquare.gymassistant.ExerciseNames.exerciseNames.length; i++) {
+                        db.exerciseDao().insert(new Exercise(pl.dsquare.gymassistant.ExerciseNames.exerciseNames[i]));
                     }
                 }
             });
             t.start();
         }
-    }
-
-    private void init() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, parent);
-
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.bringToFront();
-
-        appBarConfiguration =
-                new AppBarConfiguration.Builder(navController.getGraph())
-                        .setDrawerLayout(parent)
-                        .build();
-
-        NavigationUI.setupWithNavController(navigationView, navController);
-        navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -96,15 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         item.setChecked(true);
-        if(item.getItemId()==R.id.menu_home)
-            return true;
-        else if(item.getItemId()== id.menu_add_training)
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_add_training);
-        else if(item.getItemId()== id.menu_training)
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_training);
-        else if(item.getItemId()== id.menu_show_training)
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_home_to_show_training);
-        parent.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -115,5 +84,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || super.onSupportNavigateUp();
     }
 
+    public void create(View v){
+        Intent i = new Intent(this,CreateTrainingActivity.class);
+        startActivity(i);
+    }
 
+    public void train(View v){
+        Intent i = new Intent(this, TrainActivity.class);
+        startActivity(i);
+    }
+
+    public void shedule(View v){
+        Intent i = new Intent(this, SheduleActivity.class);
+        startActivity(i);
+    }
+
+    public void progress(View v){
+        Intent i = new Intent(this, Process.class);
+        startActivity(i);
+    }
 }
