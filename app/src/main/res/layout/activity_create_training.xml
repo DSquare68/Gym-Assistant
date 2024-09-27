@@ -9,11 +9,33 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="400dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
+            <pl.dsquare.gymassistant.ui.ExerciseCreate
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+            <pl.dsquare.gymassistant.ui.ExerciseCreate
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+            <pl.dsquare.gymassistant.ui.ExerciseCreate
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+            <ImageButton
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/add_training"
+                android:onClick="addAnotherExercise"/>
+        </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

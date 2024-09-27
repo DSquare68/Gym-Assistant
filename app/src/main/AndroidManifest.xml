@@ -13,15 +13,19 @@
         android:theme="@android:style/Theme.Black.NoTitleBar">
         <activity
             android:name=".activity.ProgressActivity"
+            android:theme="@style/AppTheme"
             android:exported="false" />
         <activity
             android:name=".activity.SheduleActivity"
+            android:theme="@style/AppTheme"
             android:exported="false" />
         <activity
             android:name=".activity.TrainActivity"
+            android:theme="@style/AppTheme"
             android:exported="false" />
         <activity
             android:name=".activity.CreateTrainingActivity"
+            android:theme="@style/AppTheme"
             android:exported="false" />
 
         <uses-library android:name="com.android.future.usb.accessory" />
