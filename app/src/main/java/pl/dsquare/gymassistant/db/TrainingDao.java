@@ -19,7 +19,7 @@ public abstract interface TrainingDao {
     @Query("SELECT * FROM training WHERE _ID IN (:exerciseIds)")
     List<Training> loadAllByIds(int[] exerciseIds);
 
-    @Query("SELECT * FROM training WHERE  exercises = :first")
+    @Query("SELECT * FROM training WHERE  exercise_name_id = :first")
     Training findByExercise(int first);
 
     @Insert
