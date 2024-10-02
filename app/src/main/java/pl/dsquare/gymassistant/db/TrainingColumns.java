@@ -6,7 +6,7 @@ public interface TrainingColumns {
     String TABLE_NAME = "Training";
     String ID = "_ID";
     String TRAINING_INFO_ID = "training_info_id";
-    String EXERCISE = "exercise";
+    String EXERCISE_NAME_ID = "exercise";
     String DATE = "date";
     String WEIGHT = "weight";
     String REPS = "rep";

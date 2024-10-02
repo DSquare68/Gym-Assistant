@@ -29,7 +29,6 @@ public class CreateTrainingActivity extends AppCompatActivity {
         ecList.add((ExerciseCreate) ll.getChildAt(1));
         ecList.add((ExerciseCreate) ll.getChildAt(2));
         ExerciseNamesAdapter ena = new ExerciseNamesAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        ena.setD
         for ( LinearLayout ll : ecList){
             AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.actv_new_exercise_add_training);
             actv.setAdapter(ena);

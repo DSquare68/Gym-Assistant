@@ -27,5 +27,7 @@ public abstract interface TrainingDao {
 
     @Delete
     void delete(Training user);
+    @Query("DELETE FROM training")
+    void deleteAll();
 
 }

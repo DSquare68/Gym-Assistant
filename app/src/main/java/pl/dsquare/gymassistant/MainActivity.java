@@ -3,27 +3,21 @@ package pl.dsquare.gymassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.room.Room;
 
 import pl.dsquare.gymassistant.activity.CreateTrainingActivity;
 import pl.dsquare.gymassistant.activity.SheduleActivity;
 import pl.dsquare.gymassistant.activity.TrainActivity;
 import pl.dsquare.gymassistant.db.AppDatabase;
+import pl.dsquare.gymassistant.db.DB;
 import pl.dsquare.gymassistant.db.Exercise;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 

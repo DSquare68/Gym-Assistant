@@ -1,0 +1,32 @@
+package pl.dsquare.gymassistant.db;
+
+import android.content.Context;
+
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+
+public class OpenHelper extends SupportSQLiteOpenHelper.Callback {
+    private static final int VERSION = 1;
+
+    OpenHelper(Context context, String name) {
+        super(VERSION);
+    }
+
+    @Override
+    public void onCreate(SupportSQLiteDatabase db) {
+        db.execSQL("CREATE TABLE "+ExerciseColumns.TABLE_NAME+" ( "+ExerciseColumns.ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+ExerciseColumns.EXERCISE_NAME+" TEXT NOT NULL )");
+        db.execSQL("CREATE TABLE "+TrainingColumns.TABLE_NAME+" ( "+TrainingColumns.ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+TrainingColumns.TRAINING_INFO_ID+" int NOT NULL," +
+                TrainingColumns.EXERCISE_NAME_ID+"  NOT NULL,"
+                +TrainingColumns.DATE+" STRING NOT NULL,"
+                +TrainingColumns.WEIGHT+" REAL NOT NULL,"
+                +TrainingColumns.REPS+" INT NOT NULL,"
+                +TrainingColumns.SERIE+" INT NOT NULL,"
+                +TrainingColumns.TEMPLATE_NUMBER+" INT NOT NULL,"
+                +TrainingColumns.SCHEMA+" BOOLEAN NOT NULL )");
+    }
+
+    @Override
+    public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+}

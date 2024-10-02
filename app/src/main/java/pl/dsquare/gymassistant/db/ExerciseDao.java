@@ -8,6 +8,8 @@ import java.util.List;
 
 @Dao
 public interface ExerciseDao {
+    @Query("SELECT name FROM exercise_name")
+    List<String> getAllNames();
     @Query("SELECT * FROM exercise_name")
     List<Exercise> getAll();
 
@@ -25,5 +27,7 @@ public interface ExerciseDao {
 
     @Delete
     void delete(Exercise user);
+    @Query("DELETE FROM exercise_name")
+    void deleteAll();
 }
 
