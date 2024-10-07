@@ -10,6 +10,8 @@ import android.util.TypedValue;
  */
 
 public class Units {
+    public static final int VERSION=3;
+    public static final int POLISH = 1;
 
     public static int dpToPx(Context context, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp, context.getResources().getDisplayMetrics());

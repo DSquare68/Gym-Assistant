@@ -27,6 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    annotationProcessor( "org.projectlombok:lombok:1.18.34")
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -49,6 +50,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     implementation 'androidx.navigation:navigation-runtime:2.8.1'
 
-    annotationProcessor( "org.projectlombok:lombok:1.18.34")
+
 
 }

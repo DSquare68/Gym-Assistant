@@ -8,15 +8,15 @@ import java.util.List;
 
 @Dao
 public interface ExerciseDao {
-    @Query("SELECT name FROM exercise_name")
+    @Query("SELECT name FROM exercises")
     List<String> getAllNames();
-    @Query("SELECT * FROM exercise_name")
+    @Query("SELECT * FROM exercises")
     List<Exercise> getAll();
 
-    @Query("SELECT * FROM exercise_name WHERE _ID IN (:exerciseIds)")
+    @Query("SELECT * FROM exercises WHERE _ID IN (:exerciseIds)")
     List<Exercise> loadAllByIds(int[] exerciseIds);
 
-    @Query("SELECT * FROM exercise_name WHERE name LIKE :first LIMIT 1")
+    @Query("SELECT * FROM exercises WHERE name LIKE :first LIMIT 1")
     Exercise findByName(String first);
 
     @Insert
@@ -27,7 +27,8 @@ public interface ExerciseDao {
 
     @Delete
     void delete(Exercise user);
-    @Query("DELETE FROM exercise_name")
+    @Query("DELETE FROM exercises")
     void deleteAll();
+
 }
 

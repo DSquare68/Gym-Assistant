@@ -1,6 +1,7 @@
 package pl.dsquare.gymassistant.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
@@ -12,7 +13,7 @@ import java.util.LinkedList;
 
 import pl.dsquare.gymassistant.R;
 import pl.dsquare.gymassistant.Units;
-import pl.dsquare.gymassistant.data.ExerciseNamesAdapter;
+import pl.dsquare.gymassistant.db.ExerciseNamesAdapter;
 import pl.dsquare.gymassistant.ui.ExerciseCreate;
 
 public class CreateTrainingActivity extends AppCompatActivity {
@@ -29,9 +30,9 @@ public class CreateTrainingActivity extends AppCompatActivity {
         ecList.add((ExerciseCreate) ll.getChildAt(1));
         ecList.add((ExerciseCreate) ll.getChildAt(2));
         ExerciseNamesAdapter ena = new ExerciseNamesAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        ena.setD
         for ( LinearLayout ll : ecList){
             AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.actv_new_exercise_add_training);
+            Log.d("asdf",ena.getCount()+"");
             actv.setAdapter(ena);
         }
     }

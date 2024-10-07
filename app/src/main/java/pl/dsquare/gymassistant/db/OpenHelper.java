@@ -6,10 +6,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 public class OpenHelper extends SupportSQLiteOpenHelper.Callback {
-    private static final int VERSION = 1;
 
-    OpenHelper(Context context, String name) {
-        super(VERSION);
+    public OpenHelper(int version) {
+        super(version);
     }
 
     @Override
@@ -29,4 +28,5 @@ public class OpenHelper extends SupportSQLiteOpenHelper.Callback {
     public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 }

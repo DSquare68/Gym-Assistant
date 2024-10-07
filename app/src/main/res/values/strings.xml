@@ -247,4 +247,5 @@
     <string name="first_and_last_name">Danny Boar</string>
     <string name="use_existing_exercise">Use existing exercise</string>
     <string name="modify">modify</string>
+    <string name="is_first_run">First run</string>
 </resources>
