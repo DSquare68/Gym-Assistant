@@ -3,6 +3,7 @@ package pl.dsquare.gymassistant.db;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import java.util.List;
 
@@ -19,16 +20,22 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE name LIKE :first LIMIT 1")
     Exercise findByName(String first);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Exercise... exercises);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Exercise exercise);
 
     @Delete
     void delete(Exercise user);
+
     @Query("DELETE FROM exercises")
     void deleteAll();
 
+    @Query("SELECT _ID FROM exercises WHERE name = :exercise")
+    int getIDByName(String exercise);
+
+    @Query("INSERT INTO exercises (name) VALUES (:name)")
+    void addExercise(String name);
 }
 

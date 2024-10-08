@@ -5,41 +5,83 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.CreateTrainingActivity">
 
     <ScrollView
+        android:id="@+id/scroll_exercise"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="550dp">
 
         <LinearLayout
             android:id="@+id/ll_exercises_create_training"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
             <pl.dsquare.gymassistant.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
+
             <pl.dsquare.gymassistant.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
+
             <pl.dsquare.gymassistant.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
+
+            <pl.dsquare.gymassistant.ui.ExerciseCreate
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <pl.dsquare.gymassistant.ui.ExerciseCreate
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <pl.dsquare.gymassistant.ui.ExerciseCreate
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 
     <ImageButton
+        android:id="@+id/button_add_another_exercise"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:adjustViewBounds="true"
         android:onClick="addAnotherExercise"
         android:scaleType="fitCenter"
         android:src="@drawable/add_training"
-        tools:layout_editor_absoluteX="163dp"
-        tools:layout_editor_absoluteY="294dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_exercise" />
+
+    <CheckBox
+        android:id="@+id/cb_new_schema"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_schema"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintRight_toLeftOf="@id/button_add_another_exercise"
+        app:layout_constraintTop_toBottomOf="@id/scroll_exercise"/>
+
+    <Spinner
+        android:id="@+id/spinner_old_schemas"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toRightOf="@id/button_add_another_exercise"
+        app:layout_constraintTop_toBottomOf="@id/scroll_exercise"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

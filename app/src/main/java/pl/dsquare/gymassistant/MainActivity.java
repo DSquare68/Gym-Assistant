@@ -4,6 +4,8 @@ package pl.dsquare.gymassistant;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -38,12 +40,11 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu_white);
-        sp.edit().putBoolean(getResources().getString(R.string.is_first_run),true).apply();
         firstRun();
     }
 
     private void firstRun() {
-        if(sp.getBoolean(getResources().getString(R.string.is_first_run),true)) {
+        if(true){//(sp.getBoolean(getResources().getString(R.string.is_first_run),true)) {
             new Thread(()->AppDatabase.init(getApplicationContext())).start();
             sp.edit().putBoolean(getResources().getString(R.string.is_first_run),false).apply();
         }
