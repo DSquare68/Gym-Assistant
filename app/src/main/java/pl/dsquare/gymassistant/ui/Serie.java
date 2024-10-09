@@ -9,10 +9,13 @@ import pl.dsquare.gymassistant.R;
 
 public class Serie extends LinearLayout {
 
+    public Serie(Context context) {
+        super(context);
+        inflate(context, R.layout.serie_add_training,this);
+    }
 
-    public Serie(Context context, AttributeSet set,int defStyle) {
+    public Serie(Context context, AttributeSet set, int defStyle) {
         super(context,set,defStyle);
         inflate(context, R.layout.serie_add_training,this);
-
     }
 }

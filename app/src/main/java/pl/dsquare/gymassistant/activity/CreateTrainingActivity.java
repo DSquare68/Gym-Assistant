@@ -1,5 +1,6 @@
 package pl.dsquare.gymassistant.activity;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -26,6 +28,7 @@ import pl.dsquare.gymassistant.db.AppDatabase;
 import pl.dsquare.gymassistant.db.ExerciseNamesAdapter;
 import pl.dsquare.gymassistant.db.Training;
 import pl.dsquare.gymassistant.ui.ExerciseCreate;
+import pl.dsquare.gymassistant.ui.Serie;
 
 public class CreateTrainingActivity extends AppCompatActivity {
 
@@ -60,7 +63,29 @@ public class CreateTrainingActivity extends AppCompatActivity {
             AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.actv_new_exercise_add_training);
             Log.d("asdf",ena.getCount()+"");
             actv.setAdapter(ena);
+            ll.findViewById(R.id.ib_advance_exercise).setOnClickListener((v)->extendedVersionExercise(ll,(ImageButton) v));
         }
+    }
+
+    private void extendedVersionExercise(LinearLayout ll , ImageButton v) {
+        ll.findViewById(R.id.ll_simple_series).setVisibility(View.GONE);
+        ll.findViewById(R.id.ll_extended_series).setVisibility(View.VISIBLE);
+        Serie s;
+        s = new Serie(getApplicationContext());
+        s.setOrientation(LinearLayout.VERTICAL);
+        s.setLayoutParams(new LinearLayout.LayoutParams(Units.dpToPx(this,100), ViewGroup.LayoutParams.WRAP_CONTENT));
+        for(int i=0;i<3;i++){
+            ((LinearLayout) ll.findViewById(R.id.ll_extended_series_parent)).addView(s);
+            s = new Serie(getApplicationContext());
+            s.setOrientation(LinearLayout.VERTICAL);
+            s.setLayoutParams(new LinearLayout.LayoutParams(Units.dpToPx(this,100), ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+        Serie serie = s;
+        ll.findViewById(R.id.button_add_another_series).setOnClickListener((view)->((LinearLayout) ll.findViewById(R.id.ll_extended_series_parent)).addView(serie));
+        int y = ll.getLayoutParams().height;
+        ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,Units.dpToPx(this,150)));
+        ll.invalidate();
+
     }
 
     @Override
