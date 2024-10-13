@@ -13,18 +13,18 @@
 
         <AutoCompleteTextView
             android:id="@+id/actv_new_exercise_add_training"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:completionThreshold="2"
             android:layout_weight="1"
-            android:text="AutoCompleteTextView" />
+            android:completionThreshold="2"
+            android:hint="Ćwiczenie" />
+
         <ImageButton
             android:id="@+id/ib_delete_serie"
             android:layout_width="@dimen/height_add_training_layout_bottom"
             android:layout_height="@dimen/height_add_training_layout_bottom"
-            android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:layout_weight="1"
+            android:scaleType="fitCenter"
             android:src="@drawable/red_minus" />
     </LinearLayout>
 
