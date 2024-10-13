@@ -5,6 +5,7 @@
     <item
         android:id="@+id/menu_add_training"
         android:title="@string/add_training"
+        android:onClick="addTraining"
         android:icon="@drawable/add_round"
         app:showAsAction="ifRoom"/>
     <item

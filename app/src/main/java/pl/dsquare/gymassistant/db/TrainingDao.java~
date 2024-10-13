@@ -38,10 +38,10 @@ public abstract interface TrainingDao {
     @Query("SELECT MAX(schema) FROM training")
     int getMAXSchemaID();
 
-    @Query("SELECT training_name FROM training WHERE schema = 1")
+    @Query("SELECT trainingName FROM training WHERE schema = 1")
     List<String> getAllSchemaNames();
 
-    @Query("SELECT MIN(_ID) FROM training WHERE training_name = :string")
+    @Query("SELECT MIN(_ID) FROM training WHERE trainingName = :string")
     int getIDSchema(String string);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

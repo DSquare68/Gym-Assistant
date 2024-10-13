@@ -1,10 +1,7 @@
 package pl.dsquare.gymassistant.db;
 
 import androidx.room.ColumnInfo;
-import androidx.room.Database;
 import androidx.room.Entity;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 
 import lombok.AllArgsConstructor;
@@ -24,8 +21,8 @@ public class Training {
     @ColumnInfo(name = "exercise_name_id")
     public int exerciseNameID;
 
-    @ColumnInfo(name = "exercise_name")
-    public String exerciseName;
+    @ColumnInfo(name = "training_name")
+    public String trainingName;
 
     @ColumnInfo(name = "date")
     public long date;
@@ -45,12 +42,22 @@ public class Training {
     @ColumnInfo(name = "schema")
     public boolean schema;
 
-    public Training(int trainingID, int exercise, double weight, int reps, int templateFamily, AppDatabase db)
+    public Training(int trainingID, int exercise, double weight, int reps, int templateFamily)
     {
         this.trainingID = trainingID;
         this.exerciseNameID = exercise;
         this.weight = weight;
         this.reps = reps;
+        this.templateFamily = templateFamily;
+        this.schema=true;
+    }
+    public Training(int trainingID, int exercise, double weight, int reps,int serie, int templateFamily)
+    {
+        this.trainingID = trainingID;
+        this.exerciseNameID = exercise;
+        this.weight = weight;
+        this.reps = reps;
+        this.serie = serie;
         this.templateFamily = templateFamily;
         this.schema=true;
     }
