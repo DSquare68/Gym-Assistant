@@ -1,5 +1,6 @@
 package pl.dsquare.gymassistant.activity;
 
+import android.content.Context;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +50,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
     private void initSpinner() {
         Spinner s = findViewById(R.id.spinner_old_schemas);
-        s.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,db.trainingDao().getAllSchemaNames()));
+        //s.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,db.trainingDao().getAllSchemaNames()));
     }
 
 
@@ -79,16 +81,20 @@ public class CreateTrainingActivity extends AppCompatActivity {
         s.setLayoutParams(new LinearLayout.LayoutParams(Units.dpToPx(this,100), ViewGroup.LayoutParams.WRAP_CONTENT));
         for(int i=0;i<3;i++){
             ((LinearLayout) ll.findViewById(R.id.ll_extended_series_parent)).addView(s);
-            s = new Serie(getApplicationContext());
-            s.setOrientation(LinearLayout.VERTICAL);
-            s.setLayoutParams(new LinearLayout.LayoutParams(Units.dpToPx(this,100), ViewGroup.LayoutParams.WRAP_CONTENT));
+            s = newSerie(getApplicationContext());
         }
-        Serie serie = s;
-        ll.findViewById(R.id.button_add_another_series).setOnClickListener((view)->((LinearLayout) ll.findViewById(R.id.ll_extended_series_parent)).addView(serie));
+        ll.findViewById(R.id.button_add_another_series).setOnClickListener((view)->((LinearLayout) ll.findViewById(R.id.ll_extended_series_parent)).addView(newSerie(getApplicationContext())));
         int y = ll.getLayoutParams().height;
         ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,Units.dpToPx(this,150)));
         ll.invalidate();
 
+    }
+
+    private Serie newSerie(Context context) {
+        Serie s = new Serie(context);
+        s.setOrientation(LinearLayout.VERTICAL);
+        s.setLayoutParams(new LinearLayout.LayoutParams(Units.dpToPx(this,100), ViewGroup.LayoutParams.WRAP_CONTENT));
+        return s;
     }
 
     @Override
@@ -109,11 +115,27 @@ public class CreateTrainingActivity extends AppCompatActivity {
         ec.setOrientation(LinearLayout.VERTICAL);
         ec.findViewById(R.id.ib_advance_exercise).setOnClickListener((v)->extendedVersionExercise(ec,(ImageButton) v));
         ec.findViewById(R.id.ib_delete_serie).setOnClickListener((v)->((LinearLayout)ec.getParent()).removeView(ec));
+        ExerciseNamesAdapter ena = new ExerciseNamesAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        AutoCompleteTextView actv = ( AutoCompleteTextView) ec.findViewById(R.id.actv_new_exercise_add_training);
+        actv.setAdapter(ena);
         ll.addView(ec,ll.getChildCount());
         ecList.add(ec);
     }
 
     public void addTraining(MenuItem item) {
-        ecList.forEach(e->e.insertExercise(((CheckBox) findViewById(R.id.cb_new_schema)).isChecked(),((Spinner) findViewById(R.id.spinner_old_schemas)).getSelectedItem().toString()));
+        if(((EditText) findViewById(R.id.et_training_name)).getText()==null || ((EditText) findViewById(R.id.et_training_name)).getText().equals("")){
+            Toast.makeText(this,"Brak nazwy Treningu",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String schema ="";
+        if(((Spinner) findViewById(R.id.spinner_old_schemas)).getSelectedItem()!=null){
+            schema = ((Spinner) findViewById(R.id.spinner_old_schemas)).getSelectedItem().toString();
+        }
+        String s = schema;
+        String name = ((EditText) findViewById(R.id.et_training_name)).getText().toString();
+        new Thread(()-> {
+            int ID = db.trainingDao().getMaxID() + 1;
+            ecList.forEach(e -> e.insertExercise(((CheckBox) findViewById(R.id.cb_new_schema)).isChecked(), s, name, ID));
+        }).start();
     }
 }

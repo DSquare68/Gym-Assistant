@@ -35,6 +35,9 @@ public interface ExerciseDao {
     @Query("SELECT _ID FROM exercises WHERE name = :exercise")
     int getIDByName(String exercise);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert();
+
     @Query("SELECT MAX(_ID) FROM exercises")
     int getMaxID();
 }

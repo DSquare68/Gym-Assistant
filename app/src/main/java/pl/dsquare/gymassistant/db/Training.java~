@@ -42,20 +42,18 @@ public class Training {
     @ColumnInfo(name = "schema")
     public boolean schema;
 
-    public Training(int trainingID,String trainingName, int exercise, double weight, int reps, int templateFamily)
+    public Training(int trainingID, int exercise, double weight, int reps, int templateFamily)
     {
         this.trainingID = trainingID;
-        this.trainingName = trainingName;
         this.exerciseNameID = exercise;
         this.weight = weight;
         this.reps = reps;
         this.templateFamily = templateFamily;
         this.schema=true;
     }
-    public Training(int trainingID,String trainingName, int exercise, double weight, int reps,int serie, int templateFamily)
+    public Training(int trainingID, int exercise, double weight, int reps,int serie, int templateFamily)
     {
         this.trainingID = trainingID;
-        this.trainingName = trainingName;
         this.exerciseNameID = exercise;
         this.weight = weight;
         this.reps = reps;
