@@ -1,0 +1,23 @@
+package pl.dsquare.gymassistant.db;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class OracleDB {
+    private String url = "jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g86313e13681d63_dsquarehome_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))";
+    private String user = "ADMIN";
+    private String password = "D^2Hom3oracle";
+    public OracleDB() {
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Statement s = connection.createStatement();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}

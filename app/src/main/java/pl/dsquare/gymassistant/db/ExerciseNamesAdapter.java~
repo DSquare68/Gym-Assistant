@@ -5,13 +5,9 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
-
 public class ExerciseNamesAdapter extends ArrayAdapter<String> {
-    AppDatabase ad;
     public ExerciseNamesAdapter(@NonNull Context context, int resource) {
         super(context, resource);
-        ad = AppDatabase.getDatabase(getContext());
         Thread t1 = new Thread(this::setData);
         t1.start();
         try {
@@ -22,9 +18,6 @@ public class ExerciseNamesAdapter extends ArrayAdapter<String> {
     }
 
     private void setData() {
-        ad.exerciseDao().getAllNames().forEach(this::add);
-    }
-    public List<Exercise> getData(){
-        return  ad.exerciseDao().getAll();
+        AppDatabase.getDatabase(getContext()).exerciseDao().getAllNames().forEach(this::add);
     }
 }

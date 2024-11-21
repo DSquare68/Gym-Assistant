@@ -73,6 +73,6 @@ public class MainActivity extends AppCompatActivity  {
         startActivity(i);
     }
     public void sync(View v){
-        new Sync().sync(this);
+        new Sync().sync();
     }
 }
