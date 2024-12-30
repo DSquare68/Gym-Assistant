@@ -10,14 +10,17 @@ public class OracleDB {
     private String user = "ADMIN";
     private String password = "D^2Hom3oracle";
     public OracleDB() {
+     //   try {
+          //  Class.forName("oracle.jdbc.driver.OracleDriver");
+      //  } catch (ClassNotFoundException e) {
+      //     throw new RuntimeException(e);
+      //  }
+    }
+    public Connection getConn(){
         try {
-            Class.forName("oracle.jdbc.OracleDriver");
-            Connection connection = DriverManager.getConnection(url, user, password);
-            Statement s = connection.createStatement();
-
-        } catch (ClassNotFoundException | SQLException e) {
+           return  DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

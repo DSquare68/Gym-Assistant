@@ -7,16 +7,48 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:id="@+id/layout_activity_home"
     android:layout_below="@id/toolbarLL">
 
     <LinearLayout
-        android:id="@+id/toolbarLL"
+        android:id="@+id/layout_activity_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarLL"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/toolbarLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+            <FrameLayout
+                android:id="@+id/main_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <!--
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_view" />
+    -->
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="@dimen/image_activity_main"
@@ -27,96 +59,72 @@
             android:onClick="sync"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/sync" />
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
-
-        <FrameLayout
-            android:id="@+id/main_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-<!--
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_view" />
-    -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical">
-        <HorizontalScrollView
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:fillViewport="true"
-            android:paddingTop="12.5dp">
-
-            <LinearLayout
-
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="150dp"
+                android:layout_gravity="bottom"
+                android:fillViewport="true"
+                android:paddingTop="12.5dp">
 
-                <ImageButton
-                    android:id="@+id/add_button"
-                    android:layout_width="@dimen/image_activity_main"
-                    android:layout_height="@dimen/image_activity_main"
-                    android:layout_marginLeft="5dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:onClick="create"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/add_training" />
+                <LinearLayout
 
-                <Space
-                    android:layout_width="@dimen/main_activity_space"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/train_button"
-                    android:layout_width="@dimen/image_activity_main"
-                    android:layout_height="@dimen/image_activity_main"
-                    android:onClick="train"
-                    app:srcCompat="@drawable/training" />
+                    <ImageButton
+                        android:id="@+id/add_button"
+                        android:layout_width="@dimen/image_activity_main"
+                        android:layout_height="@dimen/image_activity_main"
+                        android:layout_marginLeft="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@android:color/transparent"
+                        android:onClick="create"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/add_training" />
 
-                <Space
-                    android:layout_width="@dimen/main_activity_space"
-                    android:layout_height="wrap_content" />
+                    <Space
+                        android:layout_width="@dimen/main_activity_space"
+                        android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/shedule_button"
-                    android:layout_width="@dimen/image_activity_main"
-                    android:layout_height="@dimen/image_activity_main"
-                    android:onClick="shedule"
-                    app:srcCompat="@drawable/plan" />
+                    <ImageView
+                        android:id="@+id/train_button"
+                        android:layout_width="@dimen/image_activity_main"
+                        android:layout_height="@dimen/image_activity_main"
+                        android:onClick="train"
+                        app:srcCompat="@drawable/training" />
 
-                <Space
-                    android:layout_width="@dimen/main_activity_space"
-                    android:layout_height="wrap_content" />
+                    <Space
+                        android:layout_width="@dimen/main_activity_space"
+                        android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/progress_button"
-                    android:layout_width="@dimen/image_activity_main"
-                    android:layout_height="@dimen/image_activity_main"
-                    android:adjustViewBounds="true"
-                    android:onClick="progress"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/progress" />
-            </LinearLayout>
-        </HorizontalScrollView>
+                    <ImageView
+                        android:id="@+id/shedule_button"
+                        android:layout_width="@dimen/image_activity_main"
+                        android:layout_height="@dimen/image_activity_main"
+                        android:onClick="shedule"
+                        app:srcCompat="@drawable/plan" />
+
+                    <Space
+                        android:layout_width="@dimen/main_activity_space"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/progress_button"
+                        android:layout_width="@dimen/image_activity_main"
+                        android:layout_height="@dimen/image_activity_main"
+                        android:adjustViewBounds="true"
+                        android:onClick="progress"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/progress" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

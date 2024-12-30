@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,16 +29,16 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  {
 
-    private ConstraintLayout parent;
+    private LinearLayout parent;
     private AppBarConfiguration appBarConfiguration;
     private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (ConstraintLayout) View.inflate(this, R.layout.activity_main, null);
+        parent = (LinearLayout) View.inflate(this, R.layout.activity_main, null);
         sp = getSharedPreferences(getResources().getString(R.string.settings), MODE_PRIVATE);
-        setContentView(parent);
+        setContentView(parent);fdsaadfsdfsa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -73,6 +74,6 @@ public class MainActivity extends AppCompatActivity  {
         startActivity(i);
     }
     public void sync(View v){
-        new Sync().sync();
+        new Thread(()->new Sync().sync(this)).start();
     }
 }
