@@ -1,11 +1,14 @@
 package pl.dsquare.gymassistant.db;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import pl.dsquare.gymassistant.api.ApiEksport;
@@ -17,6 +20,7 @@ import retrofit2.Response;
 
 public class OracleSchema {
     private List<Exercise> exerciseList;
+    private List<Exercise> exerList = null;
     private Context c;
     private ApiEksport apiExport = ApiClient.getRetrofitInstance().create(ApiEksport.class);
     private ApiImport apiImport = ApiClient.getRetrofitInstance().create(ApiImport.class);
@@ -26,7 +30,34 @@ public class OracleSchema {
     }
 
     public void sync() {
-        List<Exercise> exerList = apiImport.getExercises();
+        Call<List<Exercise>> exerCall = apiImport.getExercises();
+        final CountDownLatch latch = new CountDownLatch(1);
+        exerCall.timeout().timeout(3, TimeUnit.SECONDS);
+        exerCall.enqueue(new Callback<List<Exercise>>() {
+
+            @Override
+            public void onResponse(Call<List<Exercise>> call, Response<List<Exercise>> response) {
+                if (response.isSuccessful()) {
+                    exerList = response.body();
+                    Toast.makeText(c, "Exercises received successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(c, "Failed to receive exercises", Toast.LENGTH_SHORT).show();
+                }
+                latch.countDown();
+            }
+
+            @Override
+            public void onFailure(Call<List<Exercise>> call, Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(c, "Error receiving exercises: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                latch.countDown();
+            }
+        });
+        try{
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<Exercise> missingExercises = exerciseList.stream()
                 .filter(exercise -> !exerList.contains(exercise))
                 .collect(Collectors.toList());

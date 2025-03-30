@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_cat"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Black.NoTitleBar">
+        android:theme="@android:style/Theme.Black.NoTitleBar"
+        android:networkSecurityConfig="@xml/ip">
         <activity
             android:name=".activity.ProgressActivity"
             android:theme="@style/AppTheme"
