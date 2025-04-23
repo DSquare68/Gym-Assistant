@@ -9,8 +9,9 @@ import retrofit2.http.POST;
 
 public interface ApiImport {
     final String IP = "10.98.0.29";
-    @POST("http:/"+IP+":8080/api/get/exercise")
+    final String HTTP = "http:/";
+    @POST(HTTP+IP+":8080/api/get/exercise")
     Call<List<Exercise>> getExercise();
-    @POST("http:/"+IP+":8080/api/get/exercises")
+    @POST(HTTP+IP+":8080/api/get/exercises")
     Call<List<Exercise>> getExercises();
 }
