@@ -79,51 +79,19 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/add_button"
+                        android:id="@+id/gym"
                         android:layout_width="@dimen/image_activity_main"
                         android:layout_height="@dimen/image_activity_main"
                         android:layout_marginLeft="5dp"
                         android:adjustViewBounds="true"
                         android:background="@android:color/transparent"
-                        android:onClick="create"
+                        android:onClick="gym"
                         android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/add_training" />
+                        app:srcCompat="@drawable/gym" />
 
                     <Space
                         android:layout_width="@dimen/main_activity_space"
                         android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:id="@+id/train_button"
-                        android:layout_width="@dimen/image_activity_main"
-                        android:layout_height="@dimen/image_activity_main"
-                        android:onClick="train"
-                        app:srcCompat="@drawable/training" />
-
-                    <Space
-                        android:layout_width="@dimen/main_activity_space"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:id="@+id/shedule_button"
-                        android:layout_width="@dimen/image_activity_main"
-                        android:layout_height="@dimen/image_activity_main"
-                        android:onClick="shedule"
-                        app:srcCompat="@drawable/plan" />
-
-                    <Space
-                        android:layout_width="@dimen/main_activity_space"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:id="@+id/progress_button"
-                        android:layout_width="@dimen/image_activity_main"
-                        android:layout_height="@dimen/image_activity_main"
-                        android:adjustViewBounds="true"
-                        android:onClick="progress"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/progress" />
-                </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
     </LinearLayout>

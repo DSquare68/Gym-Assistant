@@ -46,34 +46,19 @@ public class MainActivity extends AppCompatActivity  {
         firstRun();
 
     }
-
     private void firstRun() {
         if(sp.getBoolean(getResources().getString(R.string.is_first_run),true)) {
-            new Thread(()->AppDatabase.init(getApplicationContext())).start();
-            sp.edit().putBoolean(getResources().getString(R.string.is_first_run),false).apply();
+           // new Thread(()-> AppDatabase.init(getApplicationContext())).start();
+           // sp.edit().putBoolean(getResources().getString(R.string.is_first_run),false).apply();
         }
     }
 
-    public void create(View v){
-        Intent i = new Intent(this,CreateTrainingActivity.class);
-        startActivity(i);
-    }
-
-    public void train(View v){
-        Intent i = new Intent(this, TrainActivity.class);
-        startActivity(i);
-    }
-
-    public void shedule(View v){
-        Intent i = new Intent(this, SheduleActivity.class);
-        startActivity(i);
-    }
-
-    public void progress(View v){
-        Intent i = new Intent(this, Process.class);
-        startActivity(i);
-    }
     public void sync(View v){
         new Thread(()->new Sync().sync(this)).start();
+    }
+
+    public void gym(View view) {
+        Intent i = new Intent(this, GymActivity.class);
+        startActivity(i);
     }
 }
