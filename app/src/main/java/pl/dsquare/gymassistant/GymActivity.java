@@ -1,5 +1,6 @@
 package pl.dsquare.gymassistant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,12 +17,12 @@ import pl.dsquare.gymassistant.activity.SheduleActivity;
 import pl.dsquare.gymassistant.activity.TrainActivity;
 import pl.dsquare.gymassistant.db.AppDatabase;
 
-public class GymActivity extends AppCompatActivity {
+public class GymActivity extends Activity {
     private SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_gym);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -30,8 +31,6 @@ public class GymActivity extends AppCompatActivity {
         });
         sp = getSharedPreferences(getResources().getString(R.string.settings), MODE_PRIVATE);
     }
-
-
 
     public void create(View v){
         Intent i = new Intent(this, CreateTrainingActivity.class);
@@ -50,6 +49,11 @@ public class GymActivity extends AppCompatActivity {
 
     public void progress(View v){
         Intent i = new Intent(this, Process.class);
+        startActivity(i);
+    }
+
+    public void home(View view) {
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 }

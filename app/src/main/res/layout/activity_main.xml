@@ -78,21 +78,23 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/gym"
-                        android:layout_width="@dimen/image_activity_main"
-                        android:layout_height="@dimen/image_activity_main"
-                        android:layout_marginLeft="5dp"
-                        android:adjustViewBounds="true"
-                        android:background="@android:color/transparent"
-                        android:onClick="gym"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/gym" />
+                <ImageButton
+                    android:id="@+id/gym"
+                    android:layout_width="@dimen/image_activity_main"
+                    android:layout_height="@dimen/image_activity_main"
+                    android:layout_marginLeft="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:onClick="gym"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/gym" />
 
-                    <Space
-                        android:layout_width="@dimen/main_activity_space"
-                        android:layout_height="wrap_content" />
+                <Space
+                    android:layout_width="@dimen/main_activity_space"
+                    android:layout_height="wrap_content" />
+
+                </LinearLayout>
             </HorizontalScrollView>
-        </LinearLayout>
     </LinearLayout>
+</LinearLayout>
 </LinearLayout>

@@ -50,7 +50,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
     private void initSpinner() {
         Spinner s = findViewById(R.id.spinner_old_schemas);
-        //s.setAdapter(new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,db.trainingDao().getAllSchemaNames()));
+        s.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,db.trainingDao().getAllSchemaNames()));
     }
 
 
@@ -115,7 +115,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
         ec.setOrientation(LinearLayout.VERTICAL);
         ec.findViewById(R.id.ib_advance_exercise).setOnClickListener((v)->extendedVersionExercise(ec,(ImageButton) v));
         ec.findViewById(R.id.ib_delete_serie).setOnClickListener((v)->((LinearLayout)ec.getParent()).removeView(ec));
-        ExerciseNamesAdapter ena = new ExerciseNamesAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        ExerciseNamesAdapter ena = new ExerciseNamesAdapter(this, android.R.layout.simple_spinner_item);
         AutoCompleteTextView actv = ( AutoCompleteTextView) ec.findViewById(R.id.actv_new_exercise_add_training);
         actv.setAdapter(ena);
         ll.addView(ec,ll.getChildCount());

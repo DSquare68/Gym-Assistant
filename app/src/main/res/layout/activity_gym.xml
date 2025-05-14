@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".GymActivity">
 
     <ImageButton
@@ -19,34 +20,41 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/add_training" />
+        android:contentDescription="add"
+        android:src="@drawable/add_training" />
 
 
-    <ImageView
+    <ImageButton
         android:id="@+id/train_button"
         android:layout_width="@dimen/image_activity_main"
         android:layout_height="@dimen/image_activity_main"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:onClick="train"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/training" />
+        android:contentDescription="train"
+        android:src="@drawable/training" />
 
 
-    <ImageView
+    <ImageButton
         android:id="@+id/shedule_button"
         android:layout_width="@dimen/image_activity_main"
         android:layout_height="@dimen/image_activity_main"
         android:layout_marginStart="50dp"
         android:layout_marginTop="30dp"
         android:onClick="shedule"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/train_button"
-        app:srcCompat="@drawable/plan" />
+        android:contentDescription="shadule"
+        android:src="@drawable/plan" />
 
 
-    <ImageView
+    <ImageButton
         android:id="@+id/progress_button"
         android:layout_width="@dimen/image_activity_main"
         android:layout_height="@dimen/image_activity_main"
@@ -55,7 +63,41 @@
         android:adjustViewBounds="true"
         android:onClick="progress"
         android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_button"
-        app:srcCompat="@drawable/progress" />
+        android:contentDescription="progress"
+        android:src="@drawable/progress" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="bottom"
+        android:fillViewport="true"
+        android:paddingTop="12.5dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/home"
+                android:layout_width="@dimen/image_activity_main"
+                android:layout_height="@dimen/image_activity_main"
+                android:layout_marginLeft="5dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="home"
+                android:onClick="home"
+                android:scaleType="fitCenter"
+                android:src="@drawable/home" />
+
+            <Space
+                android:layout_width="@dimen/main_activity_space"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </HorizontalScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

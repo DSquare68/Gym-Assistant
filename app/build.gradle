@@ -36,6 +36,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
 
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.navigation:navigation-fragment:2.8.9'
