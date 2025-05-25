@@ -1,7 +1,4 @@
 package pl.dsquare.gymassistant.data;
-
-package com.dsquare.model;
-
 import java.util.ArrayList;
 import java.util.Date;
 

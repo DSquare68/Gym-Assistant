@@ -21,7 +21,7 @@ public interface ExerciseDao {
     Exercise findByName(String first);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(Exercise... exercises);
+    void insertAll(List<Exercise> exercises);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Exercise exercise);

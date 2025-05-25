@@ -23,10 +23,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import pl.dsquare.gymassistant.R;
 import pl.dsquare.gymassistant.Units;
 import pl.dsquare.gymassistant.db.AppDatabase;
+import pl.dsquare.gymassistant.db.Exercise;
 import pl.dsquare.gymassistant.db.ExerciseNamesAdapter;
 import pl.dsquare.gymassistant.db.Training;
 import pl.dsquare.gymassistant.ui.ExerciseCreate;
@@ -50,6 +52,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
 
     private void initSpinner() {
         Spinner s = findViewById(R.id.spinner_old_schemas);
+        List<Exercise> e = db.exerciseDao().getAll();
         s.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,db.trainingDao().getAllSchemaNames()));
     }
 

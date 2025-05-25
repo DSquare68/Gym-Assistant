@@ -14,12 +14,25 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
+
+import pl.dsquare.gymassistant.api.ApiClient;
+import pl.dsquare.gymassistant.api.ApiImport;
+import retrofit2.Call;
+import retrofit2.Response;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Database(entities = {Exercise.class, Training.class}, version = VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
@@ -27,6 +40,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private Context c;
     public abstract  ExerciseDao exerciseDao();
     public abstract  TrainingDao trainingDao();
+    private static ApiImport apiImport = new ApiClient().getRetrofitInstance().create(ApiImport.class);
 
     public static AppDatabase getDatabase(Context context) {
         return Room.databaseBuilder(context,AppDatabase.class, AppDatabase.DB_NAME)
@@ -36,7 +50,20 @@ public abstract class AppDatabase extends RoomDatabase {
         AppDatabase db = Room.databaseBuilder(context,AppDatabase.class, AppDatabase.DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
-        db.exerciseDao().insertAll(Exercise.init(ExerciseNames.nameTrainings,POLISH));
+        //db.exerciseDao().insertAll(Exercise.init(ExerciseNames.nameTrainings,POLISH));
+        try {
+            List<Exercise> exercises = apiImport.getExercises().execute().body();
+            List<Exercise> presentExercises = db.exerciseDao().getAll();
+            List<Exercise> result = new ArrayList<>();
+            if(presentExercises!=null||presentExercises.size()>0)
+                for (Exercise exe : exercises  ) {
+                    result = presentExercises.stream().filter(e-> e.getName().equals(exe.getName())).collect(Collectors.toList());
+                    if(result.size()==0)
+                        db.exerciseDao().insert(exe);
+                }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     private static Callable<InputStream> initExerciseNames(){

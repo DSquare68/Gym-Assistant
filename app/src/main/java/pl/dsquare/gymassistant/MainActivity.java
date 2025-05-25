@@ -20,12 +20,23 @@ import androidx.room.Room;
 import pl.dsquare.gymassistant.activity.CreateTrainingActivity;
 import pl.dsquare.gymassistant.activity.SheduleActivity;
 import pl.dsquare.gymassistant.activity.TrainActivity;
+import pl.dsquare.gymassistant.api.ApiClient;
+import pl.dsquare.gymassistant.api.ApiEksport;
+import pl.dsquare.gymassistant.api.ApiImport;
+import pl.dsquare.gymassistant.data.ExerciseNames;
 import pl.dsquare.gymassistant.db.AppDatabase;
 import pl.dsquare.gymassistant.db.DB;
 import pl.dsquare.gymassistant.db.Exercise;
 import pl.dsquare.gymassistant.db.Sync;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -44,13 +55,14 @@ public class MainActivity extends AppCompatActivity  {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu_white);
         firstRun();
-
+        // Create your list of ExerciseNames
+        List<ExerciseNames> exerciseList = new ArrayList<>();
     }
     private void firstRun() {
-        if(sp.getBoolean(getResources().getString(R.string.is_first_run),true)) {
-           // new Thread(()-> AppDatabase.init(getApplicationContext())).start();
+       // if(sp.getBoolean(getResources().getString(R.string.is_first_run),true)) {
+            new Thread(()-> AppDatabase.init(getApplicationContext())).start();
            // sp.edit().putBoolean(getResources().getString(R.string.is_first_run),false).apply();
-        }
+        //}
     }
 
     public void sync(View v){
