@@ -50,16 +50,22 @@ public abstract class AppDatabase extends RoomDatabase {
         AppDatabase db = Room.databaseBuilder(context,AppDatabase.class, AppDatabase.DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
+        db.exerciseDao().deleteAll();
         //db.exerciseDao().insertAll(Exercise.init(ExerciseNames.nameTrainings,POLISH));
         try {
             List<Exercise> exercises = apiImport.getExercises().execute().body();
             List<Exercise> presentExercises = db.exerciseDao().getAll();
             List<Exercise> result = new ArrayList<>();
-            if(presentExercises!=null||presentExercises.size()>0)
-                for (Exercise exe : exercises  ) {
+            if(presentExercises.size()==0)
+                db.exerciseDao().insertAll(exercises);
+            else if(presentExercises!=null||presentExercises.size()==0){
+                //TODO fill not present exercises
+                /*for (Exercise exe : exercises  ) {
                     result = presentExercises.stream().filter(e-> e.getName().equals(exe.getName())).collect(Collectors.toList());
                     if(result.size()==0)
                         db.exerciseDao().insert(exe);
+                 */
+
                 }
         } catch (IOException e) {
             throw new RuntimeException(e);
