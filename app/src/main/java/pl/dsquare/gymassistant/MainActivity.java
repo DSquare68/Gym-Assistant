@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity  {
     }
     private void firstRun() {
        // if(sp.getBoolean(getResources().getString(R.string.is_first_run),true)) {
-            new Thread(()-> AppDatabase.init(getApplicationContext())).start();
+//            new Thread(()-> AppDatabase.init(getApplicationContext())).start();
+        //new Thread(()-> AppDatabase.insertTrainingRecord(getApplicationContext())).start();
            // sp.edit().putBoolean(getResources().getString(R.string.is_first_run),false).apply();
         //}
     }

@@ -22,12 +22,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
+import okhttp3.ResponseBody;
 import pl.dsquare.gymassistant.api.ApiClient;
+import pl.dsquare.gymassistant.api.ApiEksport;
 import pl.dsquare.gymassistant.api.ApiImport;
+import pl.dsquare.gymassistant.data.TrainingRecord;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -38,9 +43,22 @@ import java.util.stream.Collectors;
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DB_NAME="gym_assistant_db";
     private Context c;
+
+    public static void insertTrainingRecord(Context applicationContext) {
+        try{
+            String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            Response<ResponseBody> response = apiEksport.addTrainingRecord(new TrainingRecord(1,1,1,0,0.0,1,1,simpleDateFormat.format(new Date()),"asdf")).execute();
+            response.code();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public abstract  ExerciseDao exerciseDao();
     public abstract  TrainingDao trainingDao();
     private static ApiImport apiImport = new ApiClient().getRetrofitInstance().create(ApiImport.class);
+    private static ApiEksport apiEksport = new ApiClient().getRetrofitInstance().create(ApiEksport.class);
 
     public static AppDatabase getDatabase(Context context) {
         return Room.databaseBuilder(context,AppDatabase.class, AppDatabase.DB_NAME)
@@ -50,7 +68,7 @@ public abstract class AppDatabase extends RoomDatabase {
         AppDatabase db = Room.databaseBuilder(context,AppDatabase.class, AppDatabase.DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
-        db.exerciseDao().deleteAll();
+        //db.exerciseDao().deleteAll();
         //db.exerciseDao().insertAll(Exercise.init(ExerciseNames.nameTrainings,POLISH));
         try {
             List<Exercise> exercises = apiImport.getExercises().execute().body();
