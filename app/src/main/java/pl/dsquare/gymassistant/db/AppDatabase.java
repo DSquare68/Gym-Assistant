@@ -3,6 +3,7 @@ package pl.dsquare.gymassistant.db;
 import static pl.dsquare.gymassistant.Units.*;
 
 import android.content.Context;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.room.DatabaseConfiguration;
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.concurrent.Callable;
 
 import okhttp3.ResponseBody;
@@ -39,23 +41,61 @@ import retrofit2.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Database(entities = {Exercise.class, Training.class}, version = VERSION, exportSchema = false)
+@Database(entities = {Exercise.class, TrainingRecord.class}, version = VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DB_NAME="gym_assistant_db";
     private Context c;
 
+    public static void insertExerciseName(Exercise exercise) {
+        try {
+            apiEksport.addExerciseName(exercise).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public abstract  ExerciseDao exerciseDao();
     public static void insertTrainingRecord(Context applicationContext) {
         try{
             String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             Response<ResponseBody> response = apiEksport.addTrainingRecord(new TrainingRecord(1,1,1,0,0.0,1,1,simpleDateFormat.format(new Date()),"asdf")).execute();
+           // ArrayList<TrainingRecord> t = new ArrayList<TrainingRecord>();
+            //t.add(new TrainingRecord(1,1,1,0,0.0,1,1,simpleDateFormat.format(new Date()),"asdf"));
+            //new TrainingRecord(2,2,2,2,0.0,1,1,simpleDateFormat.format(new Date()),"asdf");
+            //Response<ResponseBody> response = apiEksport.addTraining(t).execute();
             response.code();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public abstract  ExerciseDao exerciseDao();
+    public static void insertTraining(ArrayList<TrainingRecord> trainings) {
+        try {
+            Response response = apiEksport.addTraining(trainings).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int getExerciseNameId(String name) {
+        Response r = null;
+        try {
+            r = apiImport.getExerciseIDByName(name).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return (int) r.body();
+    }
+
+    public static List<Exercise> getAllExercises() {
+        try {
+            return apiImport.getExercises().execute().body();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public abstract  TrainingDao trainingDao();
     private static ApiImport apiImport = new ApiClient().getRetrofitInstance().create(ApiImport.class);
     private static ApiEksport apiEksport = new ApiClient().getRetrofitInstance().create(ApiEksport.class);
@@ -70,26 +110,37 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
         //db.exerciseDao().deleteAll();
         //db.exerciseDao().insertAll(Exercise.init(ExerciseNames.nameTrainings,POLISH));
-        try {
-            List<Exercise> exercises = apiImport.getExercises().execute().body();
-            List<Exercise> presentExercises = db.exerciseDao().getAll();
-            List<Exercise> result = new ArrayList<>();
-            if(presentExercises.size()==0)
-                db.exerciseDao().insertAll(exercises);
-            else if(presentExercises!=null||presentExercises.size()==0){
-                //TODO fill not present exercises
-                /*for (Exercise exe : exercises  ) {
-                    result = presentExercises.stream().filter(e-> e.getName().equals(exe.getName())).collect(Collectors.toList());
-                    if(result.size()==0)
-                        db.exerciseDao().insert(exe);
-                 */
+        synchExerciseNames(db);
+        synchTrainingsSchema(db);
+    }
 
-                }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    private static void synchTrainingsSchema(AppDatabase db) {
+        try {
+            List<TrainingRecord> trainings = apiImport.getTrainingSchemas().execute().body();
+            List<TrainingRecord> presentTrainings = db.trainingDao().getAll();
+            if(trainings.size()!=presentTrainings.size()) {
+                db.trainingDao().deleteAll();
+                db.trainingDao().insertAll(trainings);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
+
+    private static void synchExerciseNames(AppDatabase db) {
+        try {
+            List<Exercise> exercises = apiImport.getExercises().execute().body();
+            List<Exercise> presentExercises = db.exerciseDao().getAll();
+            if(exercises.size()!= presentExercises.size()){
+                db.exerciseDao().deleteAll();
+                db.exerciseDao().insertAll(exercises);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static Callable<InputStream> initExerciseNames(){
          return () -> {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

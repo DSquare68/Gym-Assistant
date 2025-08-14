@@ -7,9 +7,8 @@ import androidx.room.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Entity(tableName = "training")
+@Entity(tableName = "trainings")
 @Data
-@AllArgsConstructor
 public class Training {
 
     @PrimaryKey(autoGenerate = true)
@@ -42,16 +41,6 @@ public class Training {
     @ColumnInfo(name = "schema")
     public boolean schema;
 
-    public Training(int trainingID,String trainingName, int exercise, double weight, int reps, int templateFamily)
-    {
-        this.trainingID = trainingID;
-        this.trainingName = trainingName;
-        this.exerciseNameID = exercise;
-        this.weight = weight;
-        this.reps = reps;
-        this.templateFamily = templateFamily;
-        this.schema=true;
-    }
     public Training(int trainingID,String trainingName, int exercise, double weight, int reps,int serie, int templateFamily)
     {
         this.trainingID = trainingID;

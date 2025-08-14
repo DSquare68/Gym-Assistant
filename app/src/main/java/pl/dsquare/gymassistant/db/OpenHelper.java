@@ -20,8 +20,8 @@ public class OpenHelper extends SupportSQLiteOpenHelper.Callback {
                 +TrainingColumns.WEIGHT+" REAL NOT NULL,"
                 +TrainingColumns.REPS+" INT NOT NULL,"
                 +TrainingColumns.SERIE+" INT NOT NULL,"
-                +TrainingColumns.TEMPLATE_NUMBER+" INT NOT NULL,"
-                +TrainingColumns.SCHEMA+" BOOLEAN NOT NULL )");
+                +TrainingColumns.IS_SCHEMA+" INT NOT NULL,"
+                +TrainingColumns.SCHEMA+" STRING NOT NULL )");
     }
 
     @Override

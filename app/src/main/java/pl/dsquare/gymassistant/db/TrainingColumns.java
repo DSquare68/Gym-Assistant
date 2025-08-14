@@ -3,14 +3,14 @@ package pl.dsquare.gymassistant.db;
 import androidx.room.ColumnInfo;
 
 public interface TrainingColumns {
-    String TABLE_NAME = "Training";
-    String ID = "_ID";
-    String TRAINING_INFO_ID = "training_info_id";
-    String EXERCISE_NAME_ID = "exercise";
-    String DATE = "date";
-    String WEIGHT = "weight";
-    String REPS = "rep";
-    String SERIE = "serie";
-    String TEMPLATE_NUMBER = "template_family";
-    String SCHEMA ="schema";
+    String TABLE_NAME = "TRAININGS";
+    String ID = "ID";
+    String TRAINING_INFO_ID = "ID_TRAINING";
+    String EXERCISE_NAME_ID = "ID_EXERCISE_NAME";
+    String DATE = "DATE_TRAINING";
+    String WEIGHT = "WEIGHT";
+    String REPS = "REPEAT";
+    String SERIE = "SERIE";
+    String SCHEMA ="NAME_SCHEMA";
+    String IS_SCHEMA = "IS_SCHEMA";
 }

@@ -10,7 +10,7 @@ import android.util.TypedValue;
  */
 
 public class Units {
-    public static final int VERSION=5;
+    public static final int VERSION=8;
     public static final int POLISH = 1;
 
     public static int dpToPx(Context context, int dp) {

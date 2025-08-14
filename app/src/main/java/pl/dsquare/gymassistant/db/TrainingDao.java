@@ -9,41 +9,46 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 import androidx.room.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import pl.dsquare.gymassistant.data.TrainingRecord;
 @Dao
 public abstract interface TrainingDao {
 
-    @Query("SELECT * FROM training")
-    List<Training> getAll();
+    @Query("SELECT * FROM trainings")
+    List<TrainingRecord> getAll();
 
-    @Query("SELECT * FROM training WHERE _ID IN (:exerciseIds)")
-    List<Training> loadAllByIds(int[] exerciseIds);
+    @Query("SELECT * FROM trainings WHERE ID IN (:exerciseIds)")
+    List<TrainingRecord> loadAllByIds(int[] exerciseIds);
 
-    @Query("SELECT * FROM training WHERE  exercise_name_id = :first")
-    Training findByExercise(int first);
+    @Query("SELECT * FROM trainings WHERE  ID_EXERCISE_NAME = :first")
+    List<TrainingRecord> trainingsfindByExercise(int first);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(Training... exercises);
+    void insertAll(List<TrainingRecord> t);
 
     @Delete
-    void delete(Training user);
+    void delete(TrainingRecord user);
 
-    @Query("DELETE FROM training")
+    @Query("DELETE FROM trainings")
     void deleteAll();
 
-    @Query("SELECT MAX(_ID) FROM training")
+    @Query("SELECT MAX(ID) FROM trainings")
     int getMaxID();
 
-    @Query("SELECT MAX(schema) FROM training")
+    @Query("SELECT MAX(schema) FROM trainings")
     int getMAXSchemaID();
 
-    @Query("SELECT training_name FROM training WHERE schema = 1")
+    @Query("SELECT DISTINCT(NAME_SCHEMA) FROM trainings WHERE IS_SCHEMA = 1")
     List<String> getAllSchemaNames();
 
-    @Query("SELECT MIN(_ID) FROM training WHERE training_name = :string")
-    int getIDSchema(String string);
+    @Query("SELECT MIN(ID) FROM trainings WHERE ID_TRAINING = :ID")
+    int getIDSchema(int ID);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Training training);
+    void insert(TrainingRecord trainings);
+
+    @Query("SELECT * FROM trainings WHERE is_schema = 1")
+    List<TrainingRecord> gettrainings_recordSchemas();
 }

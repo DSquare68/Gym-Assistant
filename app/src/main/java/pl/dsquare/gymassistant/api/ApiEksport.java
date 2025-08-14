@@ -2,6 +2,7 @@ package pl.dsquare.gymassistant.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import okhttp3.ResponseBody;
 import pl.dsquare.gymassistant.data.TrainingModel;
@@ -23,5 +24,10 @@ public interface ApiEksport {
     @POST("api/add/training_record")
     Call<ResponseBody> addTrainingRecord(@Body TrainingRecord training_record);
     @POST("api/add/training")
-    Call<ArrayList<ResponseBody>> addTraining(@Body ArrayList<TrainingRecord> training);
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> addTraining(@Body ArrayList<TrainingRecord> training);
+
+    @POST("api/add/exercise_name")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> addExerciseName(@Body Exercise exercise);
 }

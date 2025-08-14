@@ -6,13 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.TrainActivity">
+
+    <Spinner
+        android:id="@+id/schemas_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:id="@+id/scroll_exercise"
         android:layout_width="match_parent"
-        android:layout_height="550dp">
+        android:layout_height="550dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/schemas_spinner">
 
         <LinearLayout
-            android:id="@+id/ll_exercises_train"
+            android:id="@+id/ll_train_exercises"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -20,5 +29,11 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <EditText
+        android:id="@+id/traing_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scroll_exercise" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,20 +10,24 @@ import java.util.Arrays;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(tableName = "exercises")
 @Data
+@NoArgsConstructor
 public class Exercise {
     @PrimaryKey(autoGenerate = true)
-    private int _ID;
+    private int id;
     private String name;
     private int language;
+
     public Exercise(int ID, String name) {
         this.name = name;
+        this.id = ID;
     }
     @Ignore
     public Exercise(int ID, String name, int language) {
-        this._ID = ID;
+        this.id = ID;
         this.name = name;
         this.language =language;
     }
