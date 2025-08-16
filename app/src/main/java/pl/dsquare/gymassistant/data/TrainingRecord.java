@@ -1,9 +1,12 @@
 package pl.dsquare.gymassistant.data;
 
+import android.content.Context;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -14,6 +17,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.dsquare.gymassistant.db.AppDatabase;
 
 @Data
 @NoArgsConstructor
@@ -73,6 +77,32 @@ public class TrainingRecord implements Cloneable{
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();  // Can never happen
         }
+    }
+    public static Training toTraining(ArrayList<TrainingRecord> records, Context c){
+        AppDatabase db = AppDatabase.getDatabase(c);
+        Training tr = new Training(records.get(0).getNAME_SCHEMA());
+        String exerciseName = "";
+        int exerciseLP = -1;
+        int serieLP = 0;
+        tr.setID(records.get(0).getID_TRAINING());
+        if(records.get(0).getIS_SCHEMA()==1)
+            tr.setTemplete(true);
+        else
+            tr.setTemplete(false);
+        for(TrainingRecord r : records){
+            String name = db.exerciseDao().getNameByID(r.getID_EXERCISE_NAME());
+            if(!exerciseName.equals(name)) {
+                tr.getExercises().add(name);
+                exerciseName=name;
+                exerciseLP++;
+            }
+            if(r.getSERIE()==1) {
+                tr.getRounds().put(tr.getExercises().get(exerciseLP), new ArrayList<>());
+            }
+            tr.getRounds().get(tr.getExercises().get(exerciseLP)).add(tr.new Round(r.getSERIE(),r.getREPEAT(),r.getWEIGHT()));
+
+        }
+        return tr;
     }
 }
 

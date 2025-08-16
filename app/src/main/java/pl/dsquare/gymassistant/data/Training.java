@@ -1,54 +1,39 @@
 package pl.dsquare.gymassistant.data;
 
-import java.util.ArrayList;
-import java.util.Map;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import lombok.Data;
+
+@Data
 public class Training {
 
-    private int _ID;
+    private int ID;
+    private String name;
     private ArrayList<String> exercises;
-    private Map<String,ArrayList<Round>> rounds;
+    private HashMap<String,ArrayList<Round>> rounds;
     private boolean templete;
 
-    public Training(int _ID, ArrayList<String> exercises, Map<String, ArrayList<Round>> rounds) {
-        this._ID = _ID;
+    public Training(int _ID, ArrayList<String> exercises, HashMap<String, ArrayList<Round>> rounds) {
+        this.ID = _ID;
         this.exercises = exercises;
         this.rounds = rounds;
     }
-
-    public int get_ID() {
-        return _ID;
+    public Training(String name){
+        this.name = name;
+        templete = false;
+        exercises = new ArrayList<>();
+        rounds = new HashMap<>();
     }
 
-    public void set_ID(int _ID) {
-        this._ID = _ID;
-    }
-
-    public boolean isTemplete() {
-        return templete;
-    }
-
-    public void setTemplete(boolean templete) {
-        this.templete = templete;
-    }
-
-    public ArrayList<String> getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(ArrayList<String> exercises) {
-        this.exercises = exercises;
-    }
-
-    public Map<String, ArrayList<Round>> getRounds() {
-        return rounds;
-    }
-
-    public void setRounds(Map<String, ArrayList<Round>> rounds) {
-        this.rounds = rounds;
-    }
-
-    private class Round {
+    public class Round {
         int roundNumber,reps;
         double weight;
 

@@ -51,4 +51,10 @@ public abstract interface TrainingDao {
 
     @Query("SELECT * FROM trainings WHERE is_schema = 1")
     List<TrainingRecord> gettrainings_recordSchemas();
+
+    @Query("SELECT ID_TRAINING FROM trainings WHERE NAME_SCHEMA = :name AND IS_SCHEMA = 1")
+    int getIDTrainingSchamaByName(String name);
+
+    @Query("SELECT * FROM trainings WHERE ID_TRAINING = :id")
+    List<TrainingRecord> getTrainigByIDTraining(int id);
 }

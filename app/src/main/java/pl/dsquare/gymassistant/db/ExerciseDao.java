@@ -37,4 +37,7 @@ public interface ExerciseDao {
 
     @Query("SELECT MAX(id) FROM exercises")
     int getMaxID();
+
+    @Query("SELECT name FROM exercises WHERE id = :idExerciseName")
+    String getNameByID(int idExerciseName);
 }

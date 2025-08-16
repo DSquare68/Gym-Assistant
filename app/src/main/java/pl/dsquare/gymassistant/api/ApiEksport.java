@@ -1,14 +1,10 @@
 package pl.dsquare.gymassistant.api;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
 
 import okhttp3.ResponseBody;
-import pl.dsquare.gymassistant.data.TrainingModel;
 import pl.dsquare.gymassistant.data.TrainingRecord;
 import pl.dsquare.gymassistant.db.Exercise;
-import pl.dsquare.gymassistant.db.ExerciseNames;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;

@@ -17,7 +17,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:completionThreshold="2"
+            android:visibility="visible"
             android:hint="Ćwiczenie" />
+
+        <TextView
+            android:id="@+id/exercise_name"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/ib_delete_serie"
