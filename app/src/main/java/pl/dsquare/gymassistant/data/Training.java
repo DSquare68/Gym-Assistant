@@ -2,6 +2,7 @@ package pl.dsquare.gymassistant.data;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.Database;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import lombok.Data;
+import pl.dsquare.gymassistant.db.AppDatabase;
 
 @Data
 public class Training {
@@ -31,6 +33,28 @@ public class Training {
         templete = false;
         exercises = new ArrayList<>();
         rounds = new HashMap<>();
+    }
+
+    public static ArrayList<TrainingRecord> toTrainingRecord(AppDatabase db, Training training, String name, String date, int ID_Schema) {
+        ArrayList<TrainingRecord> records = new ArrayList<>();
+        for(String nameExercise : training.getExercises()){
+            int idExercise = db.exerciseDao().getIDByName(nameExercise);
+            for(Round round : training.getRounds().get(nameExercise)) {
+                TrainingRecord record = new TrainingRecord(
+                        0,
+                        idExercise,
+                        round.getRoundNumber(),
+                        round.getReps(),
+                        round.getWeight(),
+                        ID_Schema,
+                        0, // Assuming 0 for trainingID
+                        date,
+                        name
+                );
+                records.add(record);
+            }
+        }
+        return records;
     }
 
     public class Round {

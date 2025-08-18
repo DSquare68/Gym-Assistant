@@ -3,15 +3,12 @@ package pl.dsquare.gymassistant.activity;
 import static android.view.View.VISIBLE;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -19,21 +16,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import pl.dsquare.gymassistant.R;
 import pl.dsquare.gymassistant.Units;
-import pl.dsquare.gymassistant.api.ApiClient;
 import pl.dsquare.gymassistant.data.TrainingRecord;
 import pl.dsquare.gymassistant.db.AppDatabase;
 import pl.dsquare.gymassistant.db.Exercise;
@@ -203,7 +196,7 @@ public class CreateTrainingActivity extends AppCompatActivity {
         ecList.add(ec);
     }
 
-    public void addTraining(MenuItem item) {
+    public void addTrainingSchema(MenuItem item) {
         /*if(((EditText) findViewById(R.id.et_training_name)).getText()==null || ((EditText) findViewById(R.id.et_training_name)).getText().equals("")){
             Toast.makeText(this,"Brak nazwy Treningu",Toast.LENGTH_SHORT).show();
             return;

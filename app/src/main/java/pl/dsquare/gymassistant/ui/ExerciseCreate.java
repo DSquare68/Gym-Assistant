@@ -2,9 +2,7 @@ package pl.dsquare.gymassistant.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,14 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 
 import pl.dsquare.gymassistant.R;
 import pl.dsquare.gymassistant.Units;
 import pl.dsquare.gymassistant.data.Training;
 import pl.dsquare.gymassistant.data.TrainingRecord;
-import pl.dsquare.gymassistant.db.AppDatabase;
-import pl.dsquare.gymassistant.db.Exercise;
 
 public class ExerciseCreate extends LinearLayout {
     public ExerciseCreate(Context context){
@@ -117,7 +112,7 @@ public class ExerciseCreate extends LinearLayout {
         }
         return result;
     }
-    public void  setExerciseValues(ArrayList<Training.Round> rounds, String name){
+    public void setExerciseValuesSchema(ArrayList<Training.Round> rounds, String name){
         this.findViewById(R.id.ll_simple_series).setVisibility(GONE);
         this.findViewById(R.id.actv_new_exercise_add_training).setVisibility(GONE);
         this.findViewById(R.id.ll_extended_series).setVisibility(VISIBLE);
@@ -133,6 +128,25 @@ public class ExerciseCreate extends LinearLayout {
             ((TextView)round.findViewById(R.id.textView)).setText(String.valueOf(r.getRoundNumber()));
             ((EditText) round.findViewById(R.id.editText)).setHint(String.valueOf(r.getWeight()));
             ((EditText) round.findViewById(R.id.editText2)).setHint(String.valueOf(r.getReps()));
+            ll.addView(round);
+        }
+    }
+    public void setExerciseValues(ArrayList<Training.Round> rounds, String name){
+        this.findViewById(R.id.ll_simple_series).setVisibility(GONE);
+        this.findViewById(R.id.actv_new_exercise_add_training).setVisibility(GONE);
+        this.findViewById(R.id.ll_extended_series).setVisibility(VISIBLE);
+        TextView tv = (TextView) this.findViewById(R.id.exercise_name);
+        tv.setVisibility(VISIBLE);
+        tv.setText(name);
+        LinearLayout ll = this.findViewById(R.id.ll_extended_series_parent);
+        for(Training.Round r : rounds){
+            RoundUI round = new RoundUI(this.getContext());
+            round.setVisibility(VISIBLE);
+            round.setOrientation(LinearLayout.HORIZONTAL);
+            round.setLayoutParams(new LinearLayout.LayoutParams(Units.dpToPx(this.getContext(),100), ViewGroup.LayoutParams.WRAP_CONTENT));
+            ((TextView)round.findViewById(R.id.textView)).setText(String.valueOf(r.getRoundNumber()));
+            ((EditText) round.findViewById(R.id.editText)).setText(String.valueOf(r.getWeight()));
+            ((EditText) round.findViewById(R.id.editText2)).setText(String.valueOf(r.getReps()));
             ll.addView(round);
         }
     }

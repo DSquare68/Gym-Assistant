@@ -250,4 +250,5 @@
     <string name="is_first_run">First run</string>
     <string name="options">Opcje</string>
     <string name="new_schema">Nowy schemat</string>
+    <string name="parse_file">Rzutuj</string>
 </resources>
