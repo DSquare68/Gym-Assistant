@@ -17,13 +17,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import pl.dsquare.gymassistant.R;
 import pl.dsquare.gymassistant.Units;
@@ -33,7 +38,7 @@ import pl.dsquare.gymassistant.data.Training;
 import pl.dsquare.gymassistant.data.TrainingRecord;
 import pl.dsquare.gymassistant.db.AppDatabase;
 import pl.dsquare.gymassistant.ui.ExerciseCreate;
-import pl.dsquare.gymassistant.ui.Serie;
+import pl.dsquare.gymassistant.ui.RoundUI;
 
 public class TrainActivity extends AppCompatActivity {
     private LinearLayout ll;
@@ -101,8 +106,18 @@ public class TrainActivity extends AppCompatActivity {
         int day = dp.getDayOfMonth();
         int month = dp.getMonth() + 1;
         int year = dp.getYear();
-        String date = String.format("%02d-%02d-%04d", day, month, year);
-        apiEksport.addTraining(Training.toTrainingRecord(db,training,((EditText) this.findViewById(R.id.traing_name)).getText().toString(),date,ID_Schema));
+        Date date = new Date(year - 1900, month - 1, day);
+        String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        AtomicInteger code= new AtomicInteger();
+        new Thread(()-> {
+            try {
+                code.set(apiEksport.addTraining(Training.toTrainingRecord(db, training, ((EditText) this.findViewById(R.id.traing_name)).getText().toString(), simpleDateFormat.format(date), ID_Schema)).execute().code());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+        Toast.makeText(this,"Code: "+code,Toast.LENGTH_LONG).show();
     }
 
     private void readTraining() {
@@ -114,9 +129,9 @@ public class TrainActivity extends AppCompatActivity {
             LinearLayout extendedSerie= exerciseLayout.findViewById(R.id.ll_extended_series_parent);
             ArrayList<Training.Round> rounds = new ArrayList<>();
             for(int j=0;j<extendedSerie.getChildCount(); j++) {
-                Serie serie = (Serie) extendedSerie.getChildAt(j);
-                int repeats = Integer.parseInt(((EditText) serie.findViewById(R.id.et_repeats)).getText().toString());
-                double weight = Double.parseDouble(((EditText) serie.findViewById(R.id.et_weight)).getText().toString());
+                RoundUI serie = (RoundUI) extendedSerie.getChildAt(j);
+                int repeats = Integer.parseInt(((EditText) serie.findViewById(R.id.editText2)).getText().toString());
+                double weight = Double.parseDouble(((EditText) serie.findViewById(R.id.editText)).getText().toString());
                 Training.Round r = training.new Round(j+1, repeats, weight);
                 rounds.add(r);
             }
@@ -124,16 +139,15 @@ public class TrainActivity extends AppCompatActivity {
         }
     }
     public void addTrainingFromFile(MenuItem item){
-
-    }
-    public void addTrainingFromFile(View view) {
         this.findViewById(R.id.traing_name).setVisibility(GONE);
         this.findViewById(R.id.fileField).setVisibility(VISIBLE);
         this.findViewById(R.id.date_training).setVisibility(GONE);
+        this.findViewById(R.id.scroll_exercise).setVisibility(GONE);
         this.findViewById(R.id.parser_file_button).setVisibility(VISIBLE);
         ((Button) this.findViewById(R.id.parser_file_button)).setOnClickListener((v)->{
             parseFile();
             fillData();
+            this.findViewById(R.id.scroll_exercise).setVisibility(VISIBLE);
             this.findViewById(R.id.traing_name).setVisibility(VISIBLE);
             this.findViewById(R.id.fileField).setVisibility(GONE);
             this.findViewById(R.id.date_training).setVisibility(VISIBLE);
@@ -162,12 +176,14 @@ public class TrainActivity extends AppCompatActivity {
            if(line.isBlank())
                continue;
            String[] parts = line.split(" ");
-           training.getExercises().set(i,trainingSchema.getExercises().get(Integer.valueOf(parts[0].substring(parts.length-1))));
+           String name = trainingSchema.getExercises().set(i,trainingSchema.getExercises().get(Integer.valueOf(parts[0].substring(0,parts[0].length()-1))-1));
+           training.getExercises().add(name);
+           training.getRounds().put(name, new ArrayList<>());
            for(int j = 0; j < (parts.length-1)/2; j++) {
                if(parts[j].isBlank())
                    continue;
-               Training.Round r = training.new Round((j/2+1) , Integer.valueOf(parts[j+2]), Double.valueOf(parts[j+1]));
-               training.getRounds().get(training.getExercises().get(i)).set(j/2,r);
+               Training.Round r = training.new Round((j/2+1) , Integer.valueOf(parts[j*2+2]), Double.valueOf(parts[j*2+1]));
+               training.getRounds().get(name).add(r);
            }
            i++;
         }
