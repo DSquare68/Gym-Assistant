@@ -17,12 +17,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -109,10 +111,14 @@ public class TrainActivity extends AppCompatActivity {
         Date date = new Date(year - 1900, month - 1, day);
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        TimePicker tp = (TimePicker) this.findViewById(R.id.time_training);
+        int hour = tp.getHour()==12 ? 0 : tp.getHour();
+        int minute = tp.getMinute();
+        LocalTime dt = LocalTime.of(hour,minute);
         AtomicInteger code= new AtomicInteger();
         new Thread(()-> {
             try {
-                code.set(apiEksport.addTraining(Training.toTrainingRecord(db, training, ((EditText) this.findViewById(R.id.traing_name)).getText().toString(), simpleDateFormat.format(date), ID_Schema)).execute().code());
+                code.set(apiEksport.addTraining(Training.toTrainingRecord(db, training, ((EditText) this.findViewById(R.id.traing_name)).getText().toString(), simpleDateFormat.format(date), ID_Schema,dt.toString())).execute().code());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

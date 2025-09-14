@@ -59,7 +59,7 @@ public abstract class AppDatabase extends RoomDatabase {
         try{
             String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            Response<ResponseBody> response = apiEksport.addTrainingRecord(new TrainingRecord(1,1,1,0,0.0,1,1,simpleDateFormat.format(new Date()),"asdf")).execute();
+            Response<ResponseBody> response = apiEksport.addTrainingRecord(new TrainingRecord(1,1,1,0,0.0,1,1,simpleDateFormat.format(new Date()),"asdf","")).execute();
            // ArrayList<TrainingRecord> t = new ArrayList<TrainingRecord>();
             //t.add(new TrainingRecord(1,1,1,0,0.0,1,1,simpleDateFormat.format(new Date()),"asdf"));
             //new TrainingRecord(2,2,2,2,0.0,1,1,simpleDateFormat.format(new Date()),"asdf");

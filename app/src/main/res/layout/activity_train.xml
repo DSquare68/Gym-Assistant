@@ -8,9 +8,12 @@
     tools:context=".activity.TrainActivity">
 
     <DatePicker
+        android:theme="@style/DateTimePickerStyle"
         android:id="@+id/date_training"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
+        android:scaleY="0.8"
+        android:scaleX="0.8"
         android:layout_margin="0dp"
         android:padding="0dp"
         android:datePickerMode="spinner"
@@ -18,12 +21,21 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
+    <TimePicker
+        android:theme="@style/DateTimePickerStyle"
+        android:id="@+id/time_training"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:timePickerMode="spinner"
+        android:scaleY="1.2"
+        android:scaleX="1.2"
+        app:layout_constraintTop_toBottomOf="@id/date_training" />
+
     <Spinner
         android:id="@+id/schemas_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/date_training"
-         />
+        app:layout_constraintTop_toBottomOf="@id/time_training" />
 
     <ScrollView
         android:id="@+id/scroll_exercise"

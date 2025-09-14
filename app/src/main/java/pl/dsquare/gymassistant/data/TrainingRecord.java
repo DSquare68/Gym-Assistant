@@ -45,8 +45,10 @@ public class TrainingRecord implements Cloneable{
     private String DATE_TRAINING;
     @Column(name = "NAME_SCHEMA")
     private String NAME_SCHEMA;
+    @Column(name = "TIME_TRAINING")
+    private String TIME_TRAINING;
 
-    public TrainingRecord(int ID,int ID_TRAINING, int ID_EXERCISE_NAME, int SERIE, int REPEAT, double WEIGHT, int SCHEMA, int IS_SCHEMA, String DATE_TRAINING, String NAME_SCHEMA) {
+    public TrainingRecord(int ID,int ID_TRAINING, int ID_EXERCISE_NAME, int SERIE, int REPEAT, double WEIGHT, int SCHEMA, int IS_SCHEMA, String DATE_TRAINING, String NAME_SCHEMA, String TIME_TRAINING) {
         this.ID = ID;
         this.ID_TRAINING = ID_TRAINING;
         this.ID_EXERCISE_NAME = ID_EXERCISE_NAME;
@@ -57,9 +59,10 @@ public class TrainingRecord implements Cloneable{
         this.IS_SCHEMA = IS_SCHEMA;
         this.DATE_TRAINING = DATE_TRAINING;
         this.NAME_SCHEMA = NAME_SCHEMA;
+        this.TIME_TRAINING = TIME_TRAINING;
     }
     @Ignore
-    public TrainingRecord(int ID_TRAINING, int ID_EXERCISE_NAME, int SERIE, int REPEAT, double WEIGHT, int SCHEMA, int IS_SCHEMA, String DATE_TRAINING, String NAME_SCHEMA) {
+    public TrainingRecord(int ID_TRAINING, int ID_EXERCISE_NAME, int SERIE, int REPEAT, double WEIGHT, int SCHEMA, int IS_SCHEMA, String DATE_TRAINING, String NAME_SCHEMA, String TIME_TRAINING) {
         this.ID_TRAINING = ID_TRAINING;
         this.ID_EXERCISE_NAME = ID_EXERCISE_NAME;
         this.SERIE = SERIE;
@@ -69,6 +72,7 @@ public class TrainingRecord implements Cloneable{
         this.IS_SCHEMA = IS_SCHEMA;
         this.DATE_TRAINING = DATE_TRAINING;
         this.NAME_SCHEMA = NAME_SCHEMA;
+        this.TIME_TRAINING = TIME_TRAINING;
     }
     @Override
     public TrainingRecord clone() {

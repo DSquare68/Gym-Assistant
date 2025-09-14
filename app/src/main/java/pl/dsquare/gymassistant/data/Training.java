@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Database;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +21,7 @@ public class Training {
     private int ID;
     private String name;
     private ArrayList<String> exercises;
+    private LocalTime timeOfTraining;
     private HashMap<String,ArrayList<Round>> rounds;
     private boolean templete;
 
@@ -35,7 +37,7 @@ public class Training {
         rounds = new HashMap<>();
     }
 
-    public static ArrayList<TrainingRecord> toTrainingRecord(AppDatabase db, Training training, String name, String date, int ID_Schema) {
+    public static ArrayList<TrainingRecord> toTrainingRecord(AppDatabase db, Training training, String name, String date, int ID_Schema,String time) {
         ArrayList<TrainingRecord> records = new ArrayList<>();
         for(String nameExercise : training.getExercises()){
             int idExercise = db.exerciseDao().getIDByName(nameExercise);
@@ -49,7 +51,8 @@ public class Training {
                         ID_Schema,
                         0, // Assuming 0 for trainingID
                         date,
-                        name
+                        name,
+                        time
                 );
                 records.add(record);
             }
