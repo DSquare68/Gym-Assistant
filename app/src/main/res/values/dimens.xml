@@ -15,6 +15,6 @@
     <dimen name="add_delete_round_container_width">50dp</dimen>
     <dimen name="add_delete_round_container_height">100dp</dimen>
     <dimen name="image_activity_main">125dp</dimen>
-    <dimen name="main_activity_space">25dp</dimen>
+    <dimen name="main_activity_space">15dp</dimen>
     <dimen name="height_add_training_layout_bottom">50dp</dimen>
 </resources>

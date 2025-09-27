@@ -75,4 +75,8 @@ public class MainActivity extends AppCompatActivity  {
         Intent i = new Intent(this, GymActivity.class);
         startActivity(i);
     }
+    public void football(View view) {
+        Intent i = new Intent(this, FootballActivity.class);
+        startActivity(i);
+    }
 }

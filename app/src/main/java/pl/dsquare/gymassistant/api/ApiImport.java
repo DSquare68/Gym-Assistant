@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiImport {
-    @GET("/api/get/exercises")
+    @GET("api/get/exercises")
     Call<List<Exercise>> getExercises();
 
     @GET("api/get/exerciseIDByName/{name}")

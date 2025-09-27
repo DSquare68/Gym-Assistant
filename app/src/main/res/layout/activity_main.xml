@@ -62,39 +62,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom"
             android:orientation="vertical">
-
-            <HorizontalScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="bottom"
-                android:fillViewport="true"
-                android:paddingTop="12.5dp">
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="vertical">
 
-                <LinearLayout
+                    <LinearLayout
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/gym"
-                    android:layout_width="@dimen/image_activity_main"
-                    android:layout_height="@dimen/image_activity_main"
-                    android:layout_marginLeft="5dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:onClick="gym"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/gym" />
+                    <ImageButton
+                        android:id="@+id/gym"
+                        android:layout_width="@dimen/image_activity_main"
+                        android:layout_height="@dimen/image_activity_main"
+                        android:layout_marginLeft="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@android:color/transparent"
+                        android:onClick="gym"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/gym" />
 
-                <Space
-                    android:layout_width="@dimen/main_activity_space"
-                    android:layout_height="wrap_content" />
+                    <Space
+                        android:layout_width="@dimen/main_activity_space"
+                        android:layout_height="wrap_content" />
 
-                </LinearLayout>
-            </HorizontalScrollView>
-    </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/football"
+                        android:layout_width="@dimen/image_activity_main"
+                        android:layout_height="@dimen/image_activity_main"
+                        android:layout_marginLeft="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@android:color/transparent"
+                        android:onClick="football"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ball" />
+
+                    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 </LinearLayout>
 </LinearLayout>
