@@ -19,4 +19,6 @@ public interface MatchDao {
     @Query("SELECT * FROM matches")
     List<MatchRecord> getAll();
 
+    @Query("DELETE FROM matches")
+    void deleteAll();
 }

@@ -33,4 +33,6 @@ public class MatchRecord {
     private String cup;
     @Column(name = "SEASON")
     private String season;
+    @Column(name = "CODE_OF_DATA")
+    private String code_of_data;
 }

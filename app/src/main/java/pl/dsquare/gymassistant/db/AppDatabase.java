@@ -120,6 +120,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static void synchSeasns(AppDatabase db) {
         try {
+            db.matchDao().deleteAll();
             List<MatchRecord> matches = apiImport.getMatches().execute().body();
             List<MatchRecord> presentMaches = db.matchDao().getAll();
             if(presentMaches.isEmpty() || presentMaches == null)
