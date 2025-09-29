@@ -34,6 +34,7 @@ import okhttp3.ResponseBody;
 import pl.dsquare.gymassistant.api.ApiClient;
 import pl.dsquare.gymassistant.api.ApiEksport;
 import pl.dsquare.gymassistant.api.ApiImport;
+import pl.dsquare.gymassistant.data.MatchRecord;
 import pl.dsquare.gymassistant.data.TrainingRecord;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,7 +42,7 @@ import retrofit2.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Database(entities = {Exercise.class, TrainingRecord.class}, version = VERSION, exportSchema = false)
+@Database(entities = {Exercise.class, TrainingRecord.class,MatchRecord.class}, version = VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DB_NAME="gym_assistant_db";
     private Context c;
@@ -55,6 +56,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract  ExerciseDao exerciseDao();
+
+    public abstract MatchDao matchDao();
     public static void insertTrainingRecord(Context applicationContext) {
         try{
             String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
@@ -112,7 +115,22 @@ public abstract class AppDatabase extends RoomDatabase {
         //db.exerciseDao().insertAll(Exercise.init(ExerciseNames.nameTrainings,POLISH));
         synchExerciseNames(db);
         synchTrainingsSchema(db);
+        synchSeasns(db);
     }
+
+    private static void synchSeasns(AppDatabase db) {
+        try {
+            List<MatchRecord> matches = apiImport.getMatches().execute().body();
+            List<MatchRecord> presentMaches = db.matchDao().getAll();
+            if(presentMaches.isEmpty() || presentMaches == null)
+                db.matchDao().insertAll(matches);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     private static void synchTrainingsSchema(AppDatabase db) {
         try {

@@ -25,7 +25,6 @@ import pl.dsquare.gymassistant.api.ApiEksport;
 import pl.dsquare.gymassistant.api.ApiImport;
 import pl.dsquare.gymassistant.data.ExerciseNames;
 import pl.dsquare.gymassistant.db.AppDatabase;
-import pl.dsquare.gymassistant.db.DB;
 import pl.dsquare.gymassistant.db.Exercise;
 import pl.dsquare.gymassistant.db.Sync;
 import retrofit2.Call;
@@ -36,7 +35,6 @@ import retrofit2.Retrofit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity  {
 

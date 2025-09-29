@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import pl.dsquare.gymassistant.data.MatchRecord;
 import pl.dsquare.gymassistant.data.TrainingRecord;
 import pl.dsquare.gymassistant.db.Exercise;
 import pl.dsquare.gymassistant.db.ExerciseNames;
@@ -23,4 +24,7 @@ public interface ApiImport {
 
     @GET("api/get/TrainingSchemas")
     Call<List<TrainingRecord>> getTrainingSchemas();
+
+    @GET("api/get/matches")
+    Call<List<MatchRecord>> getMatches();
 }
