@@ -21,4 +21,7 @@ public interface MatchDao {
 
     @Query("DELETE FROM matches")
     void deleteAll();
+
+    @Query("SELECT * FROM MATCHES WHERE DATE_OF_MATCH BETWEEN :friday AND :monday")
+    List<MatchRecord> getQueue(String friday, String monday);
 }

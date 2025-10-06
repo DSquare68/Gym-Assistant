@@ -35,6 +35,11 @@
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".FootballActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <uses-library android:name="com.android.future.usb.accessory" />
 
