@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "pl.dsquare.gymassistant"
+    namespace = "pl.dsquare.home"
     compileSdkVersion 35
     defaultConfig {
         applicationId "pl.dsquare.gymassistant"

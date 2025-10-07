@@ -21,32 +21,32 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <pl.dsquare.gymassistant.ui.ExerciseCreate
+            <pl.dsquare.home.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <pl.dsquare.gymassistant.ui.ExerciseCreate
+            <pl.dsquare.home.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <pl.dsquare.gymassistant.ui.ExerciseCreate
+            <pl.dsquare.home.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <pl.dsquare.gymassistant.ui.ExerciseCreate
+            <pl.dsquare.home.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <pl.dsquare.gymassistant.ui.ExerciseCreate
+            <pl.dsquare.home.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <pl.dsquare.gymassistant.ui.ExerciseCreate
+            <pl.dsquare.home.ui.ExerciseCreate
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
