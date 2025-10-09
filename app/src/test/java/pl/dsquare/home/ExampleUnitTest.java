@@ -1,4 +1,4 @@
-package pl.dsquare.home;
+package pl.dsquare.home.android;
 
 import org.junit.Test;
 

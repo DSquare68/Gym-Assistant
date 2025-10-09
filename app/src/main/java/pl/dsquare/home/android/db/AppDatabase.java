@@ -1,6 +1,6 @@
-package pl.dsquare.home.db;
+package pl.dsquare.home.android.db;
 
-import static pl.dsquare.home.Units.*;
+import static pl.dsquare.home.android.Units.*;
 
 import android.content.Context;
 
@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 
 import okhttp3.ResponseBody;
-import pl.dsquare.home.api.ApiClient;
-import pl.dsquare.home.api.ApiEksport;
-import pl.dsquare.home.api.ApiImport;
-import pl.dsquare.home.data.MatchRecord;
-import pl.dsquare.home.data.TrainingRecord;
+import pl.dsquare.home.android.api.ApiClient;
+import pl.dsquare.home.android.api.ApiEksport;
+import pl.dsquare.home.android.api.ApiImport;
+import pl.dsquare.home.android.data.MatchRecord;
+import pl.dsquare.home.android.data.TrainingRecord;
 import retrofit2.Response;
 
 import java.util.List;

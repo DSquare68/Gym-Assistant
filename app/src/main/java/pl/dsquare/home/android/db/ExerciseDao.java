@@ -1,4 +1,4 @@
-package pl.dsquare.home.db;
+package pl.dsquare.home.android.db;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

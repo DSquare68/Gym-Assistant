@@ -1,4 +1,4 @@
-package pl.dsquare.home.ui;
+package pl.dsquare.home.android.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,11 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
-import pl.dsquare.home.R;
-import pl.dsquare.home.Units;
-import pl.dsquare.home.data.Training;
-import pl.dsquare.home.data.TrainingRecord;
+import pl.dsquare.home.android.Units;
+import pl.dsquare.home.android.android.R;
+import pl.dsquare.home.android.data.Training;
+import pl.dsquare.home.android.data.TrainingRecord;
 
 public class ExerciseCreate extends LinearLayout {
     public ExerciseCreate(Context context){

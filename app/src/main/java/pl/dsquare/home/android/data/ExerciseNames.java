@@ -1,4 +1,4 @@
-package pl.dsquare.home.data;
+package pl.dsquare.home.android.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

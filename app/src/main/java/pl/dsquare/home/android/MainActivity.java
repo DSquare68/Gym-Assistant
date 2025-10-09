@@ -1,4 +1,4 @@
-package pl.dsquare.home;
+package pl.dsquare.home.android.android;
 
 
 import android.content.Intent;
@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.ui.AppBarConfiguration;
 
-import pl.dsquare.home.data.ExerciseNames;
-import pl.dsquare.home.db.AppDatabase;
-import pl.dsquare.home.db.Sync;
+import pl.dsquare.home.android.FootballActivity;
+import pl.dsquare.home.android.GymActivity;
+import pl.dsquare.home.android.data.ExerciseNames;
+import pl.dsquare.home.android.db.AppDatabase;
+import pl.dsquare.home.android.db.Sync;
 
 import java.util.ArrayList;
 import java.util.List;

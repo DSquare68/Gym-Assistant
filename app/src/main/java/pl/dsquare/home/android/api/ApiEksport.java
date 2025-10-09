@@ -1,10 +1,10 @@
-package pl.dsquare.home.api;
+package pl.dsquare.home.android.api;
 
 import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
-import pl.dsquare.home.data.TrainingRecord;
-import pl.dsquare.home.db.Exercise;
+import pl.dsquare.home.android.data.TrainingRecord;
+import pl.dsquare.home.android.db.Exercise;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;

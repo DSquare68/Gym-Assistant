@@ -1,10 +1,11 @@
-package pl.dsquare.home.ui;
+package pl.dsquare.home.android.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import pl.dsquare.home.R;
+import pl.dsquare.home.android.android.R;
+
 
 public class RoundUI extends LinearLayout {
     public RoundUI(Context context) {

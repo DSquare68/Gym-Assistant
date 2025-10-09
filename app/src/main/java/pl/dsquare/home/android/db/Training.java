@@ -1,4 +1,4 @@
-package pl.dsquare.home.db;
+package pl.dsquare.home.android.db;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

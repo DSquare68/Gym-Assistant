@@ -1,4 +1,4 @@
-package pl.dsquare.home.api;
+package pl.dsquare.home.android.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

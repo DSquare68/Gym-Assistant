@@ -1,4 +1,4 @@
-package pl.dsquare.home.data;
+package pl.dsquare.home.android.data;
 
 import android.content.Context;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.dsquare.home.db.AppDatabase;
+import pl.dsquare.home.android.db.AppDatabase;
 
 @Data
 @NoArgsConstructor

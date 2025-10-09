@@ -1,8 +1,12 @@
-package pl.dsquare.home;
+package pl.dsquare.home.android;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.room.Room;
 
@@ -11,14 +15,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import pl.dsquare.home.data.MatchRecord;
-import pl.dsquare.home.db.AppDatabase;
+import pl.dsquare.home.android.android.R;
+import pl.dsquare.home.android.data.MatchRecord;
+import pl.dsquare.home.android.db.AppDatabase;
 
 public class FootballActivity extends Activity {
     private List<MatchRecord> queues;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_match);
         AppDatabase db = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME)
                 .fallbackToDestructiveMigration()
                 .build();
@@ -28,10 +34,10 @@ public class FootballActivity extends Activity {
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         int dayOfWeek = today.get(Calendar.DAY_OF_WEEK);
-        int daysToFriday = 6 - dayOfWeek;
+        int daysToFriday = 6 - dayOfWeek-7;
         today.add(Calendar.DATE, daysToFriday);
         String fridayStr = sdf.format(today.getTime());
-        today.add(Calendar.DATE, 3);
+        today.add(Calendar.DATE, 3+7);
         today.set(Calendar.HOUR_OF_DAY, 23);
         String mondayStr = sdf.format(today.getTime());
 
@@ -45,5 +51,21 @@ public class FootballActivity extends Activity {
         Log.d("FootballActivity",queues.size()+"");
         int a=0;
         a++;
+        new Thread(()->initQueue()).start();
+    }
+
+    private void initQueue() {
+        LinearLayout ll = findViewById(R.id.queue_layout);
+        for (MatchRecord matchRecord : queues) {
+            LinearLayout match =(LinearLayout) View.inflate(this, R.layout.queue_match, null);
+            ((TextView) match.findViewById(R.id.queue_match_home)).setText(matchRecord.getHome());
+            ((TextView) match.findViewById(R.id.queue_match_date)).setText(
+                    ((TextView) match.findViewById(R.id.queue_match_date)).getText()
+                    +"\n"+
+                    matchRecord.getDate_of_match()
+            );
+            ((TextView) match.findViewById(R.id.queue_match_guest)).setText(matchRecord.getGuest());
+            ll.addView(match);
+        }
     }
 }

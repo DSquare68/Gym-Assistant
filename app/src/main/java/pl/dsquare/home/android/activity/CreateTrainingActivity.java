@@ -1,4 +1,4 @@
-package pl.dsquare.home.activity;
+package pl.dsquare.home.android.activity;
 
 import static android.view.View.VISIBLE;
 
@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import pl.dsquare.home.R;
-import pl.dsquare.home.Units;
-import pl.dsquare.home.data.TrainingRecord;
-import pl.dsquare.home.db.AppDatabase;
-import pl.dsquare.home.db.Exercise;
-import pl.dsquare.home.db.ExerciseNamesAdapter;
-import pl.dsquare.home.db.Training;
-import pl.dsquare.home.ui.ExerciseCreate;
-import pl.dsquare.home.ui.Serie;
+import pl.dsquare.home.android.Units;
+import pl.dsquare.home.android.android.R;
+import pl.dsquare.home.android.data.TrainingRecord;
+import pl.dsquare.home.android.db.AppDatabase;
+import pl.dsquare.home.android.db.Exercise;
+import pl.dsquare.home.android.db.ExerciseNamesAdapter;
+import pl.dsquare.home.android.db.Training;
+import pl.dsquare.home.android.ui.ExerciseCreate;
+import pl.dsquare.home.android.ui.Serie;
 
 public class CreateTrainingActivity extends AppCompatActivity {
     private ArrayList<TrainingRecord> records = new ArrayList<>();

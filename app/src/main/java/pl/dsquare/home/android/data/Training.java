@@ -1,11 +1,11 @@
-package pl.dsquare.home.data;
+package pl.dsquare.home.android.data;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import lombok.Data;
-import pl.dsquare.home.db.AppDatabase;
+import pl.dsquare.home.android.db.AppDatabase;
 
 @Data
 public class Training {

@@ -1,4 +1,4 @@
-package pl.dsquare.home.db;
+package pl.dsquare.home.android.db;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -8,7 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import pl.dsquare.home.data.TrainingRecord;
+import pl.dsquare.home.android.data.TrainingRecord;
 @Dao
 public abstract interface TrainingDao {
 

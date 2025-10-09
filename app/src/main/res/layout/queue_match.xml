@@ -14,6 +14,7 @@
         android:text="HOME">
     </TextView>
     <TextView
+        android:id="@+id/queue_match_date"
         android:layout_width="50dp"
         android:text="VS"
         android:gravity="center"

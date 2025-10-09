@@ -1,4 +1,4 @@
-package pl.dsquare.home.data;
+package pl.dsquare.home.android.data;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

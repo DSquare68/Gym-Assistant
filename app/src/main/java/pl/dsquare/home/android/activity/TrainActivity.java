@@ -1,4 +1,4 @@
-package pl.dsquare.home.activity;
+package pl.dsquare.home.android.activity;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -32,15 +32,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import pl.dsquare.home.R;
-import pl.dsquare.home.Units;
-import pl.dsquare.home.api.ApiClient;
-import pl.dsquare.home.api.ApiEksport;
-import pl.dsquare.home.data.Training;
-import pl.dsquare.home.data.TrainingRecord;
-import pl.dsquare.home.db.AppDatabase;
-import pl.dsquare.home.ui.ExerciseCreate;
-import pl.dsquare.home.ui.RoundUI;
+
+import pl.dsquare.home.android.Units;
+import pl.dsquare.home.android.android.R;
+import pl.dsquare.home.android.api.ApiClient;
+import pl.dsquare.home.android.api.ApiEksport;
+import pl.dsquare.home.android.data.Training;
+import pl.dsquare.home.android.data.TrainingRecord;
+import pl.dsquare.home.android.db.AppDatabase;
+import pl.dsquare.home.android.ui.ExerciseCreate;
+import pl.dsquare.home.android.ui.RoundUI;
 
 public class TrainActivity extends AppCompatActivity {
     private LinearLayout ll;

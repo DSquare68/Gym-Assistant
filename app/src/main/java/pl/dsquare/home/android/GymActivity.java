@@ -1,4 +1,4 @@
-package pl.dsquare.home;
+package pl.dsquare.home.android;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import pl.dsquare.home.activity.CreateTrainingActivity;
-import pl.dsquare.home.activity.SheduleActivity;
-import pl.dsquare.home.activity.TrainActivity;
+import pl.dsquare.home.android.activity.CreateTrainingActivity;
+import pl.dsquare.home.android.activity.SheduleActivity;
+import pl.dsquare.home.android.activity.TrainActivity;
+import pl.dsquare.home.android.android.MainActivity;
+import pl.dsquare.home.android.android.R;
 
 public class GymActivity extends Activity {
     private SharedPreferences sp;

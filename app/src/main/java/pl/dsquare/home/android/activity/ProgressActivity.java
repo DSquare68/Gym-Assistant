@@ -1,10 +1,10 @@
-package pl.dsquare.home.activity;
+package pl.dsquare.home.android.activity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import pl.dsquare.home.R;
+import pl.dsquare.home.android.android.R;
 
 public class ProgressActivity extends AppCompatActivity {
 

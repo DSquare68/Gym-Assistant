@@ -1,9 +1,10 @@
-package pl.dsquare.home;
+package pl.dsquare.home.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import pl.dsquare.home.R;
+import pl.dsquare.home.android.android.R;
+
 /**
  * Created by Daniel on 2018-02-05.
  */
