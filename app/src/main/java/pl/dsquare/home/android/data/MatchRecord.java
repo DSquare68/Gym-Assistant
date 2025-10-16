@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MatchRecord {
 
+    public static String CODE_WEB="WEBSITE_DATA";
+
     @PrimaryKey
     @Column(name = "ID")
     private int ID;

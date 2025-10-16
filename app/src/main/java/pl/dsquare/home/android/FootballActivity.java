@@ -43,7 +43,7 @@ public class FootballActivity extends Activity {
         today.set(Calendar.HOUR_OF_DAY, 23);
         String mondayStr = sdf.format(today.getTime());
 
-        Thread t = new Thread(()->queues = db.matchDao().getQueue(fridayStr,mondayStr));
+        Thread t = new Thread(()->queues = db.matchDao().getQueue(fridayStr,mondayStr,MatchRecord.CODE_WEB));
         t.start();
         try {
             t.join();
