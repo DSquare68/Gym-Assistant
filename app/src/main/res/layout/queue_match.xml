@@ -4,29 +4,44 @@
     android:layout_width="match_parent"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
-    android:layout_height="50dp">
+    android:layout_height="100dp">
     <TextView
         android:id="@+id/queue_match_home"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="24sp"
         android:gravity="center"
         android:text="HOME">
     </TextView>
-    <TextView
-        android:id="@+id/queue_match_date"
-        android:layout_width="50dp"
-        android:text="VS"
+    <LinearLayout
+        android:layout_width="100dp"
+        android:orientation="vertical"
         android:gravity="center"
         android:layout_height="match_parent">
-    </TextView>
+        <TextView
+            android:id="@+id/queue_match_vs"
+            android:layout_width="match_parent"
+            android:text="VS"
+            android:textSize="34sp"
+            android:gravity="bottom|center_horizontal"
+            android:layout_height="60dp">
+        </TextView>
+        <TextView
+            android:id="@+id/queue_match_date"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:text="12:00"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/queue_match_guest"
         android:layout_weight="1"
+        android:textSize="24sp"
         android:gravity="center"
         android:text="GUEST"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
     </TextView>
-
 </LinearLayout>

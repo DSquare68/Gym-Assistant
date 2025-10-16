@@ -13,30 +13,30 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Black.NoTitleBar">
         <activity
-            android:name=".GymActivity"
+            android:name="pl.dsquare.home.android.GymActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ProgressActivity"
+            android:name="pl.dsquare.home.android.activity.ProgressActivity"
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.SheduleActivity"
+            android:name="pl.dsquare.home.android.activity.SheduleActivity"
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.TrainActivity"
+            android:name="pl.dsquare.home.android.activity.TrainActivity"
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.CreateTrainingActivity"
+            android:name="pl.dsquare.home.android.activity.CreateTrainingActivity"
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".FootballActivity"
+            android:name="pl.dsquare.home.android.FootballActivity"
             android:exported="false"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
