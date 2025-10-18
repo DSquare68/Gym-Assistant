@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.Collection;
 import java.util.List;
 
 import pl.dsquare.home.android.data.MatchRecord;
@@ -21,6 +22,9 @@ public interface MatchDao {
     @Query("DELETE FROM matches")
     void deleteAll();
 
-    @Query("SELECT * FROM MATCHES WHERE DATE_OF_MATCH BETWEEN :friday AND :monday order by DATE_OF_MATCH and code_of_data = :code")
-    List<MatchRecord> getQueue(String friday, String monday, String code);
+    @Query("SELECT * FROM MATCHES WHERE QUEUE = :queue and mode_of_data = :code order by DATE_OF_MATCH ")
+    List<MatchRecord> getQueue(int queue, String code);
+
+    @Query("SELECT QUEUE FROM MATCHES WHERE DATE_OF_MATCH > :day and mode_of_data = :code order by DATE_OF_MATCH LIMIT 1")
+    int getQueueByDate(String day, String code);
 }

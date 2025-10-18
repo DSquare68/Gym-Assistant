@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 public class MatchRecord {
 
     public static String CODE_WEB="WEBSITE_DATA";
+    public static String CODE_HOME="ANDROID_HOME";
+    public static String CODE_TIE="ANDROID_TIE";
+    public static String CODE_GUEST="ANDROID_GUEST";
 
     @PrimaryKey
     @Column(name = "ID")
@@ -33,6 +36,8 @@ public class MatchRecord {
     private String cup;
     @Column(name = "SEASON")
     private String season;
-    @Column(name = "CODE_OF_DATA")
-    private String code_of_data;
+    @Column(name = "MODE_OF_DATA")
+    private String mode_of_data;
+    @Column(name = "QUEUE")
+    private int queue;
 }

@@ -3,14 +3,19 @@ package pl.dsquare.home.android;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -21,7 +26,7 @@ import pl.dsquare.home.android.data.MatchRecord;
 import pl.dsquare.home.android.db.AppDatabase;
 import pl.dsquare.home.android.ui.QueueLayout;
 
-public class FootballActivity extends Activity {
+public class FootballActivity extends AppCompatActivity {
     private List<MatchRecord> queues;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +37,10 @@ public class FootballActivity extends Activity {
                 .build();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        int dayOfWeek = today.get(Calendar.DAY_OF_WEEK);
-        int daysToFriday = 6 - dayOfWeek;
-        today.add(Calendar.DATE, daysToFriday);
-        String fridayStr = sdf.format(today.getTime());
-        today.add(Calendar.DATE, 3+7);
-        today.set(Calendar.HOUR_OF_DAY, 23);
-        String mondayStr = sdf.format(today.getTime());
-
-        Thread t = new Thread(()->queues = db.matchDao().getQueue(fridayStr,mondayStr,MatchRecord.CODE_WEB));
+        Thread t = new Thread(()->{
+            int queueLP = db.matchDao().getQueueByDate(sdf.format(today.getTime()),MatchRecord.CODE_WEB);
+            queues = db.matchDao().getQueue(queueLP,MatchRecord.CODE_WEB);
+        });
         t.start();
         try {
             t.join();
@@ -56,6 +53,17 @@ public class FootballActivity extends Activity {
         initQueue();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.match_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
     private void initQueue() {
         LinearLayout ll = findViewById(R.id.queue_layout);
         for (MatchRecord matchRecord : queues) {
@@ -64,6 +72,24 @@ public class FootballActivity extends Activity {
             ((TextView) match.findViewById(R.id.queue_match_date)).setText(matchRecord.getDate_of_match());
             ((TextView) match.findViewById(R.id.queue_match_guest)).setText(matchRecord.getGuest());
             new Thread(()->ll.post(()->ll.addView(match))).start();
+        }
+    }
+
+    public void sendMatch(MenuItem item) {
+        LinearLayout ll = findViewById(R.id.queue_layout);
+        List<MatchRecord> guests = queues;
+        for(int i=0; i< ll.getChildCount();i++){
+            QueueLayout match = (QueueLayout) ll.getChildAt(i);
+            String resoultMatch="";
+            boolean h = match.isHome;
+            boolean g = match.isGuest;
+            if(h && !g)
+                resoultMatch = MatchRecord.CODE_HOME;
+            else if(!h && g)
+                resoultMatch = MatchRecord.CODE_GUEST;
+            else if(h && g)
+                resoultMatch = MatchRecord.CODE_TIE;
+            queues.get(i).setMode_of_data(resoultMatch);
         }
     }
 }

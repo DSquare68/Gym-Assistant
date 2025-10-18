@@ -11,7 +11,7 @@ import pl.dsquare.home.android.android.R;
 public class QueueLayout extends LinearLayout {
 
     private TextView home, guest, date;
-    private boolean isHome =false, isGuest= false;
+    public boolean isHome =false, isGuest= false;
     private Context context;
 
 
