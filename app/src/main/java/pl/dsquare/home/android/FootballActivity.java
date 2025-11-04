@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +38,7 @@ public class FootballActivity extends AppCompatActivity {
                 .build();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Calendar today = Calendar.getInstance();
+        //today.add(Calendar.DATE, -7);
         Thread t = new Thread(()->{
             int queueLP = db.matchDao().getQueueByDate(sdf.format(today.getTime()),MatchRecord.CODE_WEB);
             queues = db.matchDao().getQueue(queueLP,MatchRecord.CODE_WEB);
@@ -77,7 +79,8 @@ public class FootballActivity extends AppCompatActivity {
 
     public void sendMatch(MenuItem item) {
         LinearLayout ll = findViewById(R.id.queue_layout);
-        List<MatchRecord> guests = queues;
+        ArrayList<MatchRecord> guests = new ArrayList<>(queues);
+        AppDatabase db = AppDatabase.getDatabase(this);
         for(int i=0; i< ll.getChildCount();i++){
             QueueLayout match = (QueueLayout) ll.getChildAt(i);
             String resoultMatch="";
@@ -89,7 +92,8 @@ public class FootballActivity extends AppCompatActivity {
                 resoultMatch = MatchRecord.CODE_GUEST;
             else if(h && g)
                 resoultMatch = MatchRecord.CODE_TIE;
-            queues.get(i).setMode_of_data(resoultMatch);
+            guests.get(i).setMode_of_data(resoultMatch);
         }
+        new Thread(()->db.insertQueue(guests)).start();
     }
 }

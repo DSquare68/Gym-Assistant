@@ -34,7 +34,7 @@ import java.util.List;
 
 @Database(entities = {Exercise.class, TrainingRecord.class,MatchRecord.class}, version = VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-    public static final String DB_NAME="gym_assistant_db";
+    public static final String DB_NAME="dsquare_home_db";
     private Context c;
 
     public static void insertExerciseName(Exercise exercise) {
@@ -70,7 +70,13 @@ public abstract class AppDatabase extends RoomDatabase {
             throw new RuntimeException(e);
         }
     }
-
+    public static void insertQueue(ArrayList<MatchRecord> matches){
+        try {
+            Response response = apiEksport.addMatches(matches).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static int getExerciseNameId(String name) {
         Response r = null;
         try {
@@ -112,8 +118,8 @@ public abstract class AppDatabase extends RoomDatabase {
         try {
             //db.matchDao().deleteAll();
             List<MatchRecord> matches = apiImport.getMatches().execute().body();
-            List<MatchRecord> presentMaches = db.matchDao().getAll();
-            if(presentMaches.isEmpty() || presentMaches == null)
+            List<MatchRecord> presentMatches = db.matchDao().getAll();
+            if(presentMatches.isEmpty() || presentMatches == null)
                 db.matchDao().insertAll(matches);
 
         } catch (IOException e) {

@@ -3,6 +3,7 @@ package pl.dsquare.home.android.api;
 import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
+import pl.dsquare.home.android.data.MatchRecord;
 import pl.dsquare.home.android.data.TrainingRecord;
 import pl.dsquare.home.android.db.Exercise;
 import retrofit2.Call;
@@ -26,4 +27,8 @@ public interface ApiEksport {
     @POST("api/add/exercise_name")
     @Headers("Content-Type: application/json")
     Call<ResponseBody> addExerciseName(@Body Exercise exercise);
+
+    @POST("api/add/matches")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> addMatches(@Body ArrayList<MatchRecord> matches);
 }
