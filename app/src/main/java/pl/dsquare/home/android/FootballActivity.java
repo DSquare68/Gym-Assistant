@@ -41,7 +41,6 @@ public class FootballActivity extends AppCompatActivity {
         today.add(Calendar.DATE, -7);
         Thread t = new Thread(()->{
             int queueLP = db.matchDao().getQueueByDate(sdf.format(today.getTime()),MatchRecord.CODE_WEB);
-            queueLP = 14;
             queues = db.matchDao().getQueue(queueLP,MatchRecord.CODE_WEB);
         });
         t.start();
