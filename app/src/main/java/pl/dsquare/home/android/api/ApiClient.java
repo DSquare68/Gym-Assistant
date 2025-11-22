@@ -3,6 +3,9 @@ package pl.dsquare.home.android.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -10,7 +13,11 @@ public class ApiClient {
     //private static final String BASE_URL = "http://130.61.173.10:8080/home/";
     private static final String BASE_URL = "http://192.168.1.64:8080/";
     private static Retrofit retrofit;
-
+    private OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(300, TimeUnit.SECONDS)
+            .writeTimeout(150, TimeUnit.SECONDS)
+            .build();
     static Gson gson = new GsonBuilder()
             .setLenient()  // Enable lenient mode
             .create();

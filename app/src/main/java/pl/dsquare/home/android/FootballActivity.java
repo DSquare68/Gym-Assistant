@@ -38,9 +38,10 @@ public class FootballActivity extends AppCompatActivity {
                 .build();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Calendar today = Calendar.getInstance();
-        //today.add(Calendar.DATE, -7);
+        today.add(Calendar.DATE, -7);
         Thread t = new Thread(()->{
             int queueLP = db.matchDao().getQueueByDate(sdf.format(today.getTime()),MatchRecord.CODE_WEB);
+            queueLP = 14;
             queues = db.matchDao().getQueue(queueLP,MatchRecord.CODE_WEB);
         });
         t.start();
@@ -93,6 +94,7 @@ public class FootballActivity extends AppCompatActivity {
             else if(h && g)
                 resoultMatch = MatchRecord.CODE_TIE;
             guests.get(i).setMode_of_data(resoultMatch);
+            queues.get(i).setID(0);
         }
         new Thread(()->db.insertQueue(guests)).start();
     }
